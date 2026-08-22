@@ -1,0 +1,44 @@
+# GameLogicEvents
+
+> **Source Path**: `assets/cc-common/cc-slot-module/Core/GameLogicEvents.ts`
+
+## Overview
+TypeScript module from `cc-common/cc-slot-module`.
+
+## Source Implementation
+```typescript
+export const GameLogicEvents = {
+	JOIN_GAME_SUCCESS: "JOIN_GAME_SUCCESS",
+	STATE_UPDATE: "STATE_UPDATE",
+	STATE_RESUME: "STATE_RESUME",
+
+	// Spin Trigger
+	BEFORE_SPIN_START: "BEFORE_SPIN_START",
+	START_SPINNING_TABLE: "START_SPINNING_TABLE",
+	START_RESPINNING_TABLE: "START_RESPINNING_TABLE",
+
+	// Result Received
+	PRE_STOP_SPINNING_TABLE: "PRE_STOP_SPINNING_TABLE",
+	STOP_SPINNING_TABLE: "STOP_SPINNING_TABLE",
+	STOP_RESPINNING_TABLE: "STOP_RESPINNING_TABLE",
+
+	// Show Result
+	SHOW_RESULT_ENTRY: "SHOW_RESULT_ENTRY",
+	SHOW_RESULT_FINAL: "SHOW_RESULT_FINAL",
+
+	// Resume
+	PRE_RESUME_GAME_MODE: "PRE_RESUME_GAME_MODE",
+	RESUME_NORMAL_GAME: "RESUME_NORMAL_GAME",
+	RESUME_GAME_MODE: "RESUME_GAME_MODE",
+
+	// Change Game Mode, using in Resume/Show Result state
+	ENTER_GAME_MODE: "ENTER_GAME_MODE",
+	TRANSITION_GAME_MODE: "TRANSITION_GAME_MODE",
+	EXIT_GAME_MODE: "EXIT_GAME_MODE",
+
+	// other: change game speed, handle error
+	FAST_TO_RESULT: "FAST_TO_RESULT",
+	FORCE_STOP_CURRENT_GAME_MODE: "FORCE_STOP_CURRENT_GAME_MODE",
+};
+
+```

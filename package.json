@@ -1,0 +1,37 @@
+{
+  "name": "mcp-fwcc",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) Knowledge Server for Cocos Creator cc-common Slot Framework SDK",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "test": "tsx test/test_fwcc_knowledge.ts"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "cocos-creator",
+    "cc-common",
+    "slot-framework",
+    "ai-agent",
+    "knowledge-base"
+  ],
+  "author": "lam-ark",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "minisearch": "^7.1.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.13.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}
