@@ -55,9 +55,9 @@ export class DocsSearchEngine implements IEngine {
     for (const item of scannedFiles) {
       try {
         const rawContent = fs.readFileSync(item.fullPath, "utf8");
-        const topicId = item.fileName.replace(/\.md$/, "");
+        const topicId = item.relPath.replace(/\.md$/, "").replace(/[\/\\]/g, ":");
         const titleMatch = rawContent.match(/^#\s+(.+)$/m);
-        const title = titleMatch ? titleMatch[1] : topicId;
+        const title = titleMatch ? titleMatch[1] : item.fileName.replace(/\.md$/, "");
 
         // Extract classes & methods
         const classMatches = [...rawContent.matchAll(/-\s+\*\*`(\w+)`\*\*/g)].map(m => m[1]);

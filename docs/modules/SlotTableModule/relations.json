@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "nodeId": "Class:SlotTableModule",
+  "category": "cc_slot_module",
+  "title": "SlotTableModule Matrix Manager",
+  "inheritsFrom": "Class:SlotBaseModule",
+  "manages": [
+    "Class:SlotReelModule",
+    "Class:SlotSymbolManager"
+  ],
+  "usedBy": [
+    {
+      "target": "Class:SlotDirector",
+      "relation": "orchestrates_spin_and_stop"
+    },
+    {
+      "target": "Mechanic:CompositeCascade",
+      "relation": "modifies_table_matrix"
+    }
+  ],
+  "dependsOn": [
+    "Class:TableModuleConfig",
+    "Class:SlotTableData",
+    "Class:GameConfig"
+  ],
+  "emitsEvents": [
+    "Event:TABLE_STOPPED",
+    "Event:TABLE_START_SPIN"
+  ],
+  "listensToEvents": [
+    "Event:SPIN_START",
+    "Event:FAST_STOP_TABLE"
+  ],
+  "gotchas": [
+    "Gotcha:Matrix_Dimension_Mismatch",
+    "Gotcha:Reel_Stop_Callback_Timeout"
+  ],
+  "files": {
+    "overview": "modules/SlotTableModule/01_overview.md",
+    "properties": "modules/SlotTableModule/02_properties.md",
+    "methods": "modules/SlotTableModule/03_methods.md",
+    "gotchas": "modules/SlotTableModule/04_gotchas.md",
+    "recipes": "modules/SlotTableModule/05_recipes.md"
+  }
+}

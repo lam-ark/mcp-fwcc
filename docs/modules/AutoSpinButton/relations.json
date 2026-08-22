@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "nodeId": "Class:AutoSpinButton",
+  "category": "cc_slot_module",
+  "title": "AutoSpinButton Component",
+  "inheritsFrom": "Class:SlotBaseModule",
+  "manages": [
+    "Component:cc.Button"
+  ],
+  "usedBy": [
+    {
+      "target": "Class:AutoSpinPanel",
+      "relation": "opens_popup"
+    },
+    {
+      "target": "Class:SlotDirector",
+      "relation": "interactivity_controlled_by_director"
+    }
+  ],
+  "dependsOn": [
+    "Class:UIManagerData",
+    "Class:GameLogicUIEvents",
+    "Class:ObserverObject"
+  ],
+  "emitsEvents": [
+    "Event:OPEN_AUTO_SPIN_PANEL"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Observer_Memory_Leak_On_Destroy",
+    "Gotcha:Observer_Initial_State_Sync"
+  ],
+  "files": {
+    "overview": "modules/AutoSpinButton/01_overview.md",
+    "properties": "modules/AutoSpinButton/02_properties.md",
+    "methods": "modules/AutoSpinButton/03_methods.md",
+    "gotchas": "modules/AutoSpinButton/04_gotchas.md",
+    "recipes": "modules/AutoSpinButton/05_recipes.md"
+  }
+}

@@ -1,4 +1,7 @@
+import * as fs from "fs";
+import * as path from "path";
 import { IEngine } from "../core/types.js";
+import { CONFIG } from "../config/constants.js";
 
 export interface GraphNode {
   id: string;
@@ -6,12 +9,16 @@ export interface GraphNode {
   category: string;
   description: string;
   related: string[];
+  raw?: any;
 }
 
 export class GraphEngine implements IEngine {
   private nodes: Map<string, GraphNode> = new Map();
 
+  constructor(private docsDir: string = CONFIG.DOCS_DIR) {}
+
   public init(): void {
+    // 1. Static Core Relationships
     const relationships: GraphNode[] = [
       {
         id: "SlotDirector",
@@ -32,7 +39,7 @@ export class GraphEngine implements IEngine {
         name: "SlotSymbolManager",
         category: "cc_slot_module",
         description: "Manages symbol instantiation, spine caching, symbol animation states (win, near-win, static).",
-        related: ["SlotTableModule", "SlotBaseModule"],
+        related: ["SlotTableModule", "SlotBaseModule", "SlotSymbolModule"],
       },
       {
         id: "PaylineInfoModule",
@@ -71,12 +78,57 @@ export class GraphEngine implements IEngine {
       },
     ];
 
-    relationships.forEach(node => this.nodes.set(node.id.toLowerCase(), node));
-    console.log(`[GraphEngine] Initialized ${this.nodes.size} conceptual graph nodes.`);
+    relationships.forEach(node => {
+      this.nodes.set(node.id.toLowerCase(), node);
+      this.nodes.set(node.name.toLowerCase(), node);
+    });
+
+    // 2. Dynamic Loading from docs/modules/*/relations.json
+    const modulesPath = path.join(this.docsDir, "modules");
+    if (fs.existsSync(modulesPath)) {
+      const dirs = fs.readdirSync(modulesPath, { withFileTypes: true });
+      for (const d of dirs) {
+        if (d.isDirectory()) {
+          const relFile = path.join(modulesPath, d.name, "relations.json");
+          if (fs.existsSync(relFile)) {
+            try {
+              const data = JSON.parse(fs.readFileSync(relFile, "utf8"));
+              const relatedTargets = [
+                data.inheritsFrom,
+                ...(data.manages || []),
+                ...(data.usedBy ? data.usedBy.map((u: any) => u.target) : []),
+                ...(data.dependsOn || []),
+                ...(data.emitsEvents || []),
+                ...(data.listensToEvents || []),
+                ...(data.gotchas || [])
+              ].filter(Boolean).map(s => String(s).replace(/^(\w+):/, ""));
+
+              const node: GraphNode = {
+                id: data.nodeId || d.name,
+                name: d.name,
+                category: data.category || "cc_slot_module",
+                description: data.title || `${d.name} Module`,
+                related: Array.from(new Set(relatedTargets)),
+                raw: data
+              };
+
+              this.nodes.set(node.id.toLowerCase(), node);
+              this.nodes.set(node.name.toLowerCase(), node);
+              this.nodes.set(d.name.toLowerCase(), node);
+            } catch (e) {
+              console.error(`[GraphEngine] Error parsing ${relFile}:`, e);
+            }
+          }
+        }
+      }
+    }
+
+    console.log(`[GraphEngine] Initialized ${this.nodes.size} conceptual graph node indices.`);
   }
 
   public getRelated(topicId: string): GraphNode | null {
-    return this.nodes.get(topicId.toLowerCase()) || null;
+    const q = topicId.toLowerCase().replace(/^(\w+):/, "");
+    return this.nodes.get(q) || this.nodes.get(topicId.toLowerCase()) || null;
   }
 
   public getAllNodes(): GraphNode[] {

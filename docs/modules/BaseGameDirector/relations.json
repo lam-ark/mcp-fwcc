@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "nodeId": "Class:BaseGameDirector",
+  "category": "cc_slot_module",
+  "title": "BaseGameDirector State Engine",
+  "inheritsFrom": "Class:SlotBaseModule",
+  "manages": [
+    "Class:ScriptExecutor"
+  ],
+  "usedBy": [
+    {
+      "target": "Class:NormalGameDirectorModule",
+      "relation": "subclasses_director"
+    },
+    {
+      "target": "Class:FreeGameDirectorModule",
+      "relation": "subclasses_director"
+    },
+    {
+      "target": "Class:BonusGameDirectorModule",
+      "relation": "subclasses_director"
+    }
+  ],
+  "dependsOn": [
+    "Class:GameDataStore",
+    "Class:SlotGameSettings",
+    "Class:ScriptExecutor"
+  ],
+  "emitsEvents": [
+    "Event:CHANGE_GAME_MODE",
+    "Event:SHOW_PAYLINE_WIN_AMOUNT",
+    "Event:COMMIT_RESPIN_WIN_AMOUNT"
+  ],
+  "listensToEvents": [
+    "Event:SPIN_START",
+    "Event:FORCE_EXIT_GAME_MODE"
+  ],
+  "gotchas": [
+    "Gotcha:Unresolved_Director_Action_Promise",
+    "Gotcha:Game_Speed_Scale_Desync"
+  ],
+  "files": {
+    "overview": "modules/BaseGameDirector/01_overview.md",
+    "properties": "modules/BaseGameDirector/02_properties.md",
+    "methods": "modules/BaseGameDirector/03_methods.md",
+    "gotchas": "modules/BaseGameDirector/04_gotchas.md",
+    "recipes": "modules/BaseGameDirector/05_recipes.md"
+  }
+}
