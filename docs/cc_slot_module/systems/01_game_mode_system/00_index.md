@@ -31,3 +31,12 @@ Welcome to the technical guide on the **Game Mode Architecture & Finite State Ma
 
 6. **[`06_game_mode_prefabs_and_composition.md`](./06_game_mode_prefabs_and_composition.md)**
    * Self-contained sub-scene packaging: `MainGamePrefab`, `FreeGamePrefab`, `BonusGamePrefab` node anatomy, component wiring matrix, memory management, and game setup guide.
+
+7. **[`07_bonus_game_pick_and_click_subsystem.md`](./07_bonus_game_pick_and_click_subsystem.md)**
+   * Pick-and-Click mini-game architecture: `BonusGameDirectorModule`, `BonusGameWriterModule`, `BonusGameTableModule`, `BonusGameItemModule`, countdown FSM, and auto-pick fallback.
+
+8. **[`08_free_game_and_volatility_option_subsystem.md`](./08_free_game_and_volatility_option_subsystem.md)**
+   * Free Spins & Volatility Option architecture: `FreeGameDirectorModule`, `FreeGameWriterModule`, `FreeOptionDirectorModule`, player choice modals, multipliers, and scatter re-triggers.
+
+9. **[`09_fortune_wheel_physics_and_director_subsystem.md`](./09_fortune_wheel_physics_and_director_subsystem.md)**
+   * Circular prize wheel architecture: `FortuneWheelGameDirector`, `FortuneWheelModule`, angular physics equations, target segment settling, and auto-trigger fallback.
