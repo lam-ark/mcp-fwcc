@@ -26,3 +26,7 @@ Welcome to the technical guide on the **Reactive Data Flow & Reconnection Archit
 
 4. **[`04_reconnection_is_resume_state_hydration.md`](./04_reconnection_is_resume_state_hydration.md)**
    * Session hydration when a player reconnects after network drop or browser refresh (`isResume`, `freeGameRemain`, `winAmountPS`, `SYNC_TABLE`).
+
+5. **[`05_companion_triplet_view_data_config_pattern.md`](./05_companion_triplet_view_data_config_pattern.md)**
+   * Clean Code Subsystem Architecture: The Companion Triplet Pattern (**Visual Controller** `*Module.ts` + **Reactive Data Model** `*Data.ts` + **Configuration** `*Config.ts`).
+   * Subsystem inventory, co-location in Scene Graph, and Single Responsibility Principle (SRP) rules.

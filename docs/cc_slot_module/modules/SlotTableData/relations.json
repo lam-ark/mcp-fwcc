@@ -1,0 +1,19 @@
+{
+  "id": "SlotTableData",
+  "title": "SlotTableData Reactive Matrix Model",
+  "category": "cc_slot_module",
+  "inheritsFrom": "BaseDataModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotTableModule", "relation": "provides_parsed_matrix" }
+  ],
+  "dependsOn": [
+    { "target": "TableModuleConfig", "relation": "reads_table_format" },
+    { "target": "GameDataStore", "relation": "receives_matrix_updates" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Table_Format_Mismatch_Crash"
+  ]
+}
