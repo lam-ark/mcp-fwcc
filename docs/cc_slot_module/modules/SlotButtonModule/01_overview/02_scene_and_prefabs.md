@@ -1,25 +1,28 @@
 ---
 id: "cc_slot_module:SlotButtonModule:overview:scene_and_prefabs"
-title: "SlotButtonModule Scene Node Hierarchy"
+title: "SlotButtonModule Scene Hierarchy & Renderer Options"
 category: "cc_slot_module"
-tags: ["SlotButtonModule", "slot_button_module", "cc_slot_module", "overview", "scene_prefabs"]
+tags: ["SlotButtonModule", "slot_button_module", "cc_slot_module", "overview", "scene_prefabs", "spine", "sprite"]
 ---
 
-# 🏛️ SlotButtonModule Scene Node Hierarchy
+# 🏛️ SlotButtonModule Scene Hierarchy & Renderer Options
 
 ---
 
-## 1. Canonical Placement
-
-Mounted under `Canvas/Director/UIManager`:
+## 1. Complete Node Hierarchy Under `UIManager`
 
 ```text
 Canvas/Director/UIManager
 ├── NormalSpinButton [Component: SlotButtonNormal]
-│   ├── Display [Component: SlotButtonSpine / SlotButtonSprite]
-│   ├── SpinButtonTouch [cc.Node with Touch Target area]
-│   └── TextSpin [cc.Sprite: Hold to Auto / Press to Stop]
-└── FreeSpinButton [Component: SlotButtonFree]
-    ├── Display [cc.Node]
-    └── SpinButtonTouch [cc.Node]
+│   ├── SpinButtonTouch [cc.Node with BoxCollider / Hit Area]
+│   ├── Display [Component: SlotButtonSpine OR SlotButtonSprite]
+│   │   ├── SpineBtnSpin [sp.Skeleton: "Spin", "Stop", "Spin_To_Stop"]
+│   │   └── SpineHover [sp.Skeleton: "Hover"]
+│   └── TextSpin [cc.Sprite: displays textHoldToAuto or textPressToStop]
+├── FreeSpinButton [Component: SlotButtonFree]
+│   ├── SpinButtonTouch [cc.Node]
+│   └── Display [Component: SlotButtonSpine / SlotButtonSprite]
+└── LightningSpinButton [Component: SlotButtonLightning]
+    ├── SpinButtonTouch [cc.Node]
+    └── Display [Component: SlotButtonSpine / SlotButtonSprite]
 ```
