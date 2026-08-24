@@ -11,11 +11,32 @@
 - **Total SDK Clusters**: 10
 - **Total Modules & Core Components**: ~75
 - **Completed Modules (v3.1)**: **23**
+- **Completed Architecture Overviews**: **13 / 13 (100% Complete)**
 - **In-Progress / Upcoming**: **52**
 
 ```text
 [████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 31% Total Completed
 ```
+
+---
+
+## 🧭 Master Architectural & Subsystem Overviews (13/13 Complete)
+
+| Status | Overview Document | Title / Scope | Key Conceptual Topics Covered |
+| :---: | :--- | :--- | :--- |
+| [x] | [`01_module_architecture`](docs/cc_slot_module/over_view/01_module_architecture_and_philosophy.md) | Module Architecture & Philosophy | Separation of Data - Presentation - Director, scalability. |
+| [x] | [`02_dependency_injection_ioc`](docs/cc_slot_module/over_view/02_dependency_injection_ioc.md) | Dependency Injection & IoC | `@inject` decorator, Service Locator container. |
+| [x] | [`03_dual_event_bus_system`](docs/cc_slot_module/over_view/03_dual_event_bus_system.md) | Dual Event Bus System | Scoped `moduleEvent` vs Global `EventManager`. |
+| [x] | [`04_module_lifecycle`](docs/cc_slot_module/over_view/04_module_lifecycle_and_registration.md) | Module Lifecycle & Registration | Scene bootstrap, `onLoad`, `start`, `onDestroy` hooks. |
+| [x] | [`05_module_ecosystem`](docs/cc_slot_module/over_view/05_module_ecosystem_and_classification.md) | Module Ecosystem & Classification | 5 major module clusters. |
+| [x] | [`06_best_practices_gotchas`](docs/cc_slot_module/over_view/06_module_best_practices_and_gotchas.md) | Best Practices & Gotchas | Coding standards, memory safety. |
+| [x] | [`07_game_mode_architecture`](docs/cc_slot_module/over_view/07_game_mode_architecture_and_composition.md) | **Game Mode Architecture & 4-Channel Inter-Module Communication** | Definition of Game Modes, Mode Anatomy (Director+Writer+Data), and 4 Communication Channels. |
+| [x] | [`08_table_reel_symbol_engine`](docs/cc_slot_module/over_view/08_table_reel_symbol_engine_architecture.md) | **Table, Reels & Symbol Rendering Engine** | 7-part Table Engine, 2D matrix `[col][row]`, Buffer Rows, Z-Order sorting, Mega Symbols. |
+| [x] | [`09_reactive_data_flow`](docs/cc_slot_module/over_view/09_reactive_data_flow_and_reconnection_architecture.md) | **Reactive Data Flow & Reconnection** | WebSocket ➔ DataStore (mapNewKeys, Deep-Clone) ➔ BaseDataModule, `isResume` state hydration. |
+| [x] | [`10_script_executor_pipeline`](docs/cc_slot_module/over_view/10_script_executor_and_writer_command_pipeline.md) | **Script Execution & Command Pipeline** | Scripting Triad (Director ➔ Writer ➔ ScriptExecutor), Async Promise chaining, Turbo Skip. |
+| [x] | [`11_win_presentation_hierarchy`](docs/cc_slot_module/over_view/11_win_evaluation_payline_and_celebration_hierarchy.md) | **Win Evaluation & Celebration Hierarchy** | Multiplier tiers, Paylines (Blink all ➔ Cycle), Win rolling count-up, Big Win Cutscenes. |
+| [x] | [`12_audio_choreography`](docs/cc_slot_module/over_view/12_audio_choreography_and_sound_pipeline.md) | **Audio Choreography & Sound Subsystem** | BGM per mode, Reel spin loops, Near-win tension music, Coin roll escalation, Mobile mute. |
+| [x] | [`13_scene_graph_prefabs`](docs/cc_slot_module/over_view/13_scene_graph_prefabs_and_packaging_conventions.md) | **Scene Graph Hierarchy & Packaging Conventions** | Standard Cocos Canvas node tree, prefab override principles, game creation workflow. |
 
 ---
 
