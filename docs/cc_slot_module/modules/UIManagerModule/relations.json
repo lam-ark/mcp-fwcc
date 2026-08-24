@@ -1,0 +1,42 @@
+{
+  "moduleId": "UIManagerModule",
+  "category": "cc_slot_module",
+  "name": "UIManagerModule",
+  "description": "Master GUI HUD orchestrator managing bottom control panels, spin buttons, betting matrices, wallet balances, jackpot headers, and modal input blocking.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "GameModeDirectorModule",
+      "relation": "ui_layout_control"
+    },
+    {
+      "target": "SlotButtonModule",
+      "relation": "popup_blocking_guard"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "GameDataStore",
+    "SlotGameSettings",
+    "CutsceneController",
+    "PopupControllerModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "UPDATE_GAME_MODE_UI"
+  ],
+  "gotchas": [
+    "01_stale_mode_ui_overlap_leak",
+    "02_blocking_popup_keyboard_leak"
+  ],
+  "related": [
+    "SlotButtonModule",
+    "BetModule",
+    "WalletModule",
+    "WinAmountModule",
+    "TurboButton",
+    "CutsceneController",
+    "PopupControllerModule"
+  ]
+}
