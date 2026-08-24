@@ -288,5 +288,35 @@ export function createSearchTools(docsEngine: DocsSearchEngine, graphEngine: Gra
         };
       },
     },
+
+    // 11. fwcc_export_report
+    {
+      name: "fwcc_export_report",
+      description: "Generate a consolidated, single self-contained Markdown report file containing full text, code, and diagrams for multiple docs/topics or a search query.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          query: { type: "string", description: "Search query to bundle relevant documentation for (e.g. 'BonusGameDirectorModule pick loop and table')" },
+          topics: { type: "array", items: { type: "string" }, description: "Specific topic IDs or relative paths to bundle" },
+          limit: { type: "number", description: "Maximum documents to bundle (default: 5)", default: 5 },
+        },
+      },
+      handler: async (args: any) => {
+        const query = args?.query;
+        const topics = args?.topics;
+        const limit = Number(args?.limit) || 5;
+
+        const report = docsEngine.exportReport(topics && topics.length > 0 ? topics : query, limit);
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: report.markdown,
+            },
+          ],
+        };
+      },
+    },
   ];
 }

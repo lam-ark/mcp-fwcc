@@ -230,16 +230,86 @@ export class DocsSearchEngine implements IEngine {
 
     return results.slice(0, limit).map((r: any) => {
       const rawTags = r.tags ? String(r.tags).split(" ").filter(Boolean) : [];
+      const normalizedRelPath = String(r.relPath || "").replace(/\\/g, "/");
       return {
         score: r.score,
         topic: r.topic,
         section: r.section,
-        relPath: r.relPath,
+        relPath: normalizedRelPath,
+        docUrl: `/doc/${normalizedRelPath}`,
         category: r.category,
         tags: rawTags,
         snippet: extractSmartSnippet(r.content, query, 320),
       };
     });
+  }
+
+  public exportReport(queryOrTopics?: string | string[], limit: number = 5): { title: string; totalDocs: number; markdown: string } {
+    let docsToInclude: Array<{ topic: string; relPath: string; content: string }> = [];
+
+    if (Array.isArray(queryOrTopics) && queryOrTopics.length > 0) {
+      for (const item of queryOrTopics) {
+        const doc = this.getDoc(item);
+        if (doc.found && doc.content) {
+          docsToInclude.push({
+            topic: item,
+            relPath: doc.relPath || item,
+            content: doc.content,
+          });
+        }
+      }
+    } else if (typeof queryOrTopics === "string" && queryOrTopics.trim()) {
+      const searchRes = this.search(queryOrTopics, limit);
+      const seenPaths = new Set<string>();
+      for (const hit of searchRes) {
+        if (!seenPaths.has(hit.relPath)) {
+          seenPaths.add(hit.relPath);
+          const doc = this.getDoc(hit.relPath);
+          if (doc.found && doc.content) {
+            docsToInclude.push({
+              topic: hit.topic,
+              relPath: hit.relPath,
+              content: doc.content,
+            });
+          }
+        }
+      }
+    }
+
+    if (docsToInclude.length === 0) {
+      return {
+        title: "cc-common Documentation Export",
+        totalDocs: 0,
+        markdown: "# ⚠️ No matching documentation found for export.",
+      };
+    }
+
+    const title = typeof queryOrTopics === "string" ? `Knowledge Report: ${queryOrTopics}` : "cc-common Bundled Documentation Report";
+    let md = `# 📚 ${title}\n\n`;
+    md += `> **Generated from cc-common Knowledge Base**  \n`;
+    md += `> **Total Included Documents**: ${docsToInclude.length}  \n`;
+    md += `> **Export Timestamp**: ${new Date().toISOString()}\n\n`;
+    md += `## 📑 Table of Contents\n\n`;
+
+    docsToInclude.forEach((doc, idx) => {
+      md += `${idx + 1}. [${doc.topic}](#doc-${idx + 1}) \`(${doc.relPath})\`\n`;
+    });
+    md += `\n---\n\n`;
+
+    docsToInclude.forEach((doc, idx) => {
+      md += `<a id="doc-${idx + 1}"></a>\n\n`;
+      md += `<!-- ========================================== -->\n`;
+      md += `<!-- Document ${idx + 1}/${docsToInclude.length}: ${doc.relPath} -->\n`;
+      md += `<!-- ========================================== -->\n\n`;
+      md += `${doc.content}\n\n`;
+      md += `---\n\n`;
+    });
+
+    return {
+      title,
+      totalDocs: docsToInclude.length,
+      markdown: md,
+    };
   }
 
   public searchExact(keyword: string): TopicInfo[] {

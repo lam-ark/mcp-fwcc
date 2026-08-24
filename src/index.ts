@@ -124,6 +124,28 @@ async function bootstrap() {
       return res.status(404).json({ jsonrpc: "2.0", id, error: { code: -32601, message: "Method not found" } });
     });
 
+    // View raw or rendered markdown document directly over HTTP
+    app.use("/doc", (req, res) => {
+      const relPath = decodeURIComponent(req.path.replace(/^\//, "").split("?")[0]);
+      const doc = docsEngine.getDoc(relPath);
+      if (!doc.found || !doc.content) {
+        return res.status(404).send(`<h1>404 Not Found</h1><p>Document <code>${relPath}</code> not found.</p>`);
+      }
+
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
+      return res.send(doc.content);
+    });
+
+    // Export bundled report directly over HTTP (e.g. GET /report?q=BonusGame)
+    app.get("/report", (req, res) => {
+      const q = String(req.query.q || req.query.query || "");
+      const limit = Number(req.query.limit) || 5;
+      const report = docsEngine.exportReport(q, limit);
+
+      res.setHeader("Content-Type", "text/markdown; charset=utf-8");
+      return res.send(report.markdown);
+    });
+
     // Health check
     app.get("/health", (req, res) => {
       res.json({
@@ -142,6 +164,8 @@ async function bootstrap() {
       console.log(`🚀 Cocos Common (cc-common) Knowledge MCP Server Started!`);
       console.log(`📡 SSE Endpoint: http://localhost:${CONFIG.PORT}/sse`);
       console.log(`📡 HTTP Endpoint: http://localhost:${CONFIG.PORT}/`);
+      console.log(`📖 Doc Viewer: http://localhost:${CONFIG.PORT}/doc/<relPath>`);
+      console.log(`📑 Report Generator: http://localhost:${CONFIG.PORT}/report?q=<query>`);
       console.log(`🩺 Health Check: http://localhost:${CONFIG.PORT}/health`);
       console.log(`🛠️  Total Tools: ${globalToolRegistry.getAllTools().length}`);
       console.log(`📚 Indexed Docs: ${CONFIG.DOCS_DIR}`);
