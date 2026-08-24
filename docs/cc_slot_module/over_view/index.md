@@ -21,6 +21,7 @@ Chào mừng bạn đến với tài liệu tổng quan toàn diện về **Ki�
 * **[`11_win_evaluation_payline_and_celebration_hierarchy.md`](./11_win_evaluation_payline_and_celebration_hierarchy.md)**: Tầng Đánh giá Thắng & Phân cấp Ăn Mừng (Win Ratio, Line Cycling, Cutscenes).
 * **[`12_audio_choreography_and_sound_pipeline.md`](./12_audio_choreography_and_sound_pipeline.md)**: Vũ đạo Âm thanh Slot (BGM, Spin Loops, Near-win Tension, Coin Roll).
 * **[`13_scene_graph_prefabs_and_packaging_conventions.md`](./13_scene_graph_prefabs_and_packaging_conventions.md)**: Cây Scene Chuẩn & Quy ước Đóng gói Thư mục Dự án.
+* **[`14_guide_how_to_create_and_setup_new_module.md`](./14_guide_how_to_create_and_setup_new_module.md)**: **Cẩm nang Toàn diện: Hướng dẫn Tạo và Thiết lập Module Mới từ Đầu** (Script Template, Gắn Scene Node, Tag Editor, Writer Integration & Tips Vàng).
 
 ---
 

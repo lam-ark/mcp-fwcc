@@ -53,6 +53,7 @@
 | [x] | [`11_win_presentation_hierarchy`](docs/cc_slot_module/over_view/11_win_evaluation_payline_and_celebration_hierarchy.md) | Win Presentation Hierarchy | Multiplier tiers, Paylines (Blink all ➔ Cycle), Win rolling count-up. |
 | [x] | [`12_audio_choreography`](docs/cc_slot_module/over_view/12_audio_choreography_and_sound_pipeline.md) | Audio Choreography | BGM per mode, Reel spin loops, Near-win tension music, Coin roll. |
 | [x] | [`13_scene_graph_prefabs`](docs/cc_slot_module/over_view/13_scene_graph_prefabs_and_packaging_conventions.md) | Scene Graph & Prefabs | Canvas node tree, prefab override principles, game creation workflow. |
+| [x] | [`14_create_setup_new_module`](docs/cc_slot_module/over_view/14_guide_how_to_create_and_setup_new_module.md) | Create & Setup New Module | Master Step-by-Step Guide: Script Boilerplate, Scene Node Placement, Tag Editor, Writer Integration & Golden Tips. |
 
 ---
 
