@@ -253,21 +253,23 @@ export class GraphEngine implements IEngine {
 
       // 3. Compute Inbound Backlinks
       if (node.inheritsFrom) {
-        const parent = this.getRelated(node.inheritsFrom);
+        const parentName = typeof node.inheritsFrom === "string" ? node.inheritsFrom : (node.inheritsFrom as any)?.target;
+        const parent = this.getRelated(parentName);
         if (parent && parent !== node) {
           parent.backlinks.push({ source: node.id, relationType: "subclassed_by" });
         }
       }
 
       for (const dep of node.dependsOn) {
-        const target = this.getRelated(dep);
+        const targetName = typeof dep === "string" ? dep : (dep as any)?.target;
+        const target = this.getRelated(targetName);
         if (target && target !== node) {
           target.backlinks.push({ source: node.id, relationType: "required_by" });
         }
       }
 
       for (const used of node.usedBy) {
-        const targetName = typeof used === "string" ? used : used.target;
+        const targetName = typeof used === "string" ? used : (used as any)?.target;
         const target = this.getRelated(targetName);
         if (target && target !== node) {
           target.backlinks.push({ source: node.id, relationType: "used_by" });
@@ -276,10 +278,13 @@ export class GraphEngine implements IEngine {
     }
   }
 
-  public getRelated(concept: string): GraphNode | null {
+  public getRelated(concept: any): GraphNode | null {
     if (!concept) return null;
-    const clean = concept.trim().toLowerCase().replace(/^(\w+):/, "");
-    return this.nodes.get(clean) || this.nodes.get(concept.trim().toLowerCase()) || null;
+    const conceptStr = typeof concept === "string" ? concept : (concept?.target || concept?.id || String(concept));
+    if (!conceptStr || typeof conceptStr !== "string") return null;
+
+    const clean = conceptStr.trim().toLowerCase().replace(/^(\w+):/, "");
+    return this.nodes.get(clean) || this.nodes.get(conceptStr.trim().toLowerCase()) || null;
   }
 
   public getBacklinks(concept: string): Array<{ source: string; relationType: string }> {
