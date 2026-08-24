@@ -1,7 +1,7 @@
-# 🗺️ Master Modules Roadmap & Implementation Checklist (v3.0)
+# 🗺️ Master Modules Roadmap & Implementation Checklist (v3.1)
 
 > **Roadmap Objective**: Comprehensive, production-grade documentation across all Cocos Common (`cc-common`) Slot Framework SDK modules.  
-> **Standard**: **Convention v3.0 Deep-Atomic Subfolder Hierarchy (One file per method, per gotcha, per recipe, and per phase breakdown)**.  
+> **Standard**: **Convention v3.1 Deep-Atomic Subfolder Hierarchy** (One file per method, per gotcha, per recipe, per phase breakdown, and complete `09_inheritance_and_customization/`).  
 > **Verification**: MiniSearch relevance validation + GraphEngine semantic link resolution.
 
 ---
@@ -13,10 +13,10 @@
 | [x] | **`GameInit`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameInit.ts` | **COMPLETED (v3.1)** - Bootstrap entry point, IoC container registration, network auto-connect. |
 | [x] | **`GameConfig`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameConfig.ts` | **COMPLETED (v3.1)** - Master config (`PAY_SYSTEM`, `TABLE_FORMAT`, `CURRENCY_CONFIG`, 25+ parameters). |
 | [x] | **`SlotBaseModule`** | Base Class for All Modules | `assets/cc-common/cc-slot-module/Core/SlotBaseModule.ts` | **COMPLETED (v3.1)** - Universal base class (`@inject`, `applyInjections`, dual event bus). |
-| [x] | **`GameDataStore`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameDataStore.ts` | **COMPLETED (v3.1)** - Central reactive store (`playSession`, `wallet`, `bet`, `winAmount`). |
+| [x] | **`GameDataStore`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameDataStore.ts` | **COMPLETED (v3.1)** - Central reactive store (`playSession`, `wallet`, `bet`, `winAmount`, `updateDataModules`). |
 | [x] | **`GameEventManager`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/GameEventManager.ts` | **COMPLETED (v3.1)** - Asynchronous global event bus (`emit` awaits `Promise.all()`). |
-| [x] | **`SlotGameSettings`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/SlotGameSettings.ts` | **COMPLETED (v3.1)** - User preferences (Turbo state, sound volumes, locale, speed modes). |
-| [x] | **`SlotSoundPlayerModule`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/SlotSound/SlotSoundPlayerModule.ts` | **COMPLETED (v3.1)** - Audio controller (BGM playback, SFX crossfade, win loops). |
+| [x] | **`SlotGameSettings`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/SlotGameSettings.ts` | **COMPLETED (v3.1)** - User preferences (Turbo state, FTR mode, speed levels, `currentGameState`). |
+| [x] | **`SlotSoundPlayerModule`** | `Canvas/Director/SlotSound` | `assets/cc-common/cc-slot-module/Core/SlotSound/SlotSoundPlayerModule.ts` | **COMPLETED (v3.1)** - Audio controller (BGM playback, SFX crossfade, win loops, mobile unlock). |
 
 ---
 
@@ -24,8 +24,8 @@
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
 | :---: | :--- | :--- | :--- | :--- |
-| [ ] | **`BaseGameDirector`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/GameMode/Core/BaseGameDirector.ts` | Master state machine loop orchestrator. |
-| [ ] | **`ScriptExecutor`** | Helper Class in Director | `assets/cc-common/cc-slot-module/GameMode/Core/ScriptExecutor.ts` | Asynchronous action queue step processor. |
+| [x] | **`BaseGameDirector`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/GameMode/Core/BaseGameDirector.ts` | **COMPLETED (v3.1)** - Master state machine loop orchestrator. |
+| [x] | **`ScriptExecutor`** | Helper Class in Director | `assets/cc-common/cc-slot-module/GameMode/Core/ScriptExecutor.ts` | **COMPLETED (v3.1)** - Asynchronous action queue step processor. |
 | [ ] | **`GameModeDirectorModule`** | `Canvas/Director/GameMode` | `assets/cc-common/cc-slot-module/GameMode/GameModeDirectorModule.ts` | Director dispatcher managing Normal, Free, and Bonus game modes. |
 | [ ] | **`NormalGameDirectorModule`** | `Canvas/Director/GameMode/NormalGame` | `assets/cc-common/cc-slot-module/GameMode/NormalGame/NormalGameDirectorModule.ts` | Normal game spin loop director. |
 | [ ] | **`NormalGameWriterModule`** | Helper Class in Normal Director | `assets/cc-common/cc-slot-module/GameMode/NormalGame/NormalGameWriterModule.ts` | Action script queue definition for normal spins. |
@@ -99,5 +99,5 @@
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
 | :--- | :--- | :--- | :--- | :--- |
-| [ ] | **`GameNetwork`** | Injected Singleton | `assets/cc-common/cc-network/game-network.js` | WebSocket transport, message serialization, reconnect. |
-| [ ] | **`WaitingSceneModule`** | `Canvas/Director/waitingScene` | `assets/cc-common/cc-slot-module/Core/WaitingSceneModule.ts` | Socket connection loading screen & spinner. |
+| [ ] | **`NetworkService`** | Injected Singleton | `assets/cc-common/cc-slot-module/Core/Network/NetworkService.ts` | WebSocket packet serialization, heartbeat ping, reconnect. |
+| [ ] | **`MockDataService`** | Injected Singleton | `assets/cc-common/cc-slot-module/Core/Mock/MockDataService.ts` | Offline spin payload simulation for development testing. |

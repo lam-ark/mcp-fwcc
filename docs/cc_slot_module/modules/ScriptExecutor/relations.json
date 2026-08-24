@@ -1,0 +1,19 @@
+{
+  "id": "ScriptExecutor",
+  "title": "ScriptExecutor Action Queue Processor",
+  "category": "cc_slot_module",
+  "inheritsFrom": "Object",
+  "manages": [],
+  "usedBy": [
+    { "target": "BaseGameDirector", "relation": "executes_command_queues_for_director" }
+  ],
+  "dependsOn": [
+    { "target": "GameDataStore", "relation": "reads_and_sets_game_speed" },
+    { "target": "SlotGameSettings", "relation": "reads_speed_and_turbo_flags" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Broken_Promise_Chain_Halts_executeNextScript_Progression"
+  ]
+}

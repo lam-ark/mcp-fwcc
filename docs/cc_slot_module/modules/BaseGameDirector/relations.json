@@ -1,0 +1,32 @@
+{
+  "id": "BaseGameDirector",
+  "title": "BaseGameDirector State Machine & Script Queue Orchestrator",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [
+    "ScriptExecutor"
+  ],
+  "usedBy": [
+    { "target": "NormalGameDirectorModule", "relation": "subclasses_base_director" },
+    { "target": "FreeGameDirectorModule", "relation": "subclasses_base_director" },
+    { "target": "BonusGameDirectorModule", "relation": "subclasses_base_director" },
+    { "target": "GameModeDirectorModule", "relation": "dispatches_mode_transitions" }
+  ],
+  "dependsOn": [
+    { "target": "ScriptExecutor", "relation": "instantiates_for_queue_processing" },
+    { "target": "GameDataStore", "relation": "injects_for_play_session_data" },
+    { "target": "SlotGameSettings", "relation": "injects_for_speed_and_state" }
+  ],
+  "emitsEvents": [
+    "GameUIEvents.GAME_MODE.EXIT_GAME_MODE",
+    "GameUIEvents.WALLET.UPDATE_WALLET"
+  ],
+  "listensToEvents": [
+    "GameUIEvents.GAME_MODE.SWITCH_GAME_MODE",
+    "GameUIEvents.BACK_TO_REAL_MODE"
+  ],
+  "gotchas": [
+    "Gotcha:Missing_makeScript_Generator_in_Companion_Writer",
+    "Gotcha:Unhandled_Step_Exception_Freezes_Director_Pipeline"
+  ]
+}
