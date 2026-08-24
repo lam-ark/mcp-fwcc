@@ -2,7 +2,7 @@
 id: "cc_slot_module:GameDataStore:method:getWinLevel"
 title: "GameDataStore.getWinLevel() Method Specification"
 category: "cc_slot_module"
-tags: ["GameDataStore", "game_data_store", "cc_slot_module", "method", "getWinLevel", "win_level", "rate", "FloatUtils"]
+tags: ["GameDataStore", "game_data_store", "cc_slot_module", "method", "getWinLevel", "win_level", "THRESHOLDS", "math"]
 ---
 
 # `GameDataStore.getWinLevel(win?: number): number`
@@ -16,23 +16,18 @@ public getWinLevel(win?: number): number
 
 ---
 
-## 2. When Is It Called & Trigger Source
-* **Invoking Entity**: `getWinAmountInfo()`, `WinEffectModule`, `SlotSoundPlayerModule`.
+## 2. Detailed Algorithmic Execution Logic
+1. Fallbacks `win` to `this.playSession.winAmount` or `0`.
+2. Computes the payout ratio: `rate = totalBet ? eno.FloatUtils.div(win, totalBet) : 0`.
+3. Compares `rate` against `this.gameConfig.WIN_LEVEL_CONFIG.THRESHOLDS` (defaults to `[1, 5, 10]`):
+   * `rate < thresholds[0]` (e.g. `< 1x`) ➔ Level `1` (Normal Win)
+   * `rate < thresholds[1]` (e.g. `< 5x`) ➔ Level `2` (Medium Win)
+   * `rate < thresholds[2]` (e.g. `< 10x`) ➔ Level `3` (Big Win)
+   * `rate >= thresholds[2]` (e.g. `>= 10x`) ➔ Level `4` (Mega / Super Win)
 
 ---
 
-## 3. Detailed Algorithmic Execution Logic
-1. Resolves `win`: uses passed parameter, or falls back to `this.playSession.winAmount` or `0`.
-2. Computes `rate = FloatUtils.div(win, totalBet)`.
-3. Compares `rate` against `this.gameConfig.WIN_LEVEL_CONFIG.THRESHOLDS`:
-   * `rate < THRESHOLDS[0]` (1.0) ➔ returns **1** (Small Win).
-   * `rate < THRESHOLDS[1]` (5.0) ➔ returns **2** (Medium Win).
-   * `rate < THRESHOLDS[2]` (10.0) ➔ returns **3** (Big Win).
-   * `rate >= THRESHOLDS[2]` ➔ returns **4** (Mega / Super Win).
-
----
-
-## 4. Un-truncated Source Code Implementation
+## 3. Un-truncated Source Code Implementation
 ```typescript
 getWinLevel(win?: number): number {
     const { winAmount, totalBet } = this.playSession;

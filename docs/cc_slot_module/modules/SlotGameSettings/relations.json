@@ -6,11 +6,20 @@
   "manages": [],
   "usedBy": [
     { "target": "GameDirector", "relation": "reads_game_speed" },
-    { "target": "TurboButton", "relation": "updates_turbo_state" },
-    { "target": "AutoSpinPanel", "relation": "updates_auto_spin" }
+    { "target": "BaseGameDirector", "relation": "reads_current_game_state" },
+    { "target": "ScriptExecutor", "relation": "scales_action_step_delays" },
+    { "target": "TurboButton", "relation": "mutates_turbo_and_speed" },
+    { "target": "SlotButtonNormal", "relation": "inspects_state_for_spin_locks" },
+    { "target": "WalletModule", "relation": "checks_trial_and_ftr_mode" },
+    { "target": "SlotTableModule", "relation": "adjusts_spin_deceleration_curves" },
+    { "target": "BaseCutscene", "relation": "fast_forwards_cutscene_dialogs" }
   ],
-  "dependsOn": [],
+  "dependsOn": [
+    { "target": "GameInit", "relation": "instantiated_and_provided_at_frame_0" }
+  ],
   "emitsEvents": [],
   "listensToEvents": [],
-  "gotchas": []
+  "gotchas": [
+    "Gotcha:Visual_Desync_via_Unhandled_isFastToResult_Mode"
+  ]
 }

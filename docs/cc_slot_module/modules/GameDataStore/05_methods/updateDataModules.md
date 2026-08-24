@@ -2,7 +2,7 @@
 id: "cc_slot_module:GameDataStore:method:updateDataModules"
 title: "GameDataStore.updateDataModules() Method Specification"
 category: "cc_slot_module"
-tags: ["GameDataStore", "game_data_store", "cc_slot_module", "method", "updateDataModules", "deep_clone", "BaseDataModule", "reactive"]
+tags: ["GameDataStore", "game_data_store", "cc_slot_module", "method", "updateDataModules", "deep_clone", "BaseDataModule"]
 ---
 
 # `GameDataStore.updateDataModules(): void`
@@ -16,23 +16,17 @@ public updateDataModules(): void
 
 ---
 
-## 2. When Is It Called & Trigger Source
-* **Invoking Entity**: `GameDirector` or `BaseGameDirector` after `parseDataPS()`.
-* **Moment**: At the start of matrix presentation and win evaluation.
+## 2. Detailed Algorithmic Execution Logic
+1. **Convert Map**: Ingests `this.playSession` into `this._dataMap` via `this.convertData(this.playSession)`.
+2. **Snapshot Cache**: Stores `this.playSession` in `this.gameModeData` for the current game mode.
+3. **Broadcast Loop**: Iterates through each registered `BaseDataModule` in `this._dataModules`:
+   - Checks every key in `module.registeredKeys`.
+   - If present in `this._dataMap`, deep-clones objects and arrays via `JSON.parse(JSON.stringify(value))` and calls `module.onDataUpdate(key, value)`.
+   - If missing, invokes `module.clearDataWithKey(key)`.
 
 ---
 
-## 3. Detailed Algorithmic Execution Logic
-1. Calls `this.convertData(this.playSession)` to populate `this._dataMap`.
-2. Stores snapshot in `this.gameModeData.set(this.currentGameMode, this.playSession)`.
-3. Iterates through all registered `BaseDataModule` instances in `this._dataModules`:
-   * For each key in `module.registeredKeys`:
-     * If `_dataMap` has the key: creates an **immutable deep copy** via `JSON.parse(JSON.stringify(value))` for objects/arrays to prevent downstream mutation leaks, then invokes `module.onDataUpdate(key, value)`.
-     * If `_dataMap` lacks the key: calls `module.clearDataWithKey(key)`.
-
----
-
-## 4. Un-truncated Source Code Implementation
+## 3. Un-truncated Source Code Implementation
 ```typescript
 updateDataModules(): void {
     this.convertData(this.playSession);
