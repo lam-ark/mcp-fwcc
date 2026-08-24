@@ -1,18 +1,32 @@
 # 🗺️ Master Modules Roadmap & Implementation Checklist (v3.1)
 
-> **Roadmap Objective**: Comprehensive, production-grade documentation across all Cocos Common (`cc-common`) Slot Framework SDK modules.  
-> **Standard**: **Convention v3.1 Deep-Atomic Subfolder Hierarchy** (One file per method, per gotcha, per recipe, per phase breakdown, and complete `09_inheritance_and_customization/`).  
+> **Roadmap Objective**: Comprehensive, production-grade documentation across all Cocos Creator (`cc-common`) Slot Framework SDK modules (`assets/cc-common/cc-slot-module/`).  
+> **Documentation Standard**: **Convention v3.1 Deep-Atomic Subfolder Hierarchy** (One file per method, per gotcha, per recipe, per phase breakdown, and complete `09_inheritance_and_customization/`).  
 > **Verification**: MiniSearch relevance validation + GraphEngine semantic link resolution.
 
 ---
 
-## 🏛️ Cluster 1: Core Foundation & Bootstrap
+## 📊 Global Implementation Progress
+
+- **Total SDK Clusters**: 10
+- **Total Modules & Core Components**: ~75
+- **Completed Modules (v3.1)**: **18**
+- **In-Progress / Upcoming**: **57**
+
+```text
+[██████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 24% Total Completed
+```
+
+---
+
+## 🏛️ Cluster 1: Core Foundation & Bootstrap (100% Complete)
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
 | :---: | :--- | :--- | :--- | :--- |
 | [x] | **`GameInit`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameInit.ts` | **COMPLETED (v3.1)** - Bootstrap entry point, IoC container registration, network auto-connect. |
 | [x] | **`GameConfig`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameConfig.ts` | **COMPLETED (v3.1)** - Master config (`PAY_SYSTEM`, `TABLE_FORMAT`, `CURRENCY_CONFIG`, 25+ parameters). |
 | [x] | **`SlotBaseModule`** | Base Class for All Modules | `assets/cc-common/cc-slot-module/Core/SlotBaseModule.ts` | **COMPLETED (v3.1)** - Universal base class (`@inject`, `applyInjections`, dual event bus). |
+| [x] | **`BaseDataModule`** | Base Class for Data Stores | `assets/cc-common/cc-slot-module/Core/BaseDataModule.ts` | **COMPLETED (v3.1)** - Reactive data state wrapper with `registeredKeys` listeners. |
 | [x] | **`GameDataStore`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameDataStore.ts` | **COMPLETED (v3.1)** - Central reactive store (`playSession`, `wallet`, `bet`, `winAmount`, `updateDataModules`). |
 | [x] | **`GameEventManager`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/GameEventManager.ts` | **COMPLETED (v3.1)** - Asynchronous global event bus (`emit` awaits `Promise.all()`). |
 | [x] | **`SlotGameSettings`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/SlotGameSettings.ts` | **COMPLETED (v3.1)** - User preferences (Turbo state, FTR mode, speed levels, `currentGameState`). |
@@ -21,7 +35,7 @@
 
 ---
 
-## 🎬 Cluster 2: Game Mode Directors & Writers
+## 🎬 Cluster 2: Game Mode Directors, Writers & Mini-Games (10/14 Complete)
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
 | :---: | :--- | :--- | :--- | :--- |
@@ -35,6 +49,10 @@
 | [x] | **`FreeGameWriterModule`** | Helper Class in Free Director | `assets/cc-common/cc-slot-module/GameMode/FreeGame/FreeGameWriterModule.ts` | **COMPLETED (v3.1)** - Action script queue definition for free spins. |
 | [x] | **`BonusGameDirectorModule`** | `Canvas/Director/GameMode/BonusGame` | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameDirectorModule.ts` | **COMPLETED (v3.1)** - Pick-and-click / Mini-game director. |
 | [x] | **`BonusGameWriterModule`** | Helper Class in Bonus Director | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameWriterModule.ts` | **COMPLETED (v3.1)** - Script queue definition for bonus rounds. |
+| [ ] | **`BonusGameTableModule`** | `Canvas/Director/GameMode/BonusGame/Table` | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameTableModule.ts` | Manages the interactive grid of pickable items/chests. |
+| [ ] | **`BonusGameItemModule`** | Child Item in Bonus Table | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameItemModule.ts` | Individual clickable chest/box Spine animation & prize display. |
+| [ ] | **`FreeOptionDirectorModule`**| `Canvas/Director/GameMode/FreeOption` | `assets/cc-common/cc-slot-module/GameMode/FreeOption/FreeOptionDirectorModule.ts` | Player choice modal for selecting Free Spin volatility options. |
+| [ ] | **`FortuneWheelGameDirector`**| `Canvas/Director/GameMode/FortuneWheel` | `assets/cc-common/cc-slot-module/GameMode/FortuneWheelGame/Scripts/Director/FortuneWheelGameDirector.ts` | Wheel of Fortune mini-game director, spin physics, target segment settling. |
 
 ---
 
@@ -43,63 +61,118 @@
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
 | :---: | :--- | :--- | :--- | :--- |
 | [ ] | **`SlotTableModule`** | `Canvas/Director/GameMode/BoardG/Table` | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotTableModule.ts` | Grid matrix orchestrator, reel instantiation, near-win anticipation. |
-| [ ] | **`SlotReelModule`** | Dynamically created child reel | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotReel/SlotReelModule.ts` | Column scrolling, speed curves, stopping bounce animation. |
+| [ ] | **`SlotReelModule`** | Dynamically created child reel | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotReelModule.ts` | Column scrolling, speed curves, stopping bounce animation. |
 | [ ] | **`SlotSymbolModule`** | Dynamically created child symbol | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/SlotSymbolModule.ts` | Visual symbol presentation (Spine skeleton, Static sprite, Blur sprite). |
 | [ ] | **`SlotSymbolManager`** | Child node of SlotTable | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/SlotSymbolManager.ts` | Node pooling (`cc.NodePool`), win animations, spine lifecycle caching. |
+| [ ] | **`MultipleSymbolManager`** | Alternative Symbol Manager | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/MultipleSymbolManager.ts` | Multi-spine bundle management for games with variable sized symbols. |
+| [ ] | **`SlotSymbolResourceManager`**| Resource Provider | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/SlotSymbolResourceManager.ts` | Dynamic asset loader for symbols, sprites, and spine skeletons. |
+| [ ] | **`SlotCustomNodePool`** | Memory optimization pool | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/SlotCustomNodePool.ts` | High-performance pooled node allocation for symbol reuse. |
 | [ ] | **`TableModuleConfig`** | Configuration in Table | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/TableModuleConfig.ts` | Reel timings, easing curves, stopping delay constants. |
 | [ ] | **`SlotTableData`** | BaseDataModule in Table | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotTableData.ts` | Table matrix state conversion (`registeredKeys: ['matrix']`). |
 | [ ] | **`SlotTableNearWinModule`**| Child component in Table | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotTableNearWinModule.ts` | Anticipation VFX overlays for 2+ Scatter/Bonus triggers. |
+| [ ] | **`SlotTableSoundEffectModule`**| Audio bridge in Table | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotTableSoundEffectModule.ts` | Reel spinning, stopping clicks, scatter anticipation sound routing. |
 
 ---
 
-## 🎛️ Cluster 4: GUI Dashboard, Controls & Betting System
+## ⚡ Cluster 4: Paylines, Win Frames & Line Number Drawing
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
-| :--- | :--- | :--- | :--- | :--- |
-| [ ] | **`UIManagerModule`** | `Canvas/Director/UIManager` | `assets/cc-common/cc-slot-module/Core/UIManagerModule.ts` | HUD orchestrator managing bottom control panel. |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **`SlotTablePaylineModule`** | `Canvas/Director/GameMode/BoardG/Payline` | `assets/cc-common/cc-slot-module/BaseModule/Payline/PaylineModule/scripts/SlotTablePaylineModule.ts` | Main payline controller coordinating blinking symbols and line art. |
+| [ ] | **`SlotTablePaylineData`** | Data model in Payline | `assets/cc-common/cc-slot-module/BaseModule/Payline/PaylineModule/scripts/SlotTablePaylineData.ts` | Normalizes server payline arrays into visual line indices. |
+| [ ] | **`PaylineSymbolModule`** | Symbol highlight layer | `assets/cc-common/cc-slot-module/BaseModule/Payline/PaylineModule/scripts/PaylineSymbolModule.ts` | Blinks and plays winning animations for symbol combinations. |
+| [ ] | **`PaylineWinFrameModule`**| Win frames container | `assets/cc-common/cc-slot-module/BaseModule/Payline/PaylineModule/WinFrame/scripts/PaylineWinFrameModule.ts` | Instantiates and animates glowing win border boxes over winning symbols. |
+| [ ] | **`PaylineLineModule`** | Line vector rendering | `assets/cc-common/cc-slot-module/BaseModule/Payline/LineDrawing/scripts/PaylineLineModule.ts` | Renders connected line paths through winning coordinate tracks. |
+| [ ] | **`PaylineNumberModule`** | Left/Right side number markers | `assets/cc-common/cc-slot-module/BaseModule/Payline/LineNumber/scripts/PaylineNumberModule.ts` | Lights up active payline index numbers along table borders. |
+| [ ] | **`SlotPaylineSchedule`** | Timer scheduler | `assets/cc-common/cc-slot-module/BaseModule/Payline/PaylineModule/scripts/SlotPaylineSchedule.ts` | Timed cycling schedule for sequential single payline display. |
+| [ ] | **`PaylineFactory`** | Helper Utility | `assets/cc-common/cc-slot-module/BaseModule/Payline/PaylineCommon/PaylineFactory.ts` | Instantiates Line and Frame visual items dynamically. |
+
+---
+
+## 🌊 Cluster 5: Cascade & Avalanche Engine
+
+| Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **`VerticalCascadeModule`** | `Canvas/Director/GameMode/BoardG/Cascade` | `assets/cc-common/cc-slot-module/BaseModule/CascadeModule/scripts/VerticalCascadeModule.ts` | Master cascading avalanche controller (disappearing wins, column drops). |
+| [ ] | **`CascadeModuleData`** | Data model in Cascade | `assets/cc-common/cc-slot-module/BaseModule/CascadeModule/scripts/CascadeModuleData.ts` | Ingests `respinGameMatrix` and calculates drop distances per column. |
+| [ ] | **`CascadeModuleConfig`** | Configuration in Cascade | `assets/cc-common/cc-slot-module/BaseModule/CascadeModule/scripts/CascadeModuleConfig.ts` | Drop speeds, bounce gravity easing, explosion particle delays. |
+
+---
+
+## 🎆 Cluster 6: Cutscenes & Celebratory Overlays
+
+| Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **`CutsceneController`** | `Canvas/Director/Cutscene` | `assets/cc-common/cc-slot-module/CutScene/CutsceneController.ts` | Master cutscene queue controller coordinating fullscreen modal overlays. |
+| [ ] | **`BaseCutscene`** | Base Class for Cutscenes | `assets/cc-common/cc-slot-module/CutScene/BaseCutscene.ts` | Abstract base cutscene providing enter/exit tweens and skip listeners. |
+| [ ] | **`IntroGameModule`** | Cutscene child | `assets/cc-common/cc-slot-module/CutScene/IntroGame/IntroGameModule.ts` | Splash intro screen displayed when entering base game. |
+| [ ] | **`IntroFreeGameModule`**| Cutscene child | `assets/cc-common/cc-slot-module/CutScene/IntroFreeGame/IntroFreeGameModule.ts` | Mode transition cutscene dialogue for Free Spins trigger. |
+| [ ] | **`WinEffectModule`** | Cutscene child | `assets/cc-common/cc-slot-module/CutScene/WinEffect/WinEffectModule.ts` | Tiered Big Win, Mega Win, and Super Win count-up celebrations. |
+| [ ] | **`JackpotWinModule`** | Cutscene child | `assets/cc-common/cc-slot-module/CutScene/JackpotWin/JackpotWinModule.ts` | Unskippable Grand/Major/Minor Jackpot win celebration banner. |
+| [ ] | **`TotalWinModule`** | Cutscene child | `assets/cc-common/cc-slot-module/CutScene/TotalWin/TotalWinModule.ts` | Summary score dialogue at the conclusion of Free Game rounds. |
+
+---
+
+## 🎛️ Cluster 7: GUI Dashboard, Controls & Betting System
+
+| Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **`UIManagerModule`** | `Canvas/Director/UIManager` | `assets/cc-common/cc-slot-module/Core/UIManagerModule.ts` | Master GUI orchestrator managing bottom control panel and states. |
+| [ ] | **`SlotButtonModule`** | `Canvas/Director/UIManager/SpinButton` | `assets/cc-common/cc-slot-module/GUI/SpinButton/SlotButtonModule.ts` | Master spin button supporting Normal, Auto, Turbo, and Lightning modes. |
 | [ ] | **`BetModule`** | `Canvas/Director/UIManager/BetModule` | `assets/cc-common/cc-slot-module/GUI/Bet/BetModule.ts` | Bet selector, bet multiplier stepper, max bet toggle. |
-| [ ] | **`WalletModule`** | `Canvas/Director/UIManager/WalletModule` | `assets/cc-common/cc-slot-module/GUI/Wallet/WalletModule.ts` | Real/Trial balance display, rolling money tweeners. |
-| [ ] | **`PaylineInfoModule`** | `Canvas/Director/UIManager/PaylineInfo` | `assets/cc-common/cc-slot-module/GUI/WinAmount/PaylineInfoModule.ts` | Win number display, bitmap font animation, counting sound. |
-| [ ] | **`SlotButtonNormal`** | `Canvas/Director/UIManager/SlotButtonNormal` | `assets/cc-common/cc-slot-module/GUI/SpinButton/SlotButtonNormal.ts` | Spin / Fast Stop / AutoPlay trigger button. |
-| [ ] | **`TurboButton`** | `Canvas/Director/UIManager/TurboButton` | `assets/cc-common/cc-slot-module/GUI/TurboButton/TurboButton.ts` | Fast-forward spin mode toggle. |
+| [ ] | **`ExtraBetModule`** | `Canvas/Director/UIManager/ExtraBet` | `assets/cc-common/cc-slot-module/GUI/Bet/ExtraBetModule.ts` | Toggle switch for Ante-Bet / Golden Bet feature modifiers. |
+| [ ] | **`WalletModule`** | `Canvas/Director/UIManager/WalletModule` | `assets/cc-common/cc-slot-module/GUI/Wallet/WalletModule.ts` | Player cash balance display with rolling MoneyTween count-ups. |
+| [ ] | **`WinAmountModule`** | `Canvas/Director/UIManager/WinAmount` | `assets/cc-common/cc-slot-module/GUI/WinAmount/WinAmountModule.ts` | Main win display label with rolling count-up animations. |
+| [ ] | **`JackpotModule`** | `Canvas/Director/Jackpot` | `assets/cc-common/cc-slot-module/GUI/Jackpot/JackpotModule.ts` | Progressive jackpot banner counters (Grand, Major, Minor, Mini). |
+| [ ] | **`SpinTimesModule`** | `Canvas/Director/UIManager/SpinTimes` | `assets/cc-common/cc-slot-module/GUI/SpinTimes/SpinTimesModule.ts` | Countdown badge displaying remaining Free Spins or Auto Spins. |
+| [ ] | **`TurboButton`** | `Canvas/Director/UIManager/TurboButton` | `assets/cc-common/cc-slot-module/GUI/Turbo/TurboButton.ts` | Turbo / Quick-spin mode toggle button with sprite state transitions. |
+| [ ] | **`PaylineInfoModule`** | `Canvas/Director/UIManager/PaylineInfo` | `assets/cc-common/cc-slot-module/GUI/PaylineInfo/PaylineInfoModule.ts` | Floating notification bar showing win amounts per hit payline. |
+| [ ] | **`TrialModeManager`** | `Canvas/Director/TrialMode` | `assets/cc-common/cc-slot-module/GUI/TrialMode/TrialModeManager.ts` | Trial play banner, demo credits simulation, Back to Real mode button. |
+| [ ] | **`IconPromotion`** | `Canvas/Director/UIManager/Promotion` | `assets/cc-common/cc-slot-module/GUI/Promotion/IconPromotion.ts` | Promotional event badges and free round counters. |
+| [ ] | **`ToastInfoModule`** | `Canvas/Director/Toast` | `assets/cc-common/cc-slot-module/GUI/ToastInfo/ToastInfoModule.ts` | Transient toast notification popups for low balance / error alerts. |
 
 ---
 
-## 🎆 Cluster 5: Celebrations, VFX & Cutscenes
+## 📜 Cluster 8: Popups, History, Settings & Info Panels
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
-| :--- | :--- | :--- | :--- | :--- |
-| [ ] | **`CutsceneController`** | `Canvas/Director/CutsceneControl` | `assets/cc-common/cc-slot-module/CutScene/CutsceneController.ts` | Modal queue dispatcher for celebration overlays. |
-| [ ] | **`WinEffectModule`** | `Canvas/Director/CutsceneControl/WinEffect` | `assets/cc-common/cc-slot-module/CutScene/WinEffect/WinEffect.ts` | Big Win, Mega Win, Super Win coin showers & Spine FX. |
-| [ ] | **`IntroFreeGameModule`** | Modal overlay | `assets/cc-common/cc-slot-module/CutScene/FreeGame/IntroFreeGameModule.ts` | Feature trigger banner awarded free spin dialog. |
-| [ ] | **`TotalWinModule`** | Modal overlay | `assets/cc-common/cc-slot-module/CutScene/WinEffect/TotalWinModule.ts` | Summary celebration displaying total payout. |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **`PopupControllerModule`**| `Canvas/Director/Popup` | `assets/cc-common/cc-slot-module/Popup/PopupControllerModule.ts` | Master popup manager with queueing, modal backgrounds, and transitions. |
+| [ ] | **`BaseUIPopup`** | Base Class for Popups | `assets/cc-common/cc-slot-module/Popup/BaseUIPopup.ts` | Base modal class providing `show()`, `hide()`, and behavior hooks. |
+| [ ] | **`BetHistoryModule`** | `Canvas/Director/Popup/BetHistory` | `assets/cc-common/cc-slot-module/Popup/BetHistory/BetHistoryModule.ts` | Comprehensive spin history viewer with paginated round details. |
+| [ ] | **`BetHistoryDetailModule`**| Sub-panel in BetHistory | `assets/cc-common/cc-slot-module/Popup/BetHistory/BetHistoryDetailModule.ts` | Granular round replay showing matrix snapshots, payouts, and bonus steps. |
+| [ ] | **`JackpotHistoryModule`**| `Canvas/Director/Popup/JackpotHistory` | `assets/cc-common/cc-slot-module/Popup/JackpotHistory/JackpotHistoryModule.ts` | Tabular record of recent jackpot winners and timestamps. |
+| [ ] | **`SettingPanel`** | `Canvas/Director/Popup/Setting` | `assets/cc-common/cc-slot-module/Popup/Setting/SettingPanel.ts` | Audio volume sliders, Turbo toggle, battery saver, and vibration. |
+| [ ] | **`InfoPanel`** | `Canvas/Director/Popup/Info` | `assets/cc-common/cc-slot-module/Popup/Info/InfoPanel.ts` | Multi-page paytable rulebook with PageViewIndicator navigation. |
+| [ ] | **`JackpotWinNoticePopup`**| `Canvas/Director/Popup/JackpotNotice` | `assets/cc-common/cc-slot-module/Popup/NotifyJackpot/JackpotWinNoticePopup.ts` | Global broadcast dialog alerting when another room player hits Jackpot. |
+| [ ] | **`DialogMessageModule`** | `Canvas/Director/DialogMessage` | `assets/cc-common/cc-slot-module/DialogMessage/DialogMessageModule.ts` | System alert modal for network disconnects, kicks, and errors. |
 
 ---
 
-## 📜 Cluster 6: Popups, Settings & History
+## 📱 Cluster 9: Base Portrait UI Experience
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
-| :--- | :--- | :--- | :--- | :--- |
-| [ ] | **`PopupControllerModule`**| `Canvas/Director/PopupControl` | `assets/cc-common/cc-slot-module/GUI/Popup/PopupControllerModule.ts` | Modal popup lifecycle manager. |
-| [ ] | **`SettingPanel`** | `Canvas/Director/PopupControl/SettingPanel` | `assets/cc-common/cc-slot-module/GUI/Popup/SettingPanel/SettingPanel.ts` | Sound toggles, speed sliders, language selector. |
-| [ ] | **`InfoPanel`** | `Canvas/Director/PopupControl/InfoPanel` | `assets/cc-common/cc-slot-module/GUI/Popup/InfoPanel/InfoPanel.ts` | Paytable rules, symbol payouts, feature guides. |
-| [ ] | **`BetHistoryModule`** | `Canvas/Director/PopupControl/BetHistory` | `assets/cc-common/cc-slot-module/GUI/Popup/BetHistory/BetHistoryModule.ts` | Player round history and spin replay records. |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **`PortraitBetModule`** | Portrait layout betting HUD | `assets/cc-common/cc-slot-module/BasePortrait/PortraitBet/PortraitBetModule.ts` | Mobile-optimized bottom bet selector for vertical screen layouts. |
+| [ ] | **`AutoSpinPanel`** | Auto-spin overlay sheet | `assets/cc-common/cc-slot-module/BasePortrait/AutoSpinPanel/AutoSpinPanel.ts` | Bottom-sheet drawer for selecting 10, 20, 50, 100 auto spin rounds. |
+| [ ] | **`BetSelectionPanel`** | Bet adjustment modal | `assets/cc-common/cc-slot-module/BasePortrait/BetSelectionPanel/BetSelectionPanel.ts` | Quick-select chip list for rapid bet level adjustments. |
+| [ ] | **`MenuPanel`** | Hamburger menu drawer | `assets/cc-common/cc-slot-module/BasePortrait/MenuPanel/MenuPanel.ts` | Vertical slide-out drawer providing access to History, Sound, and Rules. |
+| [ ] | **`PayTablePanel`** | Vertical paytable view | `assets/cc-common/cc-slot-module/BasePortrait/PayTablePanel/PayTablePanel.ts` | Scrollable vertical rulebook and dynamic symbol multiplier calculator. |
+| [ ] | **`SymbolPaytableViewer`** | Symbol payout viewer | `assets/cc-common/cc-slot-module/BasePortrait/SymbolPaytable/SymbolPaytableViewer.ts` | Interactive symbol viewer displaying payout amounts based on active bet. |
+| [ ] | **`BetHistoryDetailPortrait`**| Portrait history viewer | `assets/cc-common/cc-slot-module/BasePortrait/BetHistoryPortrait/scripts/BetHistoryDetailPortrait.ts` | Mobile-tailored spin history with expandable round accordion items. |
+| [ ] | **`TurboModeSuggestionPopup`**| Smart recommendation modal | `assets/cc-common/cc-slot-module/BasePortrait/TurboModeSuggestionPopup/TurboModeSuggestionPopup.ts` | Recommends Turbo mode activation after consecutive standard spins. |
+| [ ] | **`WinAmountTooltipModule`**| Floating win tooltip | `assets/cc-common/cc-slot-module/BasePortrait/WinAmountTooltipModule.ts` | Floating bubble displaying incremental line win breakdowns. |
 
 ---
 
-## ⚡ Cluster 7: Advanced Game Mechanics
+## ⚙️ Cluster 10: Pooling, Compatibility & Utility Services
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
-| :--- | :--- | :--- | :--- | :--- |
-| [ ] | **`CascadeTableModule`** | `Canvas/Director/GameMode/BoardG/Table` | `assets/cc-common/cc-slot-module/BaseModule/Table/Cascade/CascadeTableModule.ts` | Avalanche symbol destruction and gravity drop. |
-| [ ] | **`MegawayTableModule`** | `Canvas/Director/GameMode/BoardG/Table` | `assets/cc-common/cc-slot-module/BaseModule/Table/Megaway/MegawayTableModule.ts` | Variable symbol heights per reel column (2 to 7). |
-| [ ] | **`StickySymbolModule`** | Overlay on Table | `assets/cc-common/cc-slot-module/BaseModule/Table/StickySymbol/StickySymbolModule.ts` | Locked wild/multiplier symbols persisting across spins. |
-
----
-
-## 📡 Cluster 8: Networking & Core Platform Libraries
-
-| Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
-| :--- | :--- | :--- | :--- | :--- |
-| [ ] | **`NetworkService`** | Injected Singleton | `assets/cc-common/cc-slot-module/Core/Network/NetworkService.ts` | WebSocket packet serialization, heartbeat ping, reconnect. |
-| [ ] | **`MockDataService`** | Injected Singleton | `assets/cc-common/cc-slot-module/Core/Mock/MockDataService.ts` | Offline spin payload simulation for development testing. |
+| :---: | :--- | :--- | :--- | :--- |
+| [ ] | **`PoolFactoryModule`** | Service Component | `assets/cc-common/cc-slot-module/PoolFactory/PoolFactoryModule.ts` | Generic object pooling factory for visual nodes and particle VFX. |
+| [ ] | **`SlotObjectPool`** | Utility Class | `assets/cc-common/cc-slot-module/PoolFactory/SlotObjectPool.ts` | High-speed pool container managing instantiation, checkout, and recycle. |
+| [ ] | **`LoadingScreenModule`**| `Canvas/Director/Loading` | `assets/cc-common/cc-slot-module/Components/LoadingScreenModule.ts` | Asset preloading orchestrator, progress bar updates, and fade-out. |
+| [ ] | **`CanvasModuleController`**| Canvas Root | `assets/cc-common/cc-slot-module/Components/Compat/CanvasModuleController.ts` | Dynamic resolution adaptation, safe area calculation, and orientation locks. |
+| [ ] | **`AutoScaleBackgroundModule`**| Background container | `assets/cc-common/cc-slot-module/Components/Compat/AutoScaleBackgroundModule.ts` | Auto-fits background sprites/spines to screen aspect ratios without stretching. |
+| [ ] | **`WaitingSceneModule`** | Loading overlay | `assets/cc-common/cc-slot-module/Components/WaitingSceneModule.ts` | Spinner overlay displayed during network latency or reconnection. |
+| [ ] | **`SoundPlayerModuleImpl`**| Audio implementation | `assets/cc-common/cc-slot-module/Components/SoundPlayerModuleImpl.ts` | Concrete audio implementation mapping sound convert lists to audio clips. |
