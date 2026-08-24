@@ -1,40 +1,52 @@
 ---
 id: "cc_slot_module:FreeGameDirectorModule:overview:architecture_and_role"
-title: "FreeGameDirectorModule Free Spins Feature Orchestrator Architecture"
+title: "FreeGameDirectorModule Free Spins Autonomous Orchestrator Architecture"
 category: "cc_slot_module"
-tags: ["FreeGameDirectorModule", "free_game_director", "cc_slot_module", "overview", "architecture", "free_spins", "retrigger"]
+tags: ["FreeGameDirectorModule", "free_game_director", "cc_slot_module", "overview", "architecture", "free_spins", "orchestrator"]
 ---
 
-# 🏛️ FreeGameDirectorModule Free Spins Feature Orchestrator Architecture
+# 🏛️ FreeGameDirectorModule Free Spins Autonomous Orchestrator Architecture
 
 ## 1. Executive Summary & Purpose
 
-`FreeGameDirectorModule` (`assets/cc-common/cc-slot-module/GameMode/FreeGame/FreeGameDirectorModule.ts`) is the **Free Spins Feature Director** in the `cc-common` Slot SDK.
+`FreeGameDirectorModule` (`assets/cc-common/cc-slot-module/GameMode/FreeGame/FreeGameDirectorModule.ts`) is the **Autonomous Feature Orchestrator** for Free Spins rounds in the `cc-common` Slot SDK.
 
-Extending `GameModeDirectorModule`, it governs the automatic spin loop of Free Games (`GAME_MODE_ENUM.FREE_GAME`). It manages the Free Spin countdown counter HUD (`SpinTimesModule`), decrements remaining spins before each turn, handles re-triggers (extra free spins), coordinates progressive win multipliers, and executes the concluding Total Win summary celebration before exiting back to Base Game.
+Extending `GameModeDirectorModule`, it manages the entire free spin feature lifecycle:
+1. Entering Free Spins mode, playing feature BGM, and initializing the remaining spin badge (`freeSpinTimes`).
+2. Syncing the visual table from Normal Game to Free Game reels (`syncNormalTable`, `_resumeFreeTable`).
+3. Running continuous, uninhibited auto-spins driven by server session data (`isFirstAutoSpin`, `_beforeSpinStart`).
+4. Decrementing remaining spins immediately upon spin launch (`_decreaseFreeGameSpinTimes`).
+5. Accumulating free spin winnings (`_showWinPayline`).
+6. Concluding the feature and transitioning back to Base Game (`_gameExit`).
 
 ```mermaid
 graph TD
-    Enter[transitionGameMode 2] --> FDir[FreeGameDirectorModule<br/>Canvas/Director/GameMode/FreeGame]
+    NormalDir[NormalGameDirectorModule] -->|SWITCH_GAME_MODE: FREE_GAME| FreeDir[FreeGameDirectorModule]
     
-    subgraph Free Spin Feature Loop
-        FDir --> Count[SpinTimes HUD: syncSpinTimes & _decreaseFreeGameSpinTimes]
-        FDir --> Writer[FreeGameWriterModule: makeScriptFreeSpinTrigger]
-        FDir --> Table[SlotTableModule: Free Spin Reels & Multipliers]
+    subgraph Free Spins Orchestration
+        FreeDir -->|enter| Sync["syncSpinTimes() & syncNormalTable()"]
+        FreeDir -->|onBeforeSpinStart| SpinTrigger["runAction('FreeSpinTrigger')"]
+        SpinTrigger --> Decrement["_decreaseFreeGameSpinTimes: freeSpinTimes--"]
+        
+        FreeDir --> SpinTable["_startSpinningTable ➔ _stopSpinningTable"]
+        SpinTable --> WinEval["_showWinPayline: Accumulate winAmountPS"]
+        
+        WinEval --> CheckRemain{freeGameRemain > 0?}
+        CheckRemain -->|Yes| NextAutoSpin["delayAutoSpin() ➔ Next Spin"]
+        CheckRemain -->|No| Exit["_gameExit: TOTAL_WIN Dialog ➔ Return to Normal Game"]
     end
 
-    subgraph Feature Termination
-        FDir --> Check{freeGameRemain === 0?}
-        Check -->|Yes| TotalWin[TOTAL_WIN Cutscene Dialogue]
-        TotalWin --> Exit[_gameExit -> EXIT_GAME_MODE]
-    end
+    NextAutoSpin --> SpinTrigger
+    Exit -->|EXIT_GAME_MODE| NormalDir
 ```
 
 ---
 
 ## 2. Core Responsibilities
 
-1. **Free Spin Counter Synchronization (`syncSpinTimes`, `_decreaseFreeGameSpinTimes`)**: Synchronizes `freeGameRemain` with `SpinTimesModule` label on entry and decrements count per spin.
-2. **Automated Continuous Spinning**: Drives successive free spin rounds automatically without requiring player button clicks.
-3. **Session Reconnection Handling (`isResume`)**: Re-establishes remaining spin counters and accumulated multiplier state upon reconnect.
-4. **Feature Completion & Summary Presentation (`getFreeGameEndScript`)**: Triggers `TOTAL_WIN` cutscene dialogue and cleanly returns control to `NormalGameDirectorModule`.
+1. **Feature Entry & Spin Badge Initialization (`enter`, `syncSpinTimes`)**: Extracts `freeGameRemain` or initial `freeGame` count from `dataStore.playSession`, updates `dataStore.freeSpinTimes`, and updates the HUD badge node via `UPDATE_SPINTIMES`.
+2. **Table Reel Synchronization (`syncNormalTable`, `_resumeFreeTable`)**: Emits `SYNC_TABLE` to switch symbols to the Free Spins theme reels or restore matrix state upon reconnection.
+3. **Continuous Auto-Spin Loop Orchestration (`_beforeSpinStart`, `delayAutoSpin`)**: Handles auto-spin pacing, skipping delays on initial enter (`isFirstAutoSpin`), and ensuring snappy flow between free spins.
+4. **Immediate Badge Decrement (`_decreaseFreeGameSpinTimes`)**: Decrements `freeSpinTimes` locally as soon as reels start moving to give instant player feedback.
+5. **Accumulated Free Spins Payout Display (`_showWinPayline`)**: Overrides base payline behavior to display the cumulative session win (`winAmountPS`) rather than isolated line win amounts.
+6. **Graceful Feature Teardown (`_gameExit`)**: Clears active payline tracks, resets table matrices, and returns engine control to `NormalGameDirectorModule`.

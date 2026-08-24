@@ -9,9 +9,9 @@ tags: ["FreeGameDirectorModule", "free_game_director", "cc_slot_module", "custom
 
 ## 1. Extension Points Matrix
 
-| Method Name | Base Implementation | Safe to Override? | Required `super` Call | Customization Purpose |
+| Method Name | Default Implementation | Safe to Override? | Required `super` Call | Customization Purpose |
 | :--- | :--- | :--- | :--- | :--- |
-| **`enter()`** | Starts Free BGM & syncs spin times | `EXTEND_ONLY` | `MANDATORY` | Trigger intro banner effects and reset progressive feature multipliers. |
-| **`syncSpinTimes()`** | Reads `playSession` & emits `UPDATE_SPINTIMES` | `YES` | `RECOMMENDED` | Format special localized spin counter labels. |
-| **`_decreaseFreeGameSpinTimes()`**| Decrements `freeSpinTimes` state | `YES` | `MANDATORY` | Animate spin countdown coin burns or flame pulses. |
-| **`_gameExit()`** | Clears paylines & syncs table | `EXTEND_ONLY` | `MANDATORY` | Broadcast `RESET_MULTIPLIER` and transition BGM back to Base Game. |
+| **`enter()`** | Plays BGM, syncs badges, renders table | `YES` | `MANDATORY` | Initialize feature multipliers or custom intro VFX. |
+| **`_showWinPayline(data)`**| Displays cumulative `winAmountPS` | `YES` | `RECOMMENDED` | Ingesting escalating multiplier animations. |
+| **`delayAutoSpin()`** | 0.5s pause | `YES` | None | Adjusting speed between consecutive free spins. |
+| **`_gameExit()`** | Clears paylines & syncs table | `YES` | `RECOMMENDED` | Outro animations before returning to Base Game. |

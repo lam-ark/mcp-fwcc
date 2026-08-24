@@ -9,13 +9,17 @@ tags: ["FreeGameDirectorModule", "free_game_director", "cc_slot_module", "method
 
 ---
 
-## 1. Declared Methods Summary Table
+## 1. Declared Methods Catalog
 
-| Method Signature | Visibility | Purpose |
+| Member Signature | Visibility | Purpose |
 | :--- | :--- | :--- |
-| **[`enter(): void`](./enter.md)** | `public` | Starts Free BGM, initializes spin counter via `syncSpinTimes()`, and flags `isFirstAutoSpin = true`. |
-| **[`syncSpinTimes(): void`](./syncSpinTimes.md)** | `public` | Reads `freeGameRemain || freeGame` from `playSession` and emits `UPDATE_SPINTIMES` to HUD. |
-| **[`_decreaseFreeGameSpinTimes(): Promise<void>`](./_decreaseFreeGameSpinTimes.md)** | `public` | Decrements `this.dataStore.freeSpinTimes` and updates HUD countdown label. |
-| **[`_updateSpinTimes(spinTimes: number): Promise<void>`](./_updateSpinTimes.md)** | `public` | Overrides active spin counter with exact server figure. |
-| **[`_gameExit(): Promise<void>`](./_gameExit.md)** | `public` | Clears paylines and syncs table grid before returning to base game. |
-| **[`_showWinPayline(data: any): Promise<void>`](./_showWinPayline.md)** | `public` | Aggregates `winAmountPS` with `winAmount` and renders line animations. |
+| **[`enter(): void`](./enter.md)** | `public` | Entry point for Free Spins; plays BGM, syncs badges, renders initial table. |
+| **[`_resumeFreeTable(): Promise<void>`](./_resumeFreeTable.md)** | `public` | Reconstructs Free Game matrix upon game reconnection. |
+| **[`syncSpinTimes(): void`](./syncSpinTimes.md)** | `public` | Initializes `dataStore.freeSpinTimes` from `freeGameRemain \|\| freeGame` and updates HUD. |
+| **[`syncNormalTable(data?): void`](./syncNormalTable.md)** | `public` | Emits `SYNC_TABLE` with `NORMAL_GAME` tag on initial transition. |
+| **[`onBeforeSpinStart(): Promise<void>`](./onBeforeSpinStart.md)** | `public` | Triggers execution of the `"FreeSpinTrigger"` action script queue. |
+| **[`_beforeSpinStart(): Promise<void>`](./_beforeSpinStart.md)** | `public` | Resets speed, skips previous effects, and applies auto-spin delay. |
+| **[`_decreaseFreeGameSpinTimes(): Promise<void>`](./_decreaseFreeGameSpinTimes.md)** | `public` | Decrements `freeSpinTimes` locally by 1 and updates badge. |
+| **[`_updateSpinTimes(spinTimes): Promise<void>`](./_updateSpinTimes.md)** | `public` | Syncs `freeSpinTimes` with exact server value. |
+| **[`_gameExit(): Promise<void>`](./_gameExit.md)** | `public` | Clears paylines and syncs table before returning to Base Game. |
+| **[`_showWinPayline(data): Promise<void>`](./_showWinPayline.md)** | `public` | Blinks and shows paylines using cumulative `winAmountPS`. |

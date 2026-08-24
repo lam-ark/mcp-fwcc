@@ -1,23 +1,35 @@
 {
   "id": "FreeGameDirectorModule",
-  "title": "FreeGameDirectorModule Free Spins Feature Director",
+  "title": "FreeGameDirectorModule Autonomous Free Spins Feature Orchestrator",
   "category": "cc_slot_module",
   "inheritsFrom": "GameModeDirectorModule",
-  "manages": [],
+  "manages": [
+    "FreeGameWriterModule"
+  ],
   "usedBy": [
+    { "target": "NormalGameDirectorModule", "relation": "receives_control_from_normal_game_on_trigger" },
     { "target": "GameDirector", "relation": "managed_by_root_director" }
   ],
   "dependsOn": [
-    { "target": "FreeGameWriterModule", "relation": "companion_script_generator" },
-    { "target": "GameDataStore", "relation": "tracks_freeSpinTimes" }
+    { "target": "GameDataStore", "relation": "reads_freeGameRemain_and_winAmountPS" },
+    { "target": "FreeGameWriterModule", "relation": "receives_action_script_command_queues" },
+    { "target": "SlotTableModule", "relation": "coordinates_spinning_and_table_sync" },
+    { "target": "SlotTablePaylineModule", "relation": "coordinates_cumulative_payline_highlights" }
   ],
   "emitsEvents": [
-    "GameUIEvents.GAME_MODE.EXIT_GAME_MODE"
+    "EXIT_GAME_MODE",
+    "UPDATE_WIN_AMOUNT",
+    "PLAY_CUTSCENE"
   ],
   "listensToEvents": [
-    "ADD_FREE_SPIN_TIMES"
+    "GAME_INIT",
+    "GAME_ENTER",
+    "SET_UP_BUTTON",
+    "SET_UP_SPIN_TIMES"
   ],
   "gotchas": [
-    "Gotcha:Missing_moduleList_Wiring_Breaks_Scoped_Event_Bus"
+    "01_is_first_auto_spin_delay_bypass",
+    "02_free_spin_times_desync_on_reconnect",
+    "03_missing_sync_normal_table_matrix_leak"
   ]
 }

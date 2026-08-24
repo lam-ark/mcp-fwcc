@@ -1,27 +1,32 @@
 ---
 id: "cc_slot_module:FreeGameDirectorModule:overview:lifecycle_flowchart"
-title: "FreeGameDirectorModule Automated Spin Lifecycle Flowchart"
+title: "FreeGameDirectorModule Lifecycle & Auto-Spin Flowchart"
 category: "cc_slot_module"
-tags: ["FreeGameDirectorModule", "free_game_director", "cc_slot_module", "overview", "lifecycle", "flowchart", "free_spins"]
+tags: ["FreeGameDirectorModule", "free_game_director", "cc_slot_module", "overview", "lifecycle", "flowchart"]
 ---
 
-# 🔄 FreeGameDirectorModule Automated Spin Lifecycle Flowchart
+# 🔄 FreeGameDirectorModule Lifecycle & Auto-Spin Flowchart
 
-## 1. Free Spins Automated State Flowchart
+## 1. Free Spins Lifecycle Flowchart
 
 ```mermaid
 graph TD
-    Entry([enter: syncSpinTimes & play Free BGM]) --> Prep[onBeforeSpinStart: FreeSpinTrigger]
-    Prep --> Decr[_decreaseFreeGameSpinTimes: Decrement HUD]
-    Decr --> Start[onStartSpinningTable: StartSpinning]
-    Start --> Rec[onStateUpdate: parseDataPS & updateDataModules]
-    Rec --> Stop[onStopSpinningTable: StopSpinningTable]
-    Stop --> Win[onShowResultEntry: Win Lines & Multiplier Count-up]
+    Enter[enter: play BGM + syncSpinTimes + syncNormalTable] --> MarkFirst[isFirstAutoSpin = true]
     
-    Win --> RemainCheck{freeGameRemain > 0?}
-    RemainCheck -->|Yes: Spins Remain| SyncCount[_updateSpinTimes -> Schedule Next Free Spin]
-    SyncCount --> Prep
+    MarkFirst --> SpinStart[onBeforeSpinStart ➔ FreeSpinTrigger action]
+    SpinStart --> BeforeSpin[_beforeSpinStart: reset speed + skip effects + delayAutoSpin]
     
-    RemainCheck -->|No: Last Spin Finished| TotalWin[_showUnskippedCutscene TOTAL_WIN]
-    TotalWin --> Exit[_gameExit -> EXIT_GAME_MODE -> Return to NormalGame]
+    BeforeSpin --> Decrement[_decreaseFreeGameSpinTimes: freeSpinTimes--]
+    Decrement --> SpinReels[TABLE_START_SPIN ➔ TABLE_STOP_SPIN]
+    
+    SpinReels --> ShowWin[_showWinPayline: BLINK_ALL_PAYLINES with cumulative winAmountPS]
+    ShowWin --> ResultFinal[ShowResultFinal action]
+    
+    ResultFinal --> CheckSpins{freeGameRemain > 0?}
+    CheckSpins -->|Yes| UpdateBadge[_updateSpinTimes: sync badge]
+    UpdateBadge --> AutoNext[Next Free Spin triggered by GameLogic]
+    AutoNext --> SpinStart
+    
+    CheckSpins -->|No| FinalWin[_showUnskippedCutscene TOTAL_WIN]
+    FinalWin --> Exit[_gameExit ➔ CLEAR_PAYLINES + SYNC_TABLE ➔ Return to Normal Game]
 ```
