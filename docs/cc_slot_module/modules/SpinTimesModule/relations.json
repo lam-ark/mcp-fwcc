@@ -1,0 +1,37 @@
+{
+  "moduleId": "SpinTimesModule",
+  "category": "cc_slot_module",
+  "name": "SpinTimesModule",
+  "description": "Remaining round countdown badge overlay attached to spin buttons during Auto Spins and Free Games.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    },
+    {
+      "target": "FreeGameDirectorModule",
+      "relation": "spin_counter_display"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule",
+    "SlotButtonNormal"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "UPDATE_SPINTIMES",
+    "RESET_SPINTIMES"
+  ],
+  "gotchas": [
+    "01_infinity_spin_count_formatting",
+    "02_stale_spin_times_label_visibility"
+  ],
+  "related": [
+    "UIManagerModule",
+    "SlotButtonNormal",
+    "SlotButtonFree"
+  ]
+}

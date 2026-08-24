@@ -1,0 +1,38 @@
+{
+  "moduleId": "JackpotModule",
+  "category": "cc_slot_module",
+  "name": "JackpotModule",
+  "description": "Progressive jackpot banner scoreboard managing multi-tier pool updates (Grand, Major, Minor, Mini), pause/resume locking, and MoneyTween count-ups.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    },
+    {
+      "target": "JackpotWinModule",
+      "relation": "celebration_synchronizer"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule",
+    "JackpotLabel"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "PAUSE_JACKPOT",
+    "RESUME_JACKPOT",
+    "UPDATE_JACKPOT_VALUE"
+  ],
+  "gotchas": [
+    "01_missing_nested_jackpot_observer_cleanup",
+    "02_jackpot_frozen_during_active_spins"
+  ],
+  "related": [
+    "UIManagerModule",
+    "JackpotWinModule",
+    "JackpotLabel"
+  ]
+}
