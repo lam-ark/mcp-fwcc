@@ -51,3 +51,4 @@ graph TD
 | **[`03_mega_symbols_and_variable_height_grids`](./03_mega_symbols_and_variable_height_grids.md)** | Mega Symbols & Variable Grids | Handling irregular row heights `format: [3, 4, 5, 4, 3]` and multi-cell spans. |
 | **[`04_cascade_event_bus_and_writer_integration`](./04_cascade_event_bus_and_writer_integration.md)** | Event Bus & Writer Pipeline | `TABLE_START_RESPIN`, `TABLE_STOP_RESPIN`, and `ScriptExecutor` Promise handling. |
 | **[`05_custom_cascade_game_creation`](./05_custom_cascade_game_creation.md)** | Game Creation Guide | Step-by-step setup guide for building a new cascading slot game. |
+| **[`06_symbol_manager_table_and_indexing_integration`](./06_symbol_manager_table_and_indexing_integration.md)** | Symbol Pool, Table & Indexing | Deep-dive into `SlotSymbolModule`, `SymbolOwnerType.CASCADE_SYMBOL`, Table handover, and `setIndex()` coordinate mapping. |

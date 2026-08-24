@@ -27,14 +27,15 @@ graph TD
 
 ---
 
-## 2. Key Responsibilities
+## 2. Key Responsibilities & Subsystem Interactions
 
-1. **Two-Phase Respin Lifecycle**:
-   - `startRespin()`: Eliminates hit symbols based on `traceWay`.
-   - `stopRespin()`: Calculates drop offsets, spawns incoming symbols, and executes downward fall animations.
-2. **Variable-Height & Mega Symbol Physics**:
-   - Accurately tracks symbols spanning multiple cells (`size > 1`) and offsets landing positions.
-3. **Turbo / Fast-to-Result Scaling**:
-   - Halves falling duration and compresses bounce intervals when `gameSettings.isTurboActive` is true.
-4. **Resilient Interrupt Handling (`resetAllEffectAndTasks`)**:
-   - Reconstructs exact visual matrix state if the player initiates a new spin or triggers reconnect during an active drop.
+1. **Shared Node Pool with `SlotSymbolManager` (`SymbolOwnerType.CASCADE_SYMBOL`)**:
+   - Borrows and recycles symbol nodes zero-allocation. Fetches by existing index (`getSymbolByIndex(index, CASCADE_SYMBOL)`) or retrieves available pool node (`getSymbolByIndex(UNUSED, CASCADE_SYMBOL)`).
+2. **Direct Coordination with `SlotSymbolModule`**:
+   - Invokes `SlotSymbolModule.getModuleComponent(symbol)` to configure `init(code, Vec2(1, size))`, `changeToSymbol(code)`, and emits `SHOW_STATIC` / `PLAY_ANIMATION_APPEAR`.
+3. **Global Coordinate Re-Indexing (`setIndex`)**:
+   - When surviving symbols drop to lower rows, mandatory invocation of `symbolComp.setIndex(this.getSymbolIndex(col, currentIndex))` ensures downstream win evaluations (`SlotTablePaylineModule`, `PaylineWinFrameModule`) identify winning coordinates accurately.
+4. **Display Ownership Handover with Table (`SlotTableModule`)**:
+   - `SlotTableModule` renders base rolling and initial spin stop ➔ `VerticalCascadeModule` assumes exclusive control over tumble animations inside `this.container` ➔ Safely restores state on interruption via `resetAllEffectAndTasks()`.
+5. **Turbo / Fast-to-Result Scaling**:
+   - Dynamically scales falling durations and bounce easing ($+10\text{px}$) according to `gameSettings.isTurboActive`.
