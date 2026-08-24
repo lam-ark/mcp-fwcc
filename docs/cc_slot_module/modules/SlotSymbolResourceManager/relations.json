@@ -1,0 +1,16 @@
+{
+  "id": "SlotSymbolResourceManager",
+  "title": "SlotSymbolResourceManager Asset Provider",
+  "category": "cc_slot_module",
+  "inheritsFrom": "cc.Component",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotSymbolModule", "relation": "fetches_sprites_and_skeletons" }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Missing_Sprite_Frame_Fallback"
+  ]
+}
