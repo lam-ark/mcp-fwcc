@@ -1,0 +1,26 @@
+{
+  "id": "GameDirector",
+  "title": "GameDirector Master Scene Orchestrator & Mode Router",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [
+    "NormalGameDirectorModule",
+    "FreeGameDirectorModule",
+    "BonusGameDirectorModule"
+  ],
+  "usedBy": [],
+  "dependsOn": [
+    { "target": "GameDataStore", "relation": "tracks_currentGameMode" },
+    { "target": "GameConfig", "relation": "reads_BACK_TO_REAL_MODE_DELAY_TIME" }
+  ],
+  "emitsEvents": [
+    "GameUIEvents.UI_MANAGER.UPDATE_GAME_MODE_UI"
+  ],
+  "listensToEvents": [
+    "GameUIEvents.GAME_MODE.SWITCH_GAME_MODE",
+    "GameUIEvents.GAME_MODE.EXIT_GAME_MODE",
+    "GameUIEvents.GAME_MODE.RESUME_NORMAL_GAME_MODE",
+    "GameUIEvents.GAME_MODE.JOIN_GAME_SUCCESS"
+  ],
+  "gotchas": []
+}

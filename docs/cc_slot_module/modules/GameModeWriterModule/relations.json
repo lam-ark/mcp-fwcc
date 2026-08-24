@@ -1,0 +1,18 @@
+{
+  "id": "GameModeWriterModule",
+  "title": "GameModeWriterModule Master Script Generator",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "NormalGameWriterModule", "relation": "subclasses_base_writer" },
+    { "target": "FreeGameWriterModule", "relation": "subclasses_base_writer" },
+    { "target": "BonusGameWriterModule", "relation": "subclasses_base_writer" }
+  ],
+  "dependsOn": [
+    { "target": "GameDataStore", "relation": "reads_nextMode_and_jackpot" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": []
+}

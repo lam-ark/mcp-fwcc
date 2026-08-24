@@ -17,6 +17,7 @@
 | [x] | **`GameEventManager`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/GameEventManager.ts` | **COMPLETED (v3.1)** - Asynchronous global event bus (`emit` awaits `Promise.all()`). |
 | [x] | **`SlotGameSettings`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/SlotGameSettings.ts` | **COMPLETED (v3.1)** - User preferences (Turbo state, FTR mode, speed levels, `currentGameState`). |
 | [x] | **`SlotSoundPlayerModule`** | `Canvas/Director/SlotSound` | `assets/cc-common/cc-slot-module/Core/SlotSound/SlotSoundPlayerModule.ts` | **COMPLETED (v3.1)** - Audio controller (BGM playback, SFX crossfade, win loops, mobile unlock). |
+| [x] | **`GameDirector`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameDirector.ts` | **COMPLETED (v3.1)** - Master scene orchestrator, mode stack manager, and network event router. |
 
 ---
 
@@ -27,6 +28,7 @@
 | [x] | **`BaseGameDirector`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/GameMode/Core/BaseGameDirector.ts` | **COMPLETED (v3.1)** - Master state machine loop orchestrator. |
 | [x] | **`ScriptExecutor`** | Helper Class in Director | `assets/cc-common/cc-slot-module/GameMode/Core/ScriptExecutor.ts` | **COMPLETED (v3.1)** - Asynchronous action queue step processor. |
 | [x] | **`GameModeDirectorModule`** | `Canvas/Director/GameMode` | `assets/cc-common/cc-slot-module/GameMode/GameModeDirectorModule.ts` | **COMPLETED (v3.1)** - Director dispatcher managing Normal, Free, and Bonus game modes. |
+| [x] | **`GameModeWriterModule`** | Helper Class in GameMode Director | `assets/cc-common/cc-slot-module/GameMode/GameModeWriterModule.ts` | **COMPLETED (v3.1)** - Abstract script generator base class for all mode writers. |
 | [x] | **`NormalGameDirectorModule`** | `Canvas/Director/GameMode/NormalGame` | `assets/cc-common/cc-slot-module/GameMode/NormalGame/NormalGameDirectorModule.ts` | **COMPLETED (v3.1)** - Normal game spin loop director. |
 | [x] | **`NormalGameWriterModule`** | Helper Class in Normal Director | `assets/cc-common/cc-slot-module/GameMode/NormalGame/NormalGameWriterModule.ts` | **COMPLETED (v3.1)** - Action script queue definition for normal spins. |
 | [x] | **`FreeGameDirectorModule`** | `Canvas/Director/GameMode/FreeGame` | `assets/cc-common/cc-slot-module/GameMode/FreeGame/FreeGameDirectorModule.ts` | **COMPLETED (v3.1)** - Free game spin loop director (spins remaining, multipliers). |
