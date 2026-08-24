@@ -1,0 +1,16 @@
+{
+  "id": "BonusGameWriterModule",
+  "title": "BonusGameWriterModule Interactive Pick Script Generator",
+  "category": "cc_slot_module",
+  "inheritsFrom": "GameModeWriterModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "BonusGameDirectorModule", "relation": "generates_action_scripts_for_bonus_game" }
+  ],
+  "dependsOn": [
+    { "target": "GameDataStore", "relation": "reads_nextMode" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": []
+}

@@ -1,0 +1,24 @@
+{
+  "id": "BonusGameDirectorModule",
+  "title": "BonusGameDirectorModule Interactive Pick Feature Director",
+  "category": "cc_slot_module",
+  "inheritsFrom": "GameModeDirectorModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "GameDirector", "relation": "managed_by_root_director" }
+  ],
+  "dependsOn": [
+    { "target": "BonusGameWriterModule", "relation": "companion_script_generator" },
+    { "target": "GameDataStore", "relation": "reads_bonus_game_matrix" }
+  ],
+  "emitsEvents": [
+    "GameLogicUIEvents.SEND_BONUS_GAME_REQUEST",
+    "GameUIEvents.GAME_MODE.EXIT_GAME_MODE"
+  ],
+  "listensToEvents": [
+    "CLICK_ITEM"
+  ],
+  "gotchas": [
+    "Gotcha:Missing_moduleList_Wiring_Breaks_Scoped_Event_Bus"
+  ]
+}
