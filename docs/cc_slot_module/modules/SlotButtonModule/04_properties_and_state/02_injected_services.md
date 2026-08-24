@@ -1,16 +1,18 @@
 ---
 id: "cc_slot_module:SlotButtonModule:properties_and_state:injected_services"
-title: "SlotButtonModule Injected Services"
+title: "SlotButtonModule & Subclasses Injected Services"
 category: "cc_slot_module"
-tags: ["SlotButtonModule", "slot_button_module", "cc_slot_module", "properties", "injected_services"]
+tags: ["SlotButtonModule", "SlotButtonNormal", "SlotButtonSpine", "cc_slot_module", "properties", "injected_services"]
 ---
 
-# 💉 SlotButtonModule Injected Services
+# 💉 SlotButtonModule & Subclasses Injected Services
 
 ---
 
-## 1. Injected Dependencies
+## 1. Injected Dependencies Across Ecosystem
 
-| Service | Type | Injection Scope | Purpose |
+| Service | Type | Injected In | Purpose |
 | :--- | :--- | :--- | :--- |
-| `uiManager` | `UIManagerModule` | `@inject` | Interrogated for `checkDisplayPopup()` validation. |
+| `uiManager` | `UIManagerModule` | `SlotButtonModule` | Interrogated for `checkDisplayPopup()` validation to block spacebar triggers during popups. |
+| `gameSettings` | `SlotGameSettings` | `SlotButtonNormal` | Synchronizes `isAutoSpin` state flag during round changes. |
+| `dataStore` | `GameDataStore` | `SlotButtonSpine` | Reads `playSession.isResume` to determine reconnect animation states. |
