@@ -60,14 +60,14 @@
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
 | :---: | :--- | :--- | :--- | :--- |
-| [ ] | **`SlotTableModule`** | `Canvas/Director/GameMode/BoardG/Table` | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotTableModule.ts` | Grid matrix orchestrator, reel instantiation, near-win anticipation. |
+| [x] | **`SlotTableModule`** | `Canvas/Director/GameMode/BoardG/Table` | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotTableModule.ts` | **COMPLETED (v3.1)** - Grid matrix orchestrator, reel instantiation, near-win anticipation. |
 | [ ] | **`SlotReelModule`** | Dynamically created child reel | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotReelModule.ts` | Column scrolling, speed curves, stopping bounce animation. |
 | [ ] | **`SlotSymbolModule`** | Dynamically created child symbol | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/SlotSymbolModule.ts` | Visual symbol presentation (Spine skeleton, Static sprite, Blur sprite). |
-| [ ] | **`SlotSymbolManager`** | Child node of SlotTable | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/SlotSymbolManager.ts` | Node pooling (`cc.NodePool`), win animations, spine lifecycle caching. |
+| [x] | **`SlotSymbolManager`** | Child node of SlotTable | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/SlotSymbolManager.ts` | **COMPLETED (v3.1)** - Node pooling (`cc.NodePool`), win animations, spine lifecycle caching. |
 | [ ] | **`MultipleSymbolManager`** | Alternative Symbol Manager | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/MultipleSymbolManager.ts` | Multi-spine bundle management for games with variable sized symbols. |
 | [ ] | **`SlotSymbolResourceManager`**| Resource Provider | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/SlotSymbolResourceManager.ts` | Dynamic asset loader for symbols, sprites, and spine skeletons. |
 | [ ] | **`SlotCustomNodePool`** | Memory optimization pool | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotSymbol/SlotCustomNodePool.ts` | High-performance pooled node allocation for symbol reuse. |
-| [ ] | **`TableModuleConfig`** | Configuration in Table | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/TableModuleConfig.ts` | Reel timings, easing curves, stopping delay constants. |
+| [x] | **`TableModuleConfig`** | Configuration in Table | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/TableModuleConfig.ts` | **COMPLETED (v3.1)** - Reel timings, easing curves, stopping delay constants. |
 | [ ] | **`SlotTableData`** | BaseDataModule in Table | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotTableData.ts` | Table matrix state conversion (`registeredKeys: ['matrix']`). |
 | [ ] | **`SlotTableNearWinModule`**| Child component in Table | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotTableNearWinModule.ts` | Anticipation VFX overlays for 2+ Scatter/Bonus triggers. |
 | [ ] | **`SlotTableSoundEffectModule`**| Audio bridge in Table | `assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotTableSoundEffectModule.ts` | Reel spinning, stopping clicks, scatter anticipation sound routing. |

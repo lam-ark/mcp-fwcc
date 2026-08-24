@@ -1,39 +1,38 @@
 ---
 id: "cc_slot_module:GameDataStore:overview:scene_and_prefabs"
-title: "GameDataStore Scene Hierarchy & Child Observers Graph"
+title: "GameDataStore Scene Hierarchy & IoC Registration"
 category: "cc_slot_module"
-tags: ["GameDataStore", "game_data_store", "cc_slot_module", "overview", "scene", "prefabs", "hierarchy", "BaseDataModule"]
+tags: ["GameDataStore", "game_data_store", "cc_slot_module", "overview", "scene", "ioc"]
 ---
 
-# 🌳 GameDataStore Scene Hierarchy & Child Observers Graph
+# 🌳 GameDataStore Scene Hierarchy & IoC Registration
 
-## 1. Canonical Node Placement
+## 1. Scene Hierarchy Placement
 
-`GameDataStore` is attached to the master root node **`Canvas/Director`**:
+`GameDataStore` is attached at the root Director level so it is instantiated before child UI modules:
 
 ```text
-Canvas (cc.Canvas)
-└── Canvas/Director ➔ [Mounted: GameInit, GameConfig, GameDataStore, GameDirector]
-    │
-    ├── Canvas/Director/GameMode
-    │   └── BoardG
-    │       └── SlotTableModule ➔ [Mounted: SlotTableData (extends BaseDataModule)]
-    │
-    ├── Canvas/Director/UIManager
-    │   ├── BetModule ➔ [Mounted: BetDataModule (extends BaseDataModule)]
-    │   ├── WalletModule ➔ (Reads dataStore.playSession)
-    │   └── PaylineInfoModule ➔ (Reads dataStore.getWinAmountInfo)
-    │
-    └── Canvas/Director/CutsceneControl ➔ (Reads dataStore.getBigWinData, getJackpotInfo)
+Canvas/Director
+├── GameDataStore (Global Single Source of Truth, IoC container provided)
+├── GameDirector (Root game coordinator)
+└── GameMode
+    ├── NormalGameDirector
+    ├── FreeGameDirector
+    └── BoardG
+        ├── Table (contains SlotTableData extending BaseDataModule)
+        └── Payline (contains SlotTablePaylineData extending BaseDataModule)
 ```
 
 ---
 
-## 2. Child Data Modules Ingestion Map
+## 2. Auto-Discovery in `onLoad`
 
-| Child Component | Registered Keys in `BaseDataModule` | Target Data Ingested from `playSession` |
-| :--- | :--- | :--- |
-| **`SlotTableData`** | `["matrix0", "matrix", "normalGameMatrix", "freeGameMatrix"]` | Active symbol grids across game modes. |
-| **`SlotTablePaylineData`** | `["payLines", "normalGamePayLines", "freeGamePayLines", "jackpotPayline"]` | Winning line combinations and coordinate paths. |
-| **`CascadeModuleData`** | `["matrix0", "matrix", "traceWay"]` | Cascade elimination paths and falling symbol arrays. |
-| **`BonusTableData`** | `["bonusGameMatrix", "bonusValue", "jackpot", "bonusGameRemain"]` | Mini bonus game boards, prize values, and remaining picks. |
+During scene bootstrapping, `GameDataStore.onLoad()` automatically crawls all descendant nodes:
+```typescript
+protected onLoad(): void {
+    this.getComponentsInChildren("BaseDataModule").forEach((module) => {
+        this.registerModule(module as BaseDataModule);
+    });
+}
+```
+Any `BaseDataModule` dynamically instantiated later also registers itself explicitly via `BaseDataModule.start() ➔ dataStore.registerModule(this)`.

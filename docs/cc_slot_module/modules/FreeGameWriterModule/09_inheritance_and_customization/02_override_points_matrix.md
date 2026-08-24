@@ -9,9 +9,9 @@ tags: ["FreeGameWriterModule", "free_game_writer", "cc_slot_module", "customizat
 
 ## 1. Extension Points Matrix
 
-| Method Name | Base Implementation | Safe to Override? | Required `super` Call | Customization Purpose |
+| Method Name | Default Implementation | Safe to Override? | Required `super` Call | Customization Purpose |
 | :--- | :--- | :--- | :--- | :--- |
-| **`makeScriptFreeSpinTrigger()`** | Builds 5-step pre-spin array | `YES` | `OPTIONAL` | Insert custom multiplier teaser or bonus symbol reset steps. |
-| **`makeScriptShowResultFinal()`** | Branches on `freeGameRemain` | `YES` | `RECOMMENDED` | Insert feature retrigger check steps before updating count. |
-| **`getFreeGameEndScript()`** | Returns `TOTAL_WIN` cutscene + `_gameExit` | `YES` | `OPTIONAL` | Display custom celebratory dialogues or jackpot summaries. |
-| **`makeScriptResumeGameMode()`** | Returns `_resumeFreeTable` + `_resumeWinAmount` | `YES` | `OPTIONAL` | Restore progressive feature meters when reconnecting to Free Spins. |
+| **`makeScriptFreeSpinTrigger()`** | Standard 5-step trigger queue | `YES` | `RECOMMENDED` | Ingesting multiplier updates or sticky wild setups. |
+| **`makeScriptShowResultFinal()`** | Branch on `freeGameRemain > 0` | `YES` | Optional | Retrigger evaluations or extra feature transitions. |
+| **`getFreeGameRemainScript()`** | Updates spin times | `YES` | None | Adding subtle reel frame lighting or sound triggers. |
+| **`getFreeGameEndScript()`** | Total Win cutscene + exit | `YES` | None | Custom outro animations or jackpot transitions. |

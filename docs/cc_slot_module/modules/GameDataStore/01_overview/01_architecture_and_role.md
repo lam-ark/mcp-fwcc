@@ -1,52 +1,44 @@
 ---
 id: "cc_slot_module:GameDataStore:overview:architecture_and_role"
-title: "GameDataStore Central State & Auto-Discovery Architecture"
+title: "GameDataStore Central State Management & Deep-Clone Distribution Architecture"
 category: "cc_slot_module"
-tags: ["GameDataStore", "game_data_store", "cc_slot_module", "overview", "architecture", "state_management", "playSession", "BaseDataModule"]
+tags: ["GameDataStore", "game_data_store", "cc_slot_module", "overview", "architecture", "state_store", "deep_clone"]
 ---
 
-# 🏛️ GameDataStore Central State & Auto-Discovery Architecture
+# 🏛️ GameDataStore Central State Management & Deep-Clone Distribution Architecture
 
-## 1. Executive Summary & Core Responsibilities
+## 1. Executive Summary & Purpose
 
-`GameDataStore` (`assets/cc-common/cc-slot-module/Core/GameDataStore.ts`) is the **Reactive State Management Backbone** of the `cc-common` Slot SDK.
+`GameDataStore` (`assets/cc-common/cc-slot-module/Core/GameDataStore.ts`) is the **Single Source of Truth (SSOT) and Central State Authority** for the entire slot game application.
 
-Mounted at `Canvas/Director`, `GameDataStore` acts as the single ingestion gateway for backend spin packets via `parseDataPS(data)`, transforms raw server payloads into normalized camelCase dictionaries, and broadcasts immutable data snapshots to all child `BaseDataModule` components across the scene graph.
+Attached to the scene root / Director container (`Canvas/Director/GameDataStore`), it receives raw server session responses via WebSocket, performs key mapping / decompression (`mapNewKeys`), calculates win level thresholds (`getWinLevel`), determines Big Win and Jackpot structures (`getBigWinData`, `getJackpotInfo`), and reactively broadcasts state slices to all registered `BaseDataModule` components using **deep-clone immutability isolation** (`JSON.parse(JSON.stringify(value))`).
 
 ```mermaid
 graph TD
-    WS[WebSocket Spin Packet] -->|parseDataPS data| GDS[GameDataStore<br/>Canvas/Director]
-
-    subgraph Internal State Management
-        GDS --> PS[playSession: Master Round Payload]
-        GDS --> Map[mapNewKeys / convertData: _dataMap]
-        GDS --> ModeData[gameModeData: Mode Snapshots]
+    Server[WebSocket Server Response] --> Director[GameDirector / ModeDirectors]
+    Director -->|parseDataPS| GDS[GameDataStore: Single Source of Truth]
+    
+    GDS -->|mapNewKeys| CleanPS[Sanitized playSession]
+    CleanPS -->|convertData| DataMap[_dataMap: Map<string, any>]
+    
+    DataMap -->|updateDataModules: Deep Clone Broadcast| ModulesSet[_dataModules: Set<BaseDataModule>]
+    
+    subgraph Reactive Consumers
+        ModulesSet -->|onDataUpdate('matrix')| TableData[SlotTableData]
+        ModulesSet -->|onDataUpdate('payLines')| PaylineData[SlotTablePaylineData]
+        ModulesSet -->|onDataUpdate('freeGameRemain')| FreeData[FreeGameData]
+        ModulesSet -->|onDataUpdate('winAmount')| WinData[WinAmountData]
     end
 
-    subgraph Auto-Discovery & Broadcast (updateDataModules)
-        GDS -->|Immutable Deep-Clone| TDM[TableDataModule<br/>matrix, payLines]
-        GDS -->|Immutable Deep-Clone| BDM[BetDataModule<br/>totalBet, betId]
-        GDS -->|Immutable Deep-Clone| FDM[FreeSpinDataModule<br/>freeGameRemain]
-        GDS -->|Immutable Deep-Clone| JDM[JackpotDataModule<br/>jackpot, trialJpl]
-    end
-
-    subgraph Downstream Direct Queries
-        GDS -->|getWinAmountInfo / getWinLevel| Director[GameDirector & Writers]
-        GDS -->|getJackpotInfo| Cutscenes[WinEffectModule]
-    end
+    GDS -->|Query Methods: getWinLevel, getBigWinData| Writers[GameModeWriterModules / Directors]
 ```
 
 ---
 
 ## 2. Core Responsibilities
 
-1. **Spin Session Storage (`playSession`)**: Caches current round data (symbol matrices, win lines, total payout, jackpot hits, next game mode).
-2. **Reactive Module Synchronization**: Dispatches data updates to all child `BaseDataModule` components matching their `registeredKeys`.
-3. **Win Calculation & Threshold Evaluation**: Computes `rate = FloatUtils.div(win, totalBet)` against `GameConfig.WIN_LEVEL_CONFIG.THRESHOLDS` to determine Win Levels 1..4, coin rolling duration, and payline highlight time.
-4. **Jackpot Payload Parsing**: Extracts tier strings (e.g. `GRAND`, `MAJOR`, `MINI`) and numeric reward values from socket strings like `['9000_4_GRAND;2500000']`.
-
-## 3. Key Architectural Invariants
-
-1. **Auto-Discovery of Child Observers**: In `onLoad()`, `GameDataStore` automatically scans `this.getComponentsInChildren("BaseDataModule")` and registers them into an internal `Set<BaseDataModule>` without requiring manual Inspector drag-and-drop wiring.
-2. **Immutable Snapshot Broadcast**: When `updateDataModules()` fires, complex objects and arrays are deep-cloned via `JSON.parse(JSON.stringify(value))` before passing to child modules. This prevents child components from mutating the master `playSession` reference.
-3. **Mathematical Evaluation Centralization**: Payout evaluation logic (`getWinLevel`, `getCountMoneyTime`, `getWinLineTime`, `isBigWin`, `getJackpotInfo`) is centralized inside `GameDataStore`, keeping Directors and Writers strictly focused on timeline orchestration.
+1. **Central Session Ingestion (`parseDataPS`, `mapNewKeys`)**: Stores incoming play session objects and transforms obfuscated short keys (e.g. `cna` ➔ `currentNormalGameWinAmount`) into standardized SDK keys.
+2. **Deep-Clone Reactive State Distribution (`updateDataModules`)**: Iterates through registered `BaseDataModule` components and invokes `onDataUpdate(key, deepClonedValue)`. Deep cloning prevents downstream UI tweens or mutations from polluting the central store.
+3. **Win Tier & Timing Computation (`getWinLevel`, `getCountMoneyTime`, `getWinLineTime`)**: Evaluates win ratio against total bet (`FloatUtils.div(win, totalBet)`) and computes exact duration curves for number counters and line delays.
+4. **Jackpot & Big Win Data Sanitization (`getJackpotInfo`, `getBigWinData`, `isBigWin`)**: Decodes semicolon-delimited Jackpot payloads (e.g. `["9000_4_USD_GRAND;2500000"]`) into structured objects (`{ jackpotType: "GRAND", jackpotValue: 2500000 }`).
+5. **Mode-Specific State Caching (`gameModeData: Map<number, any>`)**: Caches session snapshots keyed by `GAME_MODE_ENUM` for mode transitions and resumes.

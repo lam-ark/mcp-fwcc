@@ -1,0 +1,22 @@
+{
+  "id": "BaseDataModule",
+  "title": "BaseDataModule Reactive State Distribution Bedrock",
+  "category": "cc_slot_module",
+  "inheritsFrom": "cc.Component",
+  "manages": [],
+  "usedBy": [
+    { "target": "GameDataStore", "relation": "registers_with_store_for_reactive_data_updates" },
+    { "target": "SlotBaseModule", "relation": "provides_local_domain_data_to_sibling_ui_module" }
+  ],
+  "dependsOn": [
+    { "target": "GameDataStore", "relation": "injected_via_ioc_container" },
+    { "target": "SlotBaseModule", "relation": "resolved_via_getComponent_in_onLoad" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_missing_registered_keys_no_update",
+    "02_property_shadowing_getter_setter",
+    "03_unregister_leak_on_dynamic_node_destroy"
+  ]
+}

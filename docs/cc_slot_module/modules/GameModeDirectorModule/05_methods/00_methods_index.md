@@ -9,20 +9,106 @@ tags: ["GameModeDirectorModule", "game_mode_director", "cc_slot_module", "method
 
 ---
 
-## 1. Lifecycle & Spin Flow Methods
+## 1. Lifecycle & Setup
+* [`onExtendedLoad(): void`](./onExtendedLoad.md)
+* [`setupModules(): void`](./setupModules.md)
+* [`init(): void`](./init.md)
+* [`enter(): void`](./enter.md)
+* [`playGameModeBGM(): void`](./playGameModeBGM.md)
+* [`onDestroy(): void`](./onDestroy.md)
 
-| Method Signature | Visibility | Purpose |
-| :--- | :--- | :--- |
-| **[`setupModules(): void`](./setupModules.md)** | `public` | Instantiates `GameModuleEvent` and binds it to all nodes in `moduleList`. |
-| **[`onStateUpdate(data: any): void`](./onStateUpdate.md)** | `public` | Ingests server spin packet into `GameDataStore` and triggers `updateDataModules()`. |
-| **[`onBeforeSpinStart(): Promise<void>`](./onBeforeSpinStart.md)** | `public` | Dispatches `NormalSpinTrigger` action before spinning reels. |
-| **[`onStartSpinningTable(): Promise<void>`](./onStartSpinningTable.md)** | `public` | Dispatches `StartSpinning` action to start continuous reel movement. |
-| **[`onStopSpinningTable(): Promise<void>`](./onStopSpinningTable.md)** | `public` | Dispatches `StopSpinningTable` action to decelerate reels column by column. |
-| **[`onShowResultEntry(): Promise<void>`](./onShowResultEntry.md)** | `public` | Dispatches `ShowResultEntry` (Big Win, Mega Win, Jackpot animations). |
-| **[`onShowResultFinal(): Promise<void>`](./onShowResultFinal.md)** | `public` | Dispatches `ShowResultFinal` after mode exits to settle round. |
-| **[`transitionGameMode(mode: number): Promise<void>`](./transitionGameMode.md)** | `public` | Manages mode transitions, skipping cutscenes when resuming an existing session. |
-| **[`onFastToResult(mode: number): void`](./onFastToResult.md)** | `public` | Switches speed to `INSTANTLY` and emits `TABLE_FAST_STOP`. |
-| **[`skipAllEffects(): Promise<void>`](./skipAllEffects.md)** | `public` | Clears active delay callbacks and triggers fast-forward of in-flight win presentations. |
-| **[`_showResultEntry(): Promise<void>`](./_showResultEntry.md)** | `public` | Evaluates Big Win vs standard paylines and dispatches presentation. |
-| **[`_handleBigWin(data: any): Promise<void>`](./_handleBigWin.md)** | `public` | Routes Big Win display to normal or fast mode depending on active game speed. |
-| **[`_playJackpotWin(): Promise<void>`](./_playJackpotWin.md)** | `public` | Blinks jackpot winning symbols and launches unskippable jackpot cutscene celebration. |
+---
+
+## 2. Server Event Handlers & Action Triggers
+* [`onJoinGameSuccess(_data): void`](./onJoinGameSuccess.md)
+* [`onStateUpdate(data): void`](./onStateUpdate.md)
+* [`onStateResume(data): void`](./onStateResume.md)
+* [`onPreResumeGameMode(): Promise<void>`](./onPreResumeGameMode.md)
+* [`onResumeGameMode(): Promise<void>`](./onResumeGameMode.md)
+* [`onResumeNormalGame(): Promise<void>`](./onResumeNormalGame.md)
+* [`onBeforeSpinStart(): Promise<void>`](./onBeforeSpinStart.md)
+* [`onStartSpinningTable(): Promise<void>`](./onStartSpinningTable.md)
+* [`onStartRespinningTable(): Promise<void>`](./onStartRespinningTable.md)
+* [`onPreStopSpinningTable(): Promise<void>`](./onPreStopSpinningTable.md)
+* [`onStopSpinningTable(): Promise<void>`](./onStopSpinningTable.md)
+* [`onStopRespinningTable(): Promise<void>`](./onStopRespinningTable.md)
+* [`onShowResultEntry(): Promise<void>`](./onShowResultEntry.md)
+* [`onShowResultFinal(): Promise<void>`](./onShowResultFinal.md)
+* [`transitionGameMode(mode): Promise<void>`](./transitionGameMode.md)
+* [`transitionToGameModeWhenResume(_mode): Promise<void>`](./transitionToGameModeWhenResume.md)
+* [`enterGameMode(mode): Promise<void>`](./enterGameMode.md)
+* [`exitGameMode(_mode): Promise<void>`](./exitGameMode.md)
+* [`onFastToResult(_mode): void`](./onFastToResult.md)
+* [`forceStopCurrentGameMode(): Promise<void>`](./forceStopCurrentGameMode.md)
+* [`onBackToGameMode(_fromMode): Promise<void>`](./onBackToGameMode.md)
+
+---
+
+## 3. Command Step Implementations
+* [`_resumeNormalTable(data): Promise<void>`](./_resumeNormalTable.md)
+* [`_resumeWinAmount(winAmount): Promise<void>`](./_resumeWinAmount.md)
+* [`_setUpPaylines(data): Promise<void>`](./_setUpPaylines.md)
+* [`_beforeSpinStart(): Promise<void>`](./_beforeSpinStart.md)
+* [`_syncPlaySessionData(): Promise<void>`](./_syncPlaySessionData.md)
+* [`_syncWinAmountPS(): Promise<void>`](./_syncWinAmountPS.md)
+* [`_syncWallet(): Promise<void>`](./_syncWallet.md)
+* [`_resetOnSpin(): Promise<void>`](./_resetOnSpin.md)
+* [`skipAllEffects(): Promise<void>`](./skipAllEffects.md)
+* [`_resetShowResultFinal(): void`](./_resetShowResultFinal.md)
+* [`_clearWinAmount(): Promise<void>`](./_clearWinAmount.md)
+* [`_resetTable(): Promise<void>`](./_resetTable.md)
+* [`_clearPaylines(): Promise<void>`](./_clearPaylines.md)
+* [`clearDelayAction(): void`](./clearDelayAction.md)
+* [`_startSpinningTable(): Promise<void>`](./_startSpinningTable.md)
+* [`_playSureWinEffect(_data): Promise<void>`](./_playSureWinEffect.md)
+* [`_playPreStopSpinningEffect(_data): Promise<void>`](./_playPreStopSpinningEffect.md)
+* [`_stopSpinningTable(data): Promise<void>`](./_stopSpinningTable.md)
+* [`_beforeReSpinStart(): Promise<void>`](./_beforeReSpinStart.md)
+* [`_startRespinningTable(data): Promise<void>`](./_startRespinningTable.md)
+* [`_stopRespinningTable(data): Promise<void>`](./_stopRespinningTable.md)
+* [`_showStartRespinEffect(): Promise<void>`](./_showStartRespinEffect.md)
+* [`_showRespinResultEntry(): Promise<void>`](./_showRespinResultEntry.md)
+* [`_showRespinResultFinal(): Promise<void>`](./_showRespinResultFinal.md)
+* [`_playJackpotWin(): Promise<void>`](./_playJackpotWin.md)
+* [`_showTransitionGameMode(): Promise<void>`](./_showTransitionGameMode.md)
+* [`_showTransitionBonusGame(): Promise<void>`](./_showTransitionBonusGame.md)
+* [`_showTransitionFreeGame(): Promise<void>`](./_showTransitionFreeGame.md)
+* [`_showTransitionFreeGameOption(): Promise<void>`](./_showTransitionFreeGameOption.md)
+* [`_showIntroGameCutscene(data): Promise<void>`](./_showIntroGameCutscene.md)
+* [`_showWinPayline(data): Promise<void>`](./_showWinPayline.md)
+* [`_handleBigWin(data): Promise<void>`](./_handleBigWin.md)
+* [`_showFastBigWin(data): Promise<void>`](./_showFastBigWin.md)
+* [`_showBigWin(data): Promise<void>`](./_showBigWin.md)
+* [`_blinkAllPaylines(): Promise<void>`](./_blinkAllPaylines.md)
+* [`_showAllPaylines(): Promise<void>`](./_showAllPaylines.md)
+* [`_showBonusPayLine(): Promise<void>`](./_showBonusPayLine.md)
+* [`_showScatterPayLine(): Promise<void>`](./_showScatterPayLine.md)
+* [`_showJackpotPayLine(data): Promise<void>`](./_showJackpotPayLine.md)
+* [`_showCutscene(data): Promise<void>`](./_showCutscene.md)
+* [`_showCutscene_2(data): Promise<void>`](./_showCutscene_2.md)
+* [`_showUnskippedCutscene(data): Promise<void>`](./_showUnskippedCutscene.md)
+* [`_hideCutscene(data): Promise<void>`](./_hideCutscene.md)
+* [`_updateSpinTimes(spineTimes): Promise<void>`](./_updateSpinTimes.md)
+* [`_resetSpinTimes(): Promise<void>`](./_resetSpinTimes.md)
+* [`_stopCurrentGameMode(): Promise<void>`](./_stopCurrentGameMode.md)
+* [`_stopSpinningTableWithRandomMatrix(): Promise<void>`](./_stopSpinningTableWithRandomMatrix.md)
+* [`_forceResetGameMode(): Promise<void>`](./_forceResetGameMode.md)
+* [`resetGameState(): void`](./resetGameState.md)
+* [`_updateWinningAmount(data): Promise<void>`](./_updateWinningAmount.md)
+* [`_pauseWallet(): Promise<void>`](./_pauseWallet.md)
+* [`_resumeWallet(force): Promise<void>`](./_resumeWallet.md)
+* [`pauseJackpot(): Promise<void>`](./pauseJackpot.md)
+* [`_syncJackpot(): Promise<void>`](./_syncJackpot.md)
+* [`_resumeJackpot(isForce): Promise<void>`](./_resumeJackpot.md)
+* [`updateJackpotValue(data): Promise<void>`](./updateJackpotValue.md)
+* [`_delayTimeScript(time): Promise<void>`](./_delayTimeScript.md)
+* [`_showMultiplier(): Promise<void>`](./_showMultiplier.md)
+* [`_resetMultiplier(): Promise<void>`](./_resetMultiplier.md)
+* [`_showTransformSymbol(): Promise<void>`](./_showTransformSymbol.md)
+* [`_updateMegaway(): Promise<void>`](./_updateMegaway.md)
+* [`canPrepareNextSpin(): boolean`](./canPrepareNextSpin.md)
+* [`setUpSpinTimes(data): void`](./setUpSpinTimes.md)
+* [`setUpSlotButton(data): void`](./setUpSlotButton.md)
+* [`delayAutoSpin(): Promise<void>`](./delayAutoSpin.md)
+* [`delayAction(time): Promise<void>`](./delayAction.md)
+* [`resetAllEffectAndTasks(): void`](./resetAllEffectAndTasks.md)

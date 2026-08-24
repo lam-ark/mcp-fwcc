@@ -1,16 +1,19 @@
 {
   "id": "FreeGameWriterModule",
-  "title": "FreeGameWriterModule Free Spins Script Generator",
+  "title": "FreeGameWriterModule Script Synthesis Planner",
   "category": "cc_slot_module",
   "inheritsFrom": "GameModeWriterModule",
   "manages": [],
   "usedBy": [
-    { "target": "FreeGameDirectorModule", "relation": "generates_action_scripts_for_free_spins" }
+    { "target": "FreeGameDirectorModule", "relation": "synthesizes_command_queues_for_director" }
   ],
   "dependsOn": [
-    { "target": "GameDataStore", "relation": "reads_freeGameRemain" }
+    { "target": "GameDataStore", "relation": "reads_freeGameRemain_and_totalWinAmount" }
   ],
   "emitsEvents": [],
   "listensToEvents": [],
-  "gotchas": []
+  "gotchas": [
+    "01_missing_decrease_free_spin_times_stuck_counter",
+    "02_total_win_cutscene_skipped_prematurely"
+  ]
 }

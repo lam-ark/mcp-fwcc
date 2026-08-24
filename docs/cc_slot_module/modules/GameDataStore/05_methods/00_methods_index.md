@@ -1,21 +1,49 @@
 ---
 id: "cc_slot_module:GameDataStore:methods:index"
-title: "GameDataStore Methods & API Specification Index"
+title: "GameDataStore Methods Index"
 category: "cc_slot_module"
-tags: ["GameDataStore", "game_data_store", "cc_slot_module", "methods", "api", "index"]
+tags: ["GameDataStore", "game_data_store", "cc_slot_module", "methods", "index"]
 ---
 
-# 🚀 GameDataStore Methods & API Specification Index
+# 📋 GameDataStore Methods Index
 
-## 1. Master Method Index
+---
 
-| Method Signature | Visibility | Return Type | Purpose |
-| :--- | :--- | :--- | :--- |
-| **[`parseDataPS(data): void`](./parseDataPS.md)** | `public` | `void` | Ingests and stores raw server spin response payload into `this.playSession`. |
-| **[`updateDataModules(): void`](./updateDataModules.md)** | `public` | `void` | Converts `playSession` and broadcasts deep-cloned key values to child `BaseDataModule` instances. |
-| **[`getWinAmountInfo(win?): object`](./getWinAmountInfo.md)** | `public` | `object` | Calculates win level (1..4), coin counting time, and win line display delay. |
-| **[`getWinLevel(win?): number`](./getWinLevel.md)** | `public` | `number` | Calculates `rate = win / totalBet` against `GameConfig.WIN_LEVEL_CONFIG.THRESHOLDS`. |
-| **[`getBigWinData(): object`](./getBigWinData.md)** | `public` | `object` | Returns big win metadata payload for cutscenes and celebration modules. |
-| **[`getJackpotInfo(): object \| null`](./getJackpotInfo.md)** | `public` | `object \| null` | Parses jackpot string format `['9000_4_GRAND;2500000']` into type and numeric value. |
-| **[`registerModule(module): void`](./registerModule.md)** | `public` | `void` | Adds a `BaseDataModule` component into the update broadcast set. |
-| **[`mapNewKeys(playSession, mapKeys): object`](./mapNewKeys.md)** | `public` | `object` | Utility remapping server payload JSON key names. |
+## 1. Lifecycle, Registry & State Setup
+* [`onLoad(): void`](./onLoad.md)
+* [`setConfig(gameConfig): void`](./setConfig.md)
+* [`setGameSpeed(speed): void`](./setGameSpeed.md)
+* [`registerModule(module): void`](./registerModule.md)
+* [`parseDataPS(data): void`](./parseDataPS.md)
+* [`updateDataModules(): void`](./updateDataModules.md)
+
+---
+
+## 2. State Slicing & Storage Lookups
+* [`getCurrentGameModeData(): any`](./getCurrentGameModeData.md)
+* [`getGameModeData(gameMode): any`](./getGameModeData.md)
+* [`setGameModeDataMap(key, value): void`](./setGameModeDataMap.md)
+* [`convertData(data): void`](./convertData.md)
+* [`setDataMap(key, value): void`](./setDataMap.md)
+* [`mapNewKeys(playSession, mapKeys): Record<string, any>`](./mapNewKeys.md)
+* [`hasPlaySession(): boolean`](./hasPlaySession.md)
+* [`getNextGameMode(): number`](./getNextGameMode.md)
+
+---
+
+## 3. Win Calculation, Tiers & Timing Queries
+* [`getWinAmountPS(): number`](./getWinAmountPS.md)
+* [`getResumeWinAmount(): number`](./getResumeWinAmount.md)
+* [`isBigWin(): boolean`](./isBigWin.md)
+* [`getBigWinData(): any`](./getBigWinData.md)
+* [`getJackpotInfo(): any`](./getJackpotInfo.md)
+* [`getWinAmountInfo(win?): any`](./getWinAmountInfo.md)
+* [`getWinLevel(win?): number`](./getWinLevel.md)
+* [`getCountMoneyTime(level): number`](./getCountMoneyTime.md)
+* [`getWinLineTime(level): number`](./getWinLineTime.md)
+
+---
+
+## 4. Reset & Cleanup Actions
+* [`resetDataPS(): void`](./resetDataPS.md)
+* [`resetWinAmount(): void`](./resetWinAmount.md)

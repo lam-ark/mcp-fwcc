@@ -1,0 +1,28 @@
+{
+  "id": "SlotSymbolManager",
+  "title": "SlotSymbolManager Node Pooling & Symbol Lifecycle Manager",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [
+    "SlotSymbolModule"
+  ],
+  "usedBy": [
+    { "target": "SlotTableModule", "relation": "provides_pooled_symbols_for_table" },
+    { "target": "SlotReelModule", "relation": "provides_static_and_blur_symbols_for_reels" },
+    { "target": "SlotTablePaylineModule", "relation": "sorts_winning_symbols_sibling_indexes" }
+  ],
+  "dependsOn": [
+    { "target": "GameConfig", "relation": "extracts_symbol_priorities_into_layer_config" },
+    { "target": "TableModuleConfig", "relation": "maps_symbol_indexes_coordinates" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "show-log-using-symbols",
+    "show-log-using-symbols-owner"
+  ],
+  "gotchas": [
+    "01_sticky_symbol_reclaimed_without_isForce",
+    "02_missing_layer_config_priority_z_order_glitch",
+    "03_node_pool_leak_on_unreturned_symbols"
+  ]
+}

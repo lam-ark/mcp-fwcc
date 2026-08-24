@@ -1,0 +1,44 @@
+{
+  "id": "SlotTableModule",
+  "title": "SlotTableModule Matrix & Reel Table Engine Orchestrator",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [
+    "SlotReelModule"
+  ],
+  "usedBy": [
+    { "target": "NormalGameDirectorModule", "relation": "orchestrated_by_normal_director" },
+    { "target": "FreeGameDirectorModule", "relation": "orchestrated_by_free_director" }
+  ],
+  "dependsOn": [
+    { "target": "TableModuleConfig", "relation": "reads_table_format_and_speeds" },
+    { "target": "SlotTableData", "relation": "reads_spin_matrix_payloads" },
+    { "target": "SlotSymbolManager", "relation": "allocates_and_recycles_symbols" },
+    { "target": "SlotTableNearWinModule", "relation": "coordinates_anticipation_vfx" },
+    { "target": "SlotTableSoundEffectModule", "relation": "dispatches_reel_audio_events" }
+  ],
+  "emitsEvents": [
+    "REEL_STOPPED",
+    "START_SPIN",
+    "RESET_NEARWIN",
+    "SETUP_NEARWIN",
+    "REEL_STOP_SOUND",
+    "PRE_REEL_STOP_NEARWIN",
+    "REEL_STOP_NEARWIN"
+  ],
+  "listensToEvents": [
+    "TABLE_INIT",
+    "TABLE_START_SPIN",
+    "TABLE_STOP_SPIN",
+    "TABLE_FAST_STOP",
+    "SHOW_BEAUTY_MATRIX",
+    "SYNC_TABLE",
+    "TABLE_STOP_SPIN_WITH_RANDOM_MATRIX",
+    "HIDE_SYMBOLS_ON_REEL"
+  ],
+  "gotchas": [
+    "01_async_stop_promise_hanging_on_reel_count",
+    "02_missing_table_module_config_component",
+    "03_symbol_manager_pooling_race_condition"
+  ]
+}

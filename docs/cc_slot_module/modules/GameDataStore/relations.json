@@ -1,23 +1,25 @@
 {
   "id": "GameDataStore",
-  "title": "GameDataStore Central Reactive State & Spin Session Hub",
+  "title": "GameDataStore Single Source of Truth & State Distribution Authority",
   "category": "cc_slot_module",
   "inheritsFrom": "cc.Component",
   "manages": [
     "BaseDataModule"
   ],
   "usedBy": [
-    { "target": "GameDirector", "relation": "provides_round_payloads" },
-    { "target": "BaseGameDirector", "relation": "evaluates_win_levels" },
-    { "target": "WinEffectModule", "relation": "supplies_big_win_data" },
-    { "target": "JackpotModule", "relation": "supplies_jackpot_info" }
+    { "target": "BaseGameDirector", "relation": "provides_session_state_and_mode_tracking" },
+    { "target": "GameModeDirectorModule", "relation": "supplies_win_amount_and_jackpot_info" },
+    { "target": "GameModeWriterModule", "relation": "evaluates_spin_remain_and_win_types" },
+    { "target": "BaseDataModule", "relation": "broadcasts_deep_cloned_state_slices" }
   ],
   "dependsOn": [
-    "GameConfig"
+    { "target": "GameConfig", "relation": "extracts_win_level_thresholds_and_durations" }
   ],
   "emitsEvents": [],
   "listensToEvents": [],
   "gotchas": [
-    "Gotcha:Direct_Mutation_PlaySession_Reference"
+    "01_object_reference_mutation_deep_clone_fix",
+    "02_compressed_server_key_mismatch_without_mapNewKeys",
+    "03_win_level_threshold_defaults_without_game_config"
   ]
 }

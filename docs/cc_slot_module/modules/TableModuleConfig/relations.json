@@ -1,0 +1,21 @@
+{
+  "id": "TableModuleConfig",
+  "title": "TableModuleConfig Grid Geometry & Speed Calibration Authority",
+  "category": "cc_slot_module",
+  "inheritsFrom": "cc.Component",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotTableModule", "relation": "configures_grid_format_and_column_positions" },
+    { "target": "SlotReelModule", "relation": "configures_speed_modes_and_stop_steps" },
+    { "target": "SlotSymbolManager", "relation": "supplies_symbol_indexes_coordinate_mapping" },
+    { "target": "SlotTablePaylineModule", "relation": "supplies_symbol_indexes_for_line_matching" },
+    { "target": "SlotTableNearWinModule", "relation": "configures_near_win_delay_timings" }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_table_format_mismatch_with_symbol_indexes",
+    "02_missing_buffer_rows_mega_symbols_pop"
+  ]
+}

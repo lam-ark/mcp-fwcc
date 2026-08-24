@@ -1,33 +1,25 @@
 ---
 id: "cc_slot_module:GameDataStore:customization:production_game_case_study"
-title: "Production Case Study: GameDataStore9666 (Red Cliff Slot)"
+title: "Production Case Study: Red Cliff 9666 Bandwidth Optimization"
 category: "cc_slot_module"
-tags: ["GameDataStore", "game_data_store", "cc_slot_module", "customization", "case_study", "red_cliff", "g9666L", "production_code"]
+tags: ["GameDataStore", "game_data_store", "cc_slot_module", "customization", "case_study", "red_cliff"]
 ---
 
-# 📖 Production Case Study: GameDataStore9666 (Red Cliff Slot)
+# 📖 Production Case Study: Red Cliff 9666 Bandwidth Optimization
 
-## 1. Context & Game Requirements
+## 1. Production Context & Architecture
 
-In **Red Cliff (`g9666L`)**, the backend server returns custom abbreviated keys for cascade multipliers and accumulated normal/free game wins:
-* `pMul` ➔ Previous multiplier for current normal game spin.
-* `pMulF` ➔ Previous multiplier inside free game mode.
-* `mulF` ➔ Active free spin multiplier.
-* `cna` ➔ Current normal game net win amount.
-* `cfa` ➔ Current free game net win amount.
-
----
-
-## 2. Complete Production Implementation (`GameDataStore9666.ts`)
+In production game `Red Cliff (9666)` (`assets/cc-release-slot/cc1-red-cliff/scripts/Core/GameDataStore9666.ts`), backend WebSocket payloads use compressed shorthand tokens to minimize bandwidth across mobile 3G networks:
+* `pMul`: Previous spin multiplier
+* `pMulF`: Previous Free Game multiplier
+* `mulF`: Current Free Game multiplier
+* `cna`: Current Normal Game win amount
+* `cfa`: Current Free Game win amount
 
 ```typescript
-const { _decorator } = cc;
-import { GameDataStore } from "../../../../cc-common/cc-slot-module/SlotModuleExport";
-const { ccclass } = _decorator;
-
-@ccclass("GameDataStore9666")
+@ccclass
 export class GameDataStore9666 extends GameDataStore {
-    parseDataPS(data: any): void {
+    parseDataPS(data): void {
         super.parseDataPS(data);
         this.playSession = this.mapDataPS(this.playSession);
     }
@@ -43,9 +35,4 @@ export class GameDataStore9666 extends GameDataStore {
     }
 }
 ```
-
----
-
-## 3. Why This Pattern Was Chosen
-1. **Zero Breaking Changes**: Keeps base `GameDataStore` clean and generic across other slot games (`g9000`, `g9888`).
-2. **Seamless Downstream Compatibility**: Downstream modules like `CollectMultiModule9666` and `FreeGameDirectorModule9666` read clean names (`this.dataStore.playSession.freeGameMultiplier`) instead of cryptic server acronyms.
+This architecture keeps backend payloads minimal while frontend UI components maintain clean, standard TypeScript property bindings!

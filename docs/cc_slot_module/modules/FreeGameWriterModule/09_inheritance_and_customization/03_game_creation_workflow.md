@@ -1,43 +1,30 @@
 ---
 id: "cc_slot_module:FreeGameWriterModule:customization:game_creation_workflow"
-title: "Game Creation Workflow: Customizing Free Spin Action Scripts"
+title: "Game Creation Workflow: FreeGameWriter Setup"
 category: "cc_slot_module"
 tags: ["FreeGameWriterModule", "free_game_writer", "cc_slot_module", "customization", "workflow", "checklist"]
 ---
 
-# 🚀 Game Creation Workflow: Customizing Free Spin Action Scripts
+# 🚀 Game Creation Workflow: FreeGameWriter Setup
 
-Follow this 4-step checklist when modifying Free Spin action scripts:
-
----
-
-## Step 1: Subclass `FreeGameWriterModule`
-Create `scripts/GameMode/FreeGameWriterModule[GameId].ts`.
+Follow this 4-step checklist:
 
 ---
 
-## Step 2: Add Custom Script Generators
-```typescript
-makeScriptStopSpinningTable(data: any): Object[] {
-    let listScript = [];
-    listScript.push({ command: "_stopSpinningTable", data });
-    listScript.push({ command: "_collectMultiplierSparks", data });
-    listScript.push({ command: "_setUpPaylines", data });
-    return listScript;
-}
-```
+## Step 1: Create Game-Specific Writer
+Create `FreeGameWriter[GameId].ts` extending `FreeGameWriterModule`.
 
 ---
 
-## Step 3: Implement Director Step Handlers
-On `FreeGameDirectorModule[GameId]`:
-```typescript
-async _collectMultiplierSparks(data: any): Promise<void> {
-    await this.multiplierVFX.playSparks(data.multiplierHits);
-}
-```
+## Step 2: Attach to Free Game Director
+Mount `FreeGameWriter[GameId]` to `Canvas/Director/GameMode/FreeGameDirector`.
 
 ---
 
-## Step 4: Validate Sequence & Exit
-Test full Free Game round from trigger to spin 0 ➔ Verify `TOTAL_WIN` cutscene opens and finishes cleanly.
+## Step 3: Configure Retriggers & Multipliers
+Override `makeScriptShowResultFinal()` or `makeScriptFreeSpinTrigger()` to insert custom feature steps.
+
+---
+
+## Step 4: Validate Script Flow
+Run an automated test spin sequence and verify all commands execute in sequential order through `ScriptExecutor`.
