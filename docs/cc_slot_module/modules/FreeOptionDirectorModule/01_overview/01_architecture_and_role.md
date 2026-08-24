@@ -1,39 +1,48 @@
 ---
 id: "cc_slot_module:FreeOptionDirectorModule:overview:architecture_and_role"
-title: "FreeOptionDirectorModule Free Spins Option Choice Modal Architecture"
+title: "FreeOptionDirectorModule Interactive Feature Selection Architecture"
 category: "cc_slot_module"
-tags: ["FreeOptionDirectorModule", "free_option_director", "cc_slot_module", "overview", "architecture", "free_spins_choice"]
+tags: ["FreeOptionDirectorModule", "free_option_director", "cc_slot_module", "overview", "architecture", "player_choice", "countdown"]
 ---
 
-# 🏛️ FreeOptionDirectorModule Free Spins Option Choice Modal Architecture
+# 🏛️ FreeOptionDirectorModule Interactive Feature Selection Architecture
 
 ## 1. Executive Summary & Purpose
 
-`FreeOptionDirectorModule` (`assets/cc-common/cc-slot-module/GameMode/FreeOption/FreeOptionDirectorModule.ts`) is the **Free Spins Volatility Selection Director**.
+`FreeOptionDirectorModule` (`assets/cc-common/cc-slot-module/GameMode/FreeOption/FreeOptionDirectorModule.ts`) is the **Interactive Player Choice & Volatility Selection Engine** for the `cc-common` Slot SDK.
 
-Extending `GameModeDirectorModule`, it presents a multi-choice modal allowing players to choose their preferred Free Spin mode (e.g. 15 Free Spins with 2x multiplier vs 5 Free Spins with 10x multiplier vs Mystery Choice). It enforces a 15-second countdown timer (`countdownTime`), auto-selects an option on timeout, locks user inputs upon selection, and emits `GameLogicUIEvents.SEND_FREE_OPTION_REQUEST` to backend servers.
+When a feature trigger offers branching game modes (e.g. Low Volatility / High Spins vs High Volatility / Low Spins / Random Mystery), `FreeOptionDirectorModule`:
+1. Activates option cards and buttons with custom IDs (`SlotCustomFreeGameOption`).
+2. Renders localized reminders (`FREE_OPTION_GAME_REMIND`) with a live 15-second countdown timer.
+3. Automatically selects a random option (`_runAutoTrigger`) if the player remains inactive.
+4. Prevents duplicate requests by disabling all buttons on click and dispatches `SEND_FREE_OPTION_REQUEST` to the server logic handler.
 
 ```mermaid
 graph TD
-    Trigger[Free Game Triggered with Options] --> Director[FreeOptionDirectorModule]
-    Director --> Enter[enter: startCountDown 15s & onEnableOptions true]
+    Trigger[Scatter Feature Trigger] --> Switch[SWITCH_GAME_MODE: FREE_OPTION]
+    Switch --> Director[FreeOptionDirectorModule: enter]
     
-    subgraph Selection Loop
-        Enter --> Choice{Player Choice or Timeout?}
-        Choice -->|Player Clicks Button| Manual[optionClick: Disable All Buttons & stopCountDown]
-        Choice -->|15s Timeout| Auto[_runAutoTrigger: Random Selection]
-        Manual --> Req[GameLogic: SEND_FREE_OPTION_REQUEST selectedOption]
-        Auto --> Req
+    subgraph Selection Loop & Timer
+        Director --> Localize[localizeText: FREE_OPTION_GAME_REMIND]
+        Director --> EnableBtns[onEnableOptions: enable cards]
+        Director --> StartTimer[startCountDown: 15s Tween Timer]
+        
+        StartTimer -->|Player clicks card| PlayerClick[optionClick]
+        StartTimer -->|Timer hits 0s| AutoPick[_runAutoTrigger: Pick random option]
+        AutoPick --> PlayerClick
     end
 
-    Req --> Switch[Server Returns Target Mode -> Switch to FreeGame]
+    PlayerClick --> DisableBtns[onEnableOptions: disable all cards]
+    PlayerClick --> StopTimer[stopCountDown]
+    PlayerClick --> NetworkReq[GameLogicUIEvents.SEND_FREE_OPTION_REQUEST]
 ```
 
 ---
 
 ## 2. Core Responsibilities
 
-1. **Multi-Choice Presentation (`onEnableOptions`)**: Configures option buttons defined in the `options: SlotCustomFreeGameOption[]` Inspector array.
-2. **Countdown Timer (`startCountDown`)**: Decrements countdown timer every second and updates UI text.
-3. **Double-Click Prevention (`optionClick`)**: Immediately disables all option buttons (`interactable = false`) upon first click.
-4. **Backend Event Dispatch**: Emits `SEND_FREE_OPTION_REQUEST` with the chosen `optionId`.
+1. **Option Card Configuration (`options: SlotCustomFreeGameOption[]`)**: Inspects array of option nodes, attaches string/number `optionId` attributes, and controls interactable button states.
+2. **Localized Countdown Display (`updateCountdownText`, `startCountDown`)**: Executes a repeating 1-second `cc.tween` on `countDownText` displaying remaining seconds.
+3. **Auto-Trigger Fail-safe (`_runAutoTrigger`)**: Selects an option at random (`Math.random() * options.length`) if player input is not received before timer expiration.
+4. **Network Dispatch & Anti-Spam (`optionClick`)**: Disables all option buttons immediately upon touch to prevent race conditions and emits `SEND_FREE_OPTION_REQUEST`.
+5. **Clean Timer Teardown (`stopCountDown`, `onDestroy`)**: Automatically halts active tween loops to prevent memory leaks and dangling interval executions.

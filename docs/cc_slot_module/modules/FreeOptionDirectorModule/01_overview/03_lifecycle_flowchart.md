@@ -1,24 +1,27 @@
 ---
 id: "cc_slot_module:FreeOptionDirectorModule:overview:lifecycle_flowchart"
-title: "FreeOptionDirectorModule Volatility Choice Flowchart"
+title: "FreeOptionDirectorModule Selection Lifecycle Flowchart"
 category: "cc_slot_module"
 tags: ["FreeOptionDirectorModule", "free_option_director", "cc_slot_module", "overview", "lifecycle", "flowchart"]
 ---
 
-# 🔄 FreeOptionDirectorModule Volatility Choice Flowchart
+# 🔄 FreeOptionDirectorModule Selection Lifecycle Flowchart
 
-## 1. Volatility Choice Flowchart
+## 1. Lifecycle & Countdown State Flowchart
 
 ```mermaid
 graph TD
-    Entry([enter(): reset timer & onEnableOptions true]) --> Wait[Wait for User Choice or Timeout]
+    Enter[enter: Reset countdownTime = defaultCountdownTime] --> Enable[onEnableOptions: Buttons active]
+    Enable --> StartTimer[startCountDown: Launch 1s repeat tween]
     
-    Wait -->|User Clicks Option| Click[optionClick: Disable Buttons & stopCountDown]
-    Wait -->|15s Expired| Timeout[_runAutoTrigger: Random Pick & Disable Buttons]
+    StartTimer --> Wait{Player clicks or Timer <= 0?}
     
-    Click --> Dispatch[gameLogic.emit SEND_FREE_OPTION_REQUEST]
-    Timeout --> Dispatch
+    Wait -->|Player Click| Touch[optionClick: Extract optionId]
+    Wait -->|Timer Reaches 0s| AutoPick[_runAutoTrigger: Pick random optionId]
     
-    Dispatch --> ServerWait[Waiting for Backend Confirmation]
-    ServerWait --> ModeSwitch[Director switches to FreeGame mode]
+    AutoPick --> Touch
+    Touch --> Disable[onEnableOptions: Buttons disabled]
+    Disable --> Stop[stopCountDown: Halt active tween]
+    Stop --> SendReq[gameLogic.emit SEND_FREE_OPTION_REQUEST, selectedOption]
+    SendReq --> WaitServer[Server responds with chosen Free Spins mode]
 ```

@@ -9,8 +9,9 @@ tags: ["FreeOptionDirectorModule", "free_option_director", "cc_slot_module", "cu
 
 ## 1. Extension Points Matrix
 
-| Method Name | Base Implementation | Safe to Override? | Required `super` Call | Customization Purpose |
+| Method Name | Default Implementation | Safe to Override? | Required `super` Call | Customization Purpose |
 | :--- | :--- | :--- | :--- | :--- |
-| **`enter()`** | Resets timer & enables buttons | `EXTEND_ONLY` | `MANDATORY` | Play option entrance animations or fanfare. |
-| **`optionClick(ev, id)`**| Disables buttons & sends request | `EXTEND_ONLY` | `MANDATORY` | Play selected option highlight and unselected option fade-out. |
-| **`_runAutoTrigger()`** | Selects random option | `YES` | None | Customize default fallback choice. |
+| **`enter()`** | Resets timer & enables buttons | `YES` | `MANDATORY` | Trigger option card entrance animations. |
+| **`optionClick(ev, optionId)`** | Disables buttons & dispatches request | `YES` | `RECOMMENDED` | Play selection particle effects or sound stings. |
+| **`_runAutoTrigger()`** | Selects random option | `YES` | Optional | Custom fallback policy (e.g. always pick default option 1). |
+| **`localizeText()`** | Fetches `FREE_OPTION_GAME_REMIND` | `YES` | Optional | Custom multi-lingual layout. |

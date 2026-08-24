@@ -1,35 +1,33 @@
 ---
 id: "cc_slot_module:FreeOptionDirectorModule:customization:game_creation_workflow"
-title: "Game Creation Workflow: Configuring Free Spins Volatility Options"
+title: "Game Creation Workflow: FreeOptionDirector Setup"
 category: "cc_slot_module"
 tags: ["FreeOptionDirectorModule", "free_option_director", "cc_slot_module", "customization", "workflow", "checklist"]
 ---
 
-# 🚀 Game Creation Workflow: Configuring Free Spins Volatility Options
+# 🚀 Game Creation Workflow: FreeOptionDirector Setup
 
-Follow this 4-step checklist when setting up Free Spins Volatility selection:
-
----
-
-## Step 1: Create Option Nodes
-Under `Canvas/Director/GameMode/FreeOption/OptionsContainer`, create buttons for each option.
+Follow this 4-step checklist:
 
 ---
 
-## Step 2: Assign `options` Array in Inspector
-On `FreeOptionDirectorModule`, add elements to `options`:
-* `optionId`: `"1"` ➔ Drag `Option_1` (e.g. 15 Spins / 2x Multiplier)
-* `optionId`: `"2"` ➔ Drag `Option_2` (e.g. 10 Spins / 5x Multiplier)
-* `optionId`: `"3"` ➔ Drag `Option_3` (e.g. 5 Spins / 10x Multiplier)
+## Step 1: Create `FreeOptionDirector[GameId].ts`
+Inherit from `FreeOptionDirectorModule`.
 
 ---
 
-## Step 3: Wire Click Events in Editor
-Bind `cc.Button` click event to `FreeOptionDirectorModule.optionClick`.
+## Step 2: Configure Option Cards in Cocos Creator
+In the Inspector:
+1. Populate `options` array with your option card nodes (`optionNode`) and string IDs (`optionId`).
+2. Link `countDownText` to the timer label.
+3. Set `countdownTime = 15`.
 
 ---
 
-## Step 4: Validate Selection & Timeout
-1. Trigger Free Option ➔ Verify buttons enable and timer counts down.
-2. Click button ➔ Verify buttons lock and backend request sends.
-3. Test timeout ➔ Verify auto-select triggers at 0s.
+## Step 3: Add Localization Key
+Ensure `FREE_OPTION_GAME_REMIND` exists in your game's language JSON dictionary.
+
+---
+
+## Step 4: Validate Auto-Trigger & Double-Click Protection
+Test clicking rapidly on cards (verify only 1 network packet is emitted) and letting the timer run down to 0 (verify auto-selection fires).

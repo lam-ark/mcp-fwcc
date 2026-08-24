@@ -1,18 +1,26 @@
 {
   "id": "FreeOptionDirectorModule",
-  "title": "FreeOptionDirectorModule Free Spins Option Choice Modal",
+  "title": "FreeOptionDirectorModule Interactive Player Choice & Volatility Selection Engine",
   "category": "cc_slot_module",
   "inheritsFrom": "GameModeDirectorModule",
-  "manages": [],
+  "manages": [
+    "SlotCustomFreeGameOption"
+  ],
   "usedBy": [
-    { "target": "GameDirector", "relation": "managed_by_root_director" }
+    { "target": "NormalGameDirectorModule", "relation": "receives_control_upon_scatter_choice_trigger" },
+    { "target": "FreeGameDirectorModule", "relation": "passes_chosen_volatility_mode_to_free_game" }
   ],
   "dependsOn": [
-    { "target": "GameDataStore", "relation": "reads_session_data" }
+    { "target": "GameLogic", "relation": "dispatches_SEND_FREE_OPTION_REQUEST_and_reads_i18n_text" },
+    { "target": "GameDataStore", "relation": "reads_active_session" }
   ],
   "emitsEvents": [
-    "GameLogicUIEvents.SEND_FREE_OPTION_REQUEST"
+    "SEND_FREE_OPTION_REQUEST"
   ],
   "listensToEvents": [],
-  "gotchas": []
+  "gotchas": [
+    "01_tween_memory_leak_on_interrupted_countdown",
+    "02_double_click_race_condition_network_spam",
+    "03_missing_localization_key_freeze"
+  ]
 }

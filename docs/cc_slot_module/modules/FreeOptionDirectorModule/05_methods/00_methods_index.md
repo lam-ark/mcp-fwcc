@@ -9,12 +9,24 @@ tags: ["FreeOptionDirectorModule", "free_option_director", "cc_slot_module", "me
 
 ---
 
-## 1. Declared Methods Summary Table
+## 1. Lifecycle, Setup & Localization
+* [`init(): void`](./init.md)
+* [`localizeText(): void`](./localizeText.md)
+* [`enter(): void`](./enter.md)
+* [`onResumeGameMode(): Promise<void>`](./onResumeGameMode.md)
+* [`transitionGameMode(data): Promise<void>`](./transitionGameMode.md)
+* [`onDestroy(): void`](./onDestroy.md)
 
-| Method Signature | Visibility | Purpose |
-| :--- | :--- | :--- |
-| **[`enter(): void`](./enter.md)** | `public` | Resets countdown, updates timer label, starts tween, and enables buttons. |
-| **[`optionClick(ev: any, optionId: number): void`](./optionClick.md)** | `public` | Disables buttons, stops timer, and emits `SEND_FREE_OPTION_REQUEST`. |
-| **[`startCountDown(): void`](./startCountDown.md)** | `public` | Runs 1s repeating tween; triggers `_runAutoTrigger()` on 0. |
-| **[`onEnableOptions(isEnable?: boolean): void`](./onEnableOptions.md)** | `public` | Sets `Button.interactable` for all options in `this.options`. |
-| **[`updateCountdownText(timerCount: number): void`](./updateCountdownText.md)** | `public` | Formats countdown string into `countDownText` label. |
+---
+
+## 2. Option Interactions & Network Dispatch
+* [`onEnableOptions(isEnable): void`](./onEnableOptions.md)
+* [`optionClick(ev, optionId): void`](./optionClick.md)
+* [`_runAutoTrigger(): void`](./_runAutoTrigger.md)
+
+---
+
+## 3. Timer & Countdown Control
+* [`updateCountdownText(timerCount): void`](./updateCountdownText.md)
+* [`startCountDown(): void`](./startCountDown.md)
+* [`stopCountDown(): void`](./stopCountDown.md)
