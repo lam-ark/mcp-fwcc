@@ -1,0 +1,38 @@
+{
+  "moduleId": "PaylineInfoModule",
+  "category": "cc_slot_module",
+  "name": "PaylineInfoModule",
+  "description": "Floating payline notification banner showing win amounts, line numbers, and symbol icons per hit payline across Lines, AllWays, Cluster, and ScatterPay math systems.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    },
+    {
+      "target": "PaylineControllerModule",
+      "relation": "payline_toast_renderer"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule",
+    "GameConfig",
+    "GameDataStore"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "ON_SHOW_PAYLINE_INFO",
+    "ON_HIDE_PAYLINE_INFO"
+  ],
+  "gotchas": [
+    "01_unsupported_pay_system_type_crash",
+    "02_missing_symbol_sprite_frame_mapping"
+  ],
+  "related": [
+    "PaylineControllerModule",
+    "PaylineLineModule",
+    "WinAmountModule"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "moduleId": "TurboButton",
+  "category": "cc_slot_module",
+  "name": "TurboButton",
+  "description": "Fast-spin / Turbo mode toggle button synchronizing with SlotGameSettings and driving reel speed curve acceleration.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    },
+    {
+      "target": "SlotTableDirector",
+      "relation": "speed_profile_controller"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule",
+    "SlotGameSettings"
+  ],
+  "emitsEvents": [
+    "TURBO_BUTTON_CLICK",
+    "TURBO_BUTTON_HOVER",
+    "TURBO_BUTTON_EXIT_HOVER",
+    "TURBO_BUTTON_PRESSED",
+    "TURBO_BUTTON_CANCEL"
+  ],
+  "listensToEvents": [
+    "LOAD_CACHE_TURBO"
+  ],
+  "gotchas": [
+    "01_persisted_turbo_state_mismatch",
+    "02_turbo_toggle_during_active_roll"
+  ],
+  "related": [
+    "UIManagerModule",
+    "SlotButtonModule",
+    "SlotTableDirector"
+  ]
+}
