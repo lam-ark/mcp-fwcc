@@ -1,0 +1,23 @@
+{
+  "id": "FreeGameDirectorModule",
+  "title": "FreeGameDirectorModule Free Spins Feature Director",
+  "category": "cc_slot_module",
+  "inheritsFrom": "GameModeDirectorModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "GameDirector", "relation": "managed_by_root_director" }
+  ],
+  "dependsOn": [
+    { "target": "FreeGameWriterModule", "relation": "companion_script_generator" },
+    { "target": "GameDataStore", "relation": "tracks_freeSpinTimes" }
+  ],
+  "emitsEvents": [
+    "GameUIEvents.GAME_MODE.EXIT_GAME_MODE"
+  ],
+  "listensToEvents": [
+    "ADD_FREE_SPIN_TIMES"
+  ],
+  "gotchas": [
+    "Gotcha:Missing_moduleList_Wiring_Breaks_Scoped_Event_Bus"
+  ]
+}

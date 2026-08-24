@@ -29,8 +29,8 @@
 | [x] | **`GameModeDirectorModule`** | `Canvas/Director/GameMode` | `assets/cc-common/cc-slot-module/GameMode/GameModeDirectorModule.ts` | **COMPLETED (v3.1)** - Director dispatcher managing Normal, Free, and Bonus game modes. |
 | [x] | **`NormalGameDirectorModule`** | `Canvas/Director/GameMode/NormalGame` | `assets/cc-common/cc-slot-module/GameMode/NormalGame/NormalGameDirectorModule.ts` | **COMPLETED (v3.1)** - Normal game spin loop director. |
 | [x] | **`NormalGameWriterModule`** | Helper Class in Normal Director | `assets/cc-common/cc-slot-module/GameMode/NormalGame/NormalGameWriterModule.ts` | **COMPLETED (v3.1)** - Action script queue definition for normal spins. |
-| [ ] | **`FreeGameDirectorModule`** | `Canvas/Director/GameMode/FreeGame` | `assets/cc-common/cc-slot-module/GameMode/FreeGame/FreeGameDirectorModule.ts` | Free game spin loop director (spins remaining, multipliers). |
-| [ ] | **`FreeGameWriterModule`** | Helper Class in Free Director | `assets/cc-common/cc-slot-module/GameMode/FreeGame/FreeGameWriterModule.ts` | Action script queue definition for free spins. |
+| [x] | **`FreeGameDirectorModule`** | `Canvas/Director/GameMode/FreeGame` | `assets/cc-common/cc-slot-module/GameMode/FreeGame/FreeGameDirectorModule.ts` | **COMPLETED (v3.1)** - Free game spin loop director (spins remaining, multipliers). |
+| [x] | **`FreeGameWriterModule`** | Helper Class in Free Director | `assets/cc-common/cc-slot-module/GameMode/FreeGame/FreeGameWriterModule.ts` | **COMPLETED (v3.1)** - Action script queue definition for free spins. |
 | [ ] | **`BonusGameDirectorModule`** | `Canvas/Director/GameMode/BonusGame` | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameDirectorModule.ts` | Pick-and-click / Mini-game director. |
 | [ ] | **`BonusGameWriterModule`** | Helper Class in Bonus Director | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameWriterModule.ts` | Script queue definition for bonus rounds. |
 

@@ -1,0 +1,16 @@
+{
+  "id": "FreeGameWriterModule",
+  "title": "FreeGameWriterModule Free Spins Script Generator",
+  "category": "cc_slot_module",
+  "inheritsFrom": "GameModeWriterModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "FreeGameDirectorModule", "relation": "generates_action_scripts_for_free_spins" }
+  ],
+  "dependsOn": [
+    { "target": "GameDataStore", "relation": "reads_freeGameRemain" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": []
+}
