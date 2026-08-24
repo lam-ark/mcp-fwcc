@@ -1,0 +1,18 @@
+{
+  "id": "FreeOptionDirectorModule",
+  "title": "FreeOptionDirectorModule Free Spins Option Choice Modal",
+  "category": "cc_slot_module",
+  "inheritsFrom": "GameModeDirectorModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "GameDirector", "relation": "managed_by_root_director" }
+  ],
+  "dependsOn": [
+    { "target": "GameDataStore", "relation": "reads_session_data" }
+  ],
+  "emitsEvents": [
+    "GameLogicUIEvents.SEND_FREE_OPTION_REQUEST"
+  ],
+  "listensToEvents": [],
+  "gotchas": []
+}

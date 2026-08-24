@@ -1,0 +1,20 @@
+{
+  "id": "FortuneWheelGameDirector",
+  "title": "FortuneWheelGameDirector Wheel Mini-Game Orchestrator",
+  "category": "cc_slot_module",
+  "inheritsFrom": "BonusGameDirectorModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "GameDirector", "relation": "managed_by_root_director" }
+  ],
+  "dependsOn": [
+    { "target": "GameDataStore", "relation": "reads_session_data" }
+  ],
+  "emitsEvents": [
+    "GameLogicUIEvents.SEND_BONUS_GAME_REQUEST"
+  ],
+  "listensToEvents": [
+    "ON_SPIN_WHEEL"
+  ],
+  "gotchas": []
+}

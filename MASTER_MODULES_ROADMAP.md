@@ -10,11 +10,11 @@
 
 - **Total SDK Clusters**: 10
 - **Total Modules & Core Components**: ~75
-- **Completed Modules (v3.1)**: **18**
-- **In-Progress / Upcoming**: **57**
+- **Completed Modules (v3.1)**: **23**
+- **In-Progress / Upcoming**: **52**
 
 ```text
-[██████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 24% Total Completed
+[████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 31% Total Completed
 ```
 
 ---
@@ -51,8 +51,8 @@
 | [x] | **`BonusGameWriterModule`** | Helper Class in Bonus Director | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameWriterModule.ts` | **COMPLETED (v3.1)** - Script queue definition for bonus rounds. |
 | [x] | **`BonusGameTableModule`** | `Canvas/Director/GameMode/BonusGame/Table` | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameTableModule.ts` | **COMPLETED (v3.1)** - Manages the interactive grid of pickable items/chests. |
 | [x] | **`BonusGameItemModule`** | Child Item in Bonus Table | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameItemModule.ts` | **COMPLETED (v3.1)** - Individual clickable chest/box Spine animation & prize display. |
-| [ ] | **`FreeOptionDirectorModule`**| `Canvas/Director/GameMode/FreeOption` | `assets/cc-common/cc-slot-module/GameMode/FreeOption/FreeOptionDirectorModule.ts` | Player choice modal for selecting Free Spin volatility options. |
-| [ ] | **`FortuneWheelGameDirector`**| `Canvas/Director/GameMode/FortuneWheel` | `assets/cc-common/cc-slot-module/GameMode/FortuneWheelGame/Scripts/Director/FortuneWheelGameDirector.ts` | Wheel of Fortune mini-game director, spin physics, target segment settling. |
+| [x] | **`FreeOptionDirectorModule`**| `Canvas/Director/GameMode/FreeOption` | `assets/cc-common/cc-slot-module/GameMode/FreeOption/FreeOptionDirectorModule.ts` | **COMPLETED (v3.1)** - Player choice modal for selecting Free Spin volatility options. |
+| [x] | **`FortuneWheelGameDirector`**| `Canvas/Director/GameMode/FortuneWheel` | `assets/cc-common/cc-slot-module/GameMode/FortuneWheelGame/Scripts/Director/FortuneWheelGameDirector.ts` | **COMPLETED (v3.1)** - Wheel of Fortune mini-game director, spin physics, target segment settling. |
 
 ---
 
