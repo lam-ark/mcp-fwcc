@@ -1,0 +1,23 @@
+{
+  "id": "GameDataStore",
+  "title": "GameDataStore Central Reactive State & Spin Session Hub",
+  "category": "cc_slot_module",
+  "inheritsFrom": "cc.Component",
+  "manages": [
+    "BaseDataModule"
+  ],
+  "usedBy": [
+    { "target": "GameDirector", "relation": "provides_round_payloads" },
+    { "target": "BaseGameDirector", "relation": "evaluates_win_levels" },
+    { "target": "WinEffectModule", "relation": "supplies_big_win_data" },
+    { "target": "JackpotModule", "relation": "supplies_jackpot_info" }
+  ],
+  "dependsOn": [
+    "GameConfig"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Direct_Mutation_PlaySession_Reference"
+  ]
+}

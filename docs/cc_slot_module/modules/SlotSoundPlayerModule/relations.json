@@ -1,0 +1,15 @@
+{
+  "id": "SlotSoundPlayerModule",
+  "title": "SlotSoundPlayerModule Audio & Crossfade Controller",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SoundPlayerModuleImpl",
+  "manages": [],
+  "usedBy": [
+    { "target": "GameModeDirectorModule", "relation": "triggers_bgm_crossfade" },
+    { "target": "SlotBaseModule", "relation": "injected_sound_player" }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": []
+}

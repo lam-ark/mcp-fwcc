@@ -10,13 +10,13 @@
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
 | :---: | :--- | :--- | :--- | :--- |
-| [x] | **`GameInit`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameInit.ts` | **COMPLETED (v3.0)** - Bootstrap entry point, IoC container registration, network auto-connect. |
-| [x] | **`GameConfig`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameConfig.ts` | **COMPLETED (v3.0)** - Master config (`PAY_SYSTEM`, `TABLE_FORMAT`, `CURRENCY_CONFIG`). |
-| [x] | **`SlotBaseModule`** | Base Class for All Modules | `assets/cc-common/cc-slot-module/Core/SlotBaseModule.ts` | **COMPLETED (v3.0)** - Universal base class (`@inject`, `applyInjections`, dual event bus). |
-| [x] | **`GameDataStore`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameDataStore.ts` | **COMPLETED (v3.0)** - Central reactive store (`playSession`, `wallet`, `bet`, `winAmount`). |
-| [ ] | **`GameEventManager`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/GameEventManager.ts` | Asynchronous global event bus (`emit` awaits `Promise.all()`). |
-| [ ] | **`SlotGameSettings`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/SlotGameSettings.ts` | User preferences (Turbo state, sound volumes, locale). |
-| [ ] | **`SlotSoundPlayerModule`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/SlotSound/SlotSoundPlayerModule.ts` | Audio controller (BGM playback, SFX pitch, win loops). |
+| [x] | **`GameInit`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameInit.ts` | **COMPLETED (v3.1)** - Bootstrap entry point, IoC container registration, network auto-connect. |
+| [x] | **`GameConfig`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameConfig.ts` | **COMPLETED (v3.1)** - Master config (`PAY_SYSTEM`, `TABLE_FORMAT`, `CURRENCY_CONFIG`, 25+ parameters). |
+| [x] | **`SlotBaseModule`** | Base Class for All Modules | `assets/cc-common/cc-slot-module/Core/SlotBaseModule.ts` | **COMPLETED (v3.1)** - Universal base class (`@inject`, `applyInjections`, dual event bus). |
+| [x] | **`GameDataStore`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/GameDataStore.ts` | **COMPLETED (v3.1)** - Central reactive store (`playSession`, `wallet`, `bet`, `winAmount`). |
+| [x] | **`GameEventManager`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/GameEventManager.ts` | **COMPLETED (v3.1)** - Asynchronous global event bus (`emit` awaits `Promise.all()`). |
+| [x] | **`SlotGameSettings`** | Injected via `GameInit` | `assets/cc-common/cc-slot-module/Core/SlotGameSettings.ts` | **COMPLETED (v3.1)** - User preferences (Turbo state, sound volumes, locale, speed modes). |
+| [x] | **`SlotSoundPlayerModule`** | `Canvas/Director` | `assets/cc-common/cc-slot-module/Core/SlotSound/SlotSoundPlayerModule.ts` | **COMPLETED (v3.1)** - Audio controller (BGM playback, SFX crossfade, win loops). |
 
 ---
 

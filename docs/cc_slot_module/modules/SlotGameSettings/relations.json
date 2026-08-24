@@ -1,0 +1,16 @@
+{
+  "id": "SlotGameSettings",
+  "title": "SlotGameSettings User Preferences & Fast Speed Container",
+  "category": "cc_slot_module",
+  "inheritsFrom": "Object",
+  "manages": [],
+  "usedBy": [
+    { "target": "GameDirector", "relation": "reads_game_speed" },
+    { "target": "TurboButton", "relation": "updates_turbo_state" },
+    { "target": "AutoSpinPanel", "relation": "updates_auto_spin" }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": []
+}
