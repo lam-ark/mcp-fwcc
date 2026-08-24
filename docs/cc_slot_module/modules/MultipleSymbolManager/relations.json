@@ -1,0 +1,18 @@
+{
+  "id": "MultipleSymbolManager",
+  "title": "MultipleSymbolManager Multi-Template Symbol Pooling",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotSymbolManager",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotTableModule", "relation": "provides_pooled_symbols" }
+  ],
+  "dependsOn": [
+    { "target": "SlotCustomNodePool", "relation": "delegates_multi_pool" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Unregistered_Special_Symbol_Fallback"
+  ]
+}

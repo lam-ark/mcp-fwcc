@@ -1,0 +1,20 @@
+{
+  "id": "SlotCustomNodePool",
+  "title": "SlotCustomNodePool Heterogeneous Multi-Pool Manager",
+  "category": "cc_slot_module",
+  "inheritsFrom": "Object",
+  "manages": [
+    "cc.NodePool"
+  ],
+  "usedBy": [
+    { "target": "MultipleSymbolManager", "relation": "delegates_pooling" }
+  ],
+  "dependsOn": [
+    { "target": "SlotSymbolModule", "relation": "pools_instances" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Corrupted_Pool_Key_Destroy_Fallback"
+  ]
+}
