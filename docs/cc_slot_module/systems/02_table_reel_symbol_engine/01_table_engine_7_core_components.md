@@ -1,48 +1,97 @@
 ---
 id: "cc_slot_module:systems:table_engine:7_core_components"
-title: "Table Engine: 7 Core Components Cooperation"
+title: "The 7 Core Components of the Table Engine"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "table_engine", "components", "architecture"]
+tags: ["cc_slot_module", "systems", "table_engine", "components", "architecture", "module_linkage", "flow"]
 ---
 
-# 🎰 Table Engine: 7 Core Components Cooperation
+# ⚙️ The 7 Core Components of the Table Engine
 
 ---
 
-## 1. Sơ Đồ Phối Hợp 7 Hợp Phần Cốt Lõi
+## 1. Subsystem Architecture Map
 
-Cỗ máy Bảng quay trong `cc-slot-module` được tạo thành từ 7 component chuyên trách:
+The Table Engine is composed of **7 specialized components** working in tight synchronization to deliver smooth 60 FPS slot reel scrolling and Spine animations:
 
 ```mermaid
 graph TD
-    TableConfig[1. TableModuleConfig: Layout & Speed Constants] --> Table[2. SlotTableModule: Master Table]
-    
-    Table --> ReelsContainer[Reels Group]
-    subgraph Reels Assembly
-        ReelsContainer --> Reel0[3. SlotReelModule Col 0]
-        ReelsContainer --> Reel1[3. SlotReelModule Col 1]
-        ReelsContainer --> Reel2[3. SlotReelModule Col 2]
+    subgraph Table Engine Subsystem
+        STM[1. SlotTableModule: Master Table Orchestrator]
+        TMC[2. TableModuleConfig: Timing & Physics Config]
+        SRM[3. SlotReelModule: Column Scrolling Controller]
+        SSM[4. SlotSymbolManager: Node Pooling & Sorting]
+        SYM[5. SlotSymbolModule: Visual Symbol Entity]
+        RES[6. SlotSymbolResourceManager: Spine & Texture Cache]
+        SND[7. SlotTableSoundEffectModule: Audio FX Bridge]
     end
 
-    Table --> SymbolMgr[4. SlotSymbolManager: Sorter & Life Cycle]
-    
-    subgraph Cache & Pooling
-        SymbolMgr --> NodePool[6. SlotCustomNodePool: Node Pool Cache]
-        SymbolMgr --> ResMgr[7. SlotSymbolResourceManager: Spine & Sprite Data]
-        SymbolMgr --> Symbols[5. SlotSymbolModule: Render Instance]
-    end
+    STM -->|Uses Config Parameters| TMC
+    STM -->|Instantiates & Triggers| SRM
+    STM -->|Coordinates Pool & Sorting| SSM
+    SRM -->|Renders & Recycles| SYM
+    SSM -->|Fetches Skeletons & Sprites| RES
+    STM -->|Dispatches Spin Audio Events| SND
 ```
 
 ---
 
-## 2. Bảng Phân Công Nhiệm Vụ 7 Hợp Phần
+## 2. Granular Component Breakdown & Inter-Module Linkage
 
-| STT | Hợp phần | File Nguồn | Trách nhiệm Trọng tâm |
-| :---: | :--- | :--- | :--- |
-| **1** | `TableModuleConfig` | `TableModuleConfig.ts` | Khai báo số cột/dòng (`TABLE_FORMAT`), tính toán tọa độ `SYMBOL_INDEXES`, và lưu trữ cấu hình tốc độ (`MODES.NORMAL`, `MODES.TURBO`). |
-| **2** | `SlotTableModule` | `SlotTableModule.ts` | Lớp vỏ điều phối chính, quản lý mảng `reelList`, phát tín hiệu quay/dừng cột và đồng bộ trạng thái bảng. |
-| **3** | `SlotReelModule` | `SlotReelModule.ts` | Điều khiển chuyển động cuộn xoay vô tận của từng cột riêng lẻ, tính toán quán tính và hiệu ứng nảy (Bounce Easing) khi dừng. |
-| **4** | `SlotSymbolManager` | `SlotSymbolManager.ts` | Cấp phát, thu hồi, sắp xếp thứ tự đè lớp (`sortSymbols`), quản lý biểu tượng dính (Sticky Wilds) và Z-Index layer. |
-| **5** | `SlotSymbolModule` | `SlotSymbolModule.ts` | Component hiển thị của 1 ô Symbol (chứa Sprite tĩnh, Spine Animation, Spine Blur, và các hàm đổi hình `changeToSymbol`). |
-| **6** | `SlotCustomNodePool`| `SlotCustomNodePool.ts`| Quản lý Pool Node riêng cho từng loại Symbol ID, tái sử dụng node đã có để triệt tiêu việc cấp phát bộ nhớ rác. |
-| **7** | `SlotSymbolResourceManager`| `SlotSymbolResourceManager.ts`| Tải và lưu trữ khung xương Spine SkeletonData, SpriteAtlas toàn bộ biểu tượng game. |
+### 1. `SlotTableModule` (Master Orchestrator)
+* **Role**: Root component mounted on `Canvas/Director/GameMode/BoardG/Table`.
+* **Linkage**: Receives scoped commands from `GameModeDirectorModule` (`TABLE_START_SPIN`, `TABLE_STOP_SPIN`) via `moduleEvent`. Dispatches column spin actions to child `SlotReelModule` instances and coordinates near-win anticipation teasers.
+
+### 2. `TableModuleConfig` (Timing & Physics Configuration)
+* **Role**: Static and dynamic configuration defining reel column counts, row counts, reel spacing, scroll velocities, deceleration easing curves (`easeBackOut`), and sequential column stop delays.
+* **Linkage**: Injected into `SlotTableModule` and read by `SlotReelModule` to compute pixel travel distances per frame.
+
+### 3. `SlotReelModule` (Column Scrolling Engine)
+* **Role**: Visual controller attached to each individual column (`Reel_0` through `Reel_N`).
+* **Linkage**: Manages vertical pixel translation of child symbols, wrapping symbols from bottom to top buffer during continuous spinning, and calculating bounce-landing tweens upon stopping.
+
+### 4. `SlotSymbolManager` (Node Pooling & Z-Index Sorting)
+* **Role**: Centralized symbol manager responsible for dynamic node allocation, Spine skeleton playback, and layer sorting.
+* **Linkage**: Controls `cc.NodePool` for static and blur symbol instances, recycling off-screen nodes to prevent memory spikes.
+
+### 5. `SlotSymbolModule` (Visual Symbol Entity)
+* **Role**: Component attached to every individual symbol node on the grid.
+* **Linkage**: Switches visual display modes between **Static Sprite** (idle), **Blur Sprite** (high-speed scroll), and **Spine Skeleton** (winning celebration).
+
+### 6. `SlotSymbolResourceManager` (Asset & Prefab Cache)
+* **Role**: Asset cache provider preloading Spine skeleton data, SpriteAtlases, and texture frames.
+* **Linkage**: Queried by `SlotSymbolManager` during scene initialization to instantly instantiate symbol visual assets without runtime disk I/O.
+
+### 7. `SlotTableSoundEffectModule` (Audio Synchronization Bridge)
+* **Role**: Audio coordinator bridging reel movement to sound playback.
+* **Linkage**: Listens to reel stop events to trigger reel stop clicks, scatter anticipation tension tracks, and near-win siren sound effects.
+
+---
+
+## 3. End-to-End Spin Flow Diagram
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Dir as GameModeDirectorModule
+    participant Table as SlotTableModule
+    participant Reel as SlotReelModule (Col 0..N)
+    participant Pool as SlotSymbolManager
+    participant Audio as SlotTableSoundEffectModule
+
+    Dir->>Table: moduleEvent: TABLE_START_SPIN
+    Table->>Audio: Play Reel Spin Sound Loop
+    loop Every Column with Delay
+        Table->>Reel: startSpinning(turboState)
+        Reel->>Pool: Swap Static Symbols to Blur Sprites
+        Reel->>Reel: Accelerate & Continuous Pixel Roll
+    end
+
+    Dir->>Table: moduleEvent: TABLE_STOP_SPIN (Matrix Payload)
+    loop Sequential Column Deceleration
+        Table->>Reel: stopSpinning(targetColSymbols)
+        Reel->>Pool: Populate Target Matrix Symbols
+        Reel->>Reel: Decelerate with easeBackOut Bounce
+        Reel->>Audio: Play Reel Stop Thud SFX
+    end
+    Table-->>Dir: All Columns Stopped (Promise Resolved)
+```

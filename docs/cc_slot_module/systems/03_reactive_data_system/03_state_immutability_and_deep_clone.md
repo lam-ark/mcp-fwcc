@@ -1,47 +1,58 @@
 ---
 id: "cc_slot_module:systems:reactive_data:state_immutability_and_deep_clone"
-title: "State Immutability & Deep-Clone Memory Isolation"
+title: "State Immutability & Deep-Clone Broadcast Mechanism"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "reactive_data", "deep_clone", "state_immutability", "memory_isolation"]
+tags: ["cc_slot_module", "systems", "reactive_data", "immutability", "deep_clone", "state_safety", "flow"]
 ---
 
-# 🛡️ State Immutability & Deep-Clone Memory Isolation
-
----
-
-## 1. Mối Nguy Hại của Shared Mutable Reference trong Game Slot
-
-Hãy xét kịch bản sau:
-1. Server trả về ma trận `matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]`.
-2. `SlotTableData` nhận `matrix` và chuyển cho `SlotTableModule`.
-3. `SlotTableModule` trong quá trình chạy hiệu ứng nổ biểu tượng (cascade) đã gán `matrix[0][1] = 0`.
-4. Khi `SlotTablePaylineModule` đọc lại `matrix` để vẽ đường line thắng, nó thấy ô `[0][1]` mang giá trị `0` (bị mất dữ liệu gốc).
+# 🛡️ State Immutability & Deep-Clone Broadcast Mechanism
 
 ---
 
-## 2. Giải Pháp Bất Biến Deep-Clone trong `GameDataStore.updateDataModules()`
+## 1. Why State Immutability is Enforced
 
-Để đảm bảo mọi Component tiêu thụ dữ liệu hoàn toàn độc lập và an toàn:
+In complex slot games, multiple UI modules concurrently consume the same server payload (e.g. `SlotTableModule` reads `matrix` to display symbols, while `SlotTablePaylineModule` highlights win lines, and `CutsceneController` computes big win tiers).
 
-```typescript
-_dataModules.forEach((module) => {
-    for (const key of module.registeredKeys) {
-        if (this._dataMap.has(key)) {
-            let value = this._dataMap.get(key);
-            
-            // TẠO BẢN SAO BỘ NHỚ HOÀN TOÀN ĐỘC LẬP
-            if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
-                value = JSON.parse(JSON.stringify(value));
-            }
-            
-            module.onDataUpdate(key, value);
-        } else {
-            module.clearDataWithKey(key);
-        }
-    }
-});
+If a UI component modifies its received object reference in-place (e.g., sorting paylines or mutating symbol codes), it could corrupt the single source of truth in `GameDataStore`, leading to desynchronized state and hard-to-trace bugs.
+
+```mermaid
+graph TD
+    GDS[GameDataStore Single Source of Truth] -->|Deep Clone: JSON.parse JSON.stringify| S1[Safe Isolated Slice 1: SlotTableData]
+    GDS -->|Deep Clone: JSON.parse JSON.stringify| S2[Safe Isolated Slice 2: PaylineData]
+    GDS -->|Deep Clone: JSON.parse JSON.stringify| S3[Safe Isolated Slice 3: WinEffectData]
+
+    S1 -.->|Local mutations have NO effect on central store| GDS
 ```
 
-### Lợi ích:
-* Mọi thao tác sắp xếp, cắt mảng hay biến đổi của 1 UI Module **không bao giờ** làm sai lệch dữ liệu gốc trong `GameDataStore.playSession`.
-* Dữ liệu trong `GameDataStore` luôn là nguồn sự thật duy nhất (**Single Source of Truth**).
+---
+
+## 2. Deep-Clone Broadcasting Implementation
+
+When `GameDataStore` notifies observers via `updateDataModules()`, it creates isolated object clones:
+
+```typescript
+// In GameDataStore.ts
+updateDataModules(changedKeys: string[]): void {
+    this._dataModules.forEach((module: BaseDataModule) => {
+        const relevantKeys = module.registeredKeys.filter(key => changedKeys.includes(key));
+        if (relevantKeys.length > 0) {
+            const dataSlice: any = {};
+            relevantKeys.forEach(key => {
+                const val = this.playSession[key];
+                // Deep-clone slice to enforce strict immutability
+                dataSlice[key] = (val !== null && typeof val === "object") 
+                    ? JSON.parse(JSON.stringify(val)) 
+                    : val;
+            });
+            module.onDataUpdate(dataSlice);
+        }
+    });
+}
+```
+
+---
+
+## 3. Best Practices for Developers
+
+1. **Never Mutate Received Props In-Place**: Always treat data passed to `onDataUpdate()` as read-only.
+2. **Use Structured Clones for Complex Nested Arrays**: When transforming 2D matrices locally inside a custom module, create local copies to preserve component isolation.

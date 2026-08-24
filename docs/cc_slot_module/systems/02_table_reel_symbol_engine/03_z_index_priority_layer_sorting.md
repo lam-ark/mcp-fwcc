@@ -1,55 +1,62 @@
 ---
 id: "cc_slot_module:systems:table_engine:z_index_priority_layer_sorting"
-title: "Symbol Z-Index Layering & Priority Sorting"
+title: "Z-Index Layer Hierarchy & Symbol Sorting Algorithm"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "table_engine", "z_index", "sorting", "layer_priority", "spine_animation"]
+tags: ["cc_slot_module", "systems", "table_engine", "z_index", "sorting", "layer_hierarchy", "spine", "flow"]
 ---
 
-# 📑 Symbol Z-Index Layering & Priority Sorting
-
----
-
-## 1. Vấn Đề Xung Đột Đè Lớp Biểu Tượng (Visual Overlap Problem)
-
-Khi biểu tượng trúng thưởng phát hoạt họa Spine (thường bung to kích thước, tỏa hiệu ứng hào quang hoặc bay lên khỏi ô cờ), nếu các Node trong Scene Graph giữ nguyên thứ tự DOM mặc định:
-* Symbol ở cột bên trái có thể bị cạnh của Symbol cột bên phải đè lên, tạo ra lỗi đồ họa xé rách (visual clipping).
-* Biểu tượng dính (Sticky Wild) bị che lấp bởi các Symbol cuộn bình thường.
+# 🥞 Z-Index Layer Hierarchy & Symbol Sorting Algorithm
 
 ---
 
-## 2. Thuật Toán Phân Lớp 3 Tầng trong `SlotSymbolManager.sortSymbols()`
+## 1. Visual Layer Hierarchy & Z-Index Stack
 
-`SlotSymbolManager` giải quyết triệt để vấn đề này bằng cách duyệt qua toàn bộ các biểu tượng đang hiển thị và tính toán giá trị `zIndex` theo công thức phân tầng:
+In dynamic slot games with overlapping animations, expanding Wilds, and win celebrations, visual rendering layers must follow a strict **Z-Order Hierarchy** to prevent foreground clipping:
 
 ```mermaid
 graph TD
-    Symbol[Symbol Node trên Bảng] --> Eval[Đánh giá Trạng thái & Layer Config]
-    
-    Eval --> CheckSticky{Có phải Sticky Wild?}
-    CheckSticky -->|Yes| LayerTop[TẦNG 1: STICKY LAYER - zIndex = 1000 + Priority]
-    
-    CheckSticky -->|No| CheckWin{Đang phát Hoạt họa Thắng?}
-    CheckWin -->|Yes| LayerMid[TẦNG 2: WIN ANIMATION LAYER - zIndex = 500 + Priority]
-    
-    CheckWin -->|No| LayerBase[TẦNG 3: BASE IDLE LAYER - zIndex = col * 10 + row]
-    
-    LayerTop --> Apply[node.setSiblingIndex hoặc zIndex]
-    LayerMid --> Apply
-    LayerBase --> Apply
+    subgraph Z-Order Rendering Priority (Top to Bottom)
+        L5["Level 5: Sticky Wild / Overlay Modals (Z = 500)"]
+        L4["Level 4: Active Winning Spine Animations (Z = 400)"]
+        L3["Level 3: Payline Win Frames & Highlighting (Z = 300)"]
+        L2["Level 2: High Payout Static Symbols (Z = 200)"]
+        L1["Level 1: Low Payout Static Symbols (Z = 100)"]
+        L0["Level 0: Rolling Blur Symbols & Buffer Nodes (Z = 0)"]
+    end
 ```
 
-### Mã Nguồn Thực Thi Chuẩn:
-```typescript
-sortSymbols(): void {
-    const symbols = this.getShowingSymbols();
-    symbols.sort((a, b) => {
-        const priorityA = this.getSymbolPriority(a);
-        const priorityB = this.getSymbolPriority(b);
-        return priorityA - priorityB;
-    });
+---
 
-    symbols.forEach((symbol, index) => {
-        symbol.node.setSiblingIndex(index);
+## 2. Dynamic Sorting Algorithm (`SlotSymbolManager.sortSymbols()`)
+
+When symbols transition from rolling to static display, or from idle state to winning celebration, `SlotSymbolManager` dynamically calculates node `zIndex` (or `setSiblingIndex` in Cocos Creator 2.4):
+
+```typescript
+// Conceptual algorithm in SlotSymbolManager
+sortSymbols(symbolNodeList: cc.Node[]): void {
+    symbolNodeList.forEach((node) => {
+        const symbolComponent = node.getComponent(SlotSymbolModule);
+        let baseZIndex = 0;
+
+        if (symbolComponent.isSticky) {
+            baseZIndex = 500;
+        } else if (symbolComponent.isWinningAnimationPlaying) {
+            baseZIndex = 400;
+        } else if (symbolComponent.isHighSymbol) {
+            baseZIndex = 200;
+        } else {
+            baseZIndex = 100;
+        }
+
+        // Secondary tie-breaker: bottom-to-top rendering order
+        node.zIndex = baseZIndex + (NUMBER_ROW - symbolComponent.rowIndex);
     });
 }
 ```
+
+---
+
+## 3. Spine Skeleton Overdraw & Clipping Guards
+
+1. **Reel Mask Boundary Clamping**: By default, each reel column is wrapped inside a `cc.Mask` component. Winning Spine skeletons with large explosion VFX are reparented to an overlay container above the table mask (`Table/WinOverlayContainer`) to allow particle FX to burst across adjacent reels without being clipped by column masks.
+2. **Post-Animation Reset**: When win line blinking concludes, symbols are immediately reparented back to their original reel column and their `zIndex` is restored to base idle priority.

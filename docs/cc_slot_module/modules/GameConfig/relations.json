@@ -14,5 +14,9 @@
   "dependsOn": [],
   "emitsEvents": [],
   "listensToEvents": [],
-  "gotchas": []
+  "gotchas": [
+    "Gotcha:Missing_Currency_Format_Crash",
+    "Gotcha:Table_Format_Column_Mismatch",
+    "Gotcha:Win_Level_Threshold_Ordering"
+  ]
 }

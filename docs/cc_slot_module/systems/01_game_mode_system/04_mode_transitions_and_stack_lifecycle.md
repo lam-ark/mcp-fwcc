@@ -1,54 +1,79 @@
 ---
 id: "cc_slot_module:systems:game_mode:mode_transitions_and_stack_lifecycle"
-title: "Game Mode Transitions, Stack Management & Lifecycle"
+title: "Game Mode Transitions & Stack Lifecycle"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "game_mode", "transitions", "lifecycle", "stack_management", "teardown"]
+tags: ["cc_slot_module", "systems", "game_mode", "lifecycle", "transitions", "state_machine", "flow"]
 ---
 
-# 🔄 Game Mode Transitions, Stack Management & Lifecycle
+# 🔄 Game Mode Transitions & Stack Lifecycle
 
 ---
 
-## 1. Vòng Đời Chuyển Đổi Game Mode (Mode Transition Lifecycle)
+## 1. Mode Transition Flow Sequence
 
-Việc chuyển đổi giữa các Game Mode trong `cc-slot-module` tuân theo một quy trình 4 giai đoạn nghiêm ngặt:
+When a slot game switches from one mode to another (e.g. `NORMAL_GAME` ➔ `FREE_GAME` or `FREE_GAME` ➔ `NORMAL_GAME`), the transition follows an atomic 5-step lifecycle orchestrated by `GameModeDirectorModule`:
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Normal as NormalGameDirectorModule
-    participant GM as GameDirector (Stack Manager)
-    participant Free as FreeGameDirectorModule
-    participant UI as Cutscene / Transition VFX
+    participant Prev as Previous Mode (NormalGame)
+    participant Master as GameModeDirectorModule
+    participant Cut as CutsceneController
+    participant Next as Next Mode (FreeGame)
+    participant Sound as SlotSoundPlayerModule
 
-    Note over Normal: 1. Trigger Phát hiện Thắng Feature
-    Normal->>UI: _showTransitionFreeGame()
-    Normal->>GM: emit(SWITCH_GAME_MODE, GAME_MODE_ENUM.FREE_GAME)
-    
-    Note over Normal,Free: 2. Exit Mode Cũ & Enter Mode Mới
-    Normal->>Normal: exitGameMode() (Đóng băng tương tác, tắt BGM)
-    GM->>Free: enterGameMode(FREE_GAME)
-    
-    Note over Free: 3. Khởi tạo Trạng thái Chế độ Mới
-    Free->>Free: enter() (Bật Free BGM, syncSpinTimes, syncNormalTable)
-    Free->>Free: onBeforeSpinStart() (Khởi chạy vòng quay đầu)
-    
-    Note over Free,Normal: 4. Kết Thúc & Trở về Base Game
-    Free->>UI: _showUnskippedCutscene(TOTAL_WIN)
-    Free->>Free: _gameExit() (CLEAR_PAYLINES, SYNC_TABLE)
-    Free->>GM: emit(EXIT_GAME_MODE)
-    GM->>Normal: enterGameMode(NORMAL_GAME)
+    Prev->>Master: onPreExitGameMode()
+    Master->>Sound: Fade out current BGM
+    Master->>Cut: SHOW_CUTSCENE (IntroFreeGame)
+    Cut-->>Master: Cutscene Dialog Confirmed
+    Master->>Prev: onExitGameMode() & node.active = false
+    Master->>Next: node.active = true & onEnterGameMode()
+    Next->>Next: init() -> resetGameMode()
+    Next->>Sound: Play Free Game BGM
+    Next->>Next: onStartSpinning() / Free Spin Loop Begins
 ```
 
 ---
 
-## 2. Các Điểm Móc Vòng Đời (Lifecycle Hooks)
+## 2. Granular Transition Phases
 
-Mọi `GameModeDirectorModule` đều hỗ trợ các phương thức vòng đời có thể override:
+### Phase 1: Pre-Exit Teardown (`onPreExitGameMode`)
+* **Trigger**: Current mode finishes its settlement step (e.g. 3 Scatters evaluated on table).
+* **Actions**:
+  1. Blocks UI input controls on `UIManagerModule`.
+  2. Freezes current payline animations (`CLEAR_PAYLINES`).
+  3. Prepares transition payload in `GameDataStore`.
 
-1. **`init(): void`**: Khởi tạo ban đầu khi Node được mount. Tạo `moduleEvent` và gắn vào `moduleList`.
-2. **`enter(): void`**: Được gọi khi Mode chính thức nhận quyền điều khiển màn hình. Nơi khởi tạo BGM, cập nhật HUD và dựng bảng quay ban đầu.
-3. **`onPreResumeGameMode()` / `onResumeGameMode()`**: Được gọi khi người chơi kết nối lại (reconnect) giữa chừng tính năng.
-4. **`exitGameMode(): Promise<void>`**: Được gọi khi Mode sắp bị ẩn đi. Nơi dừng các hoạt họa đang chạy dở.
-5. **`resetAllEffectAndTasks(): void`**: Được gọi khi xảy ra lỗi mạng hoặc người chơi bị force-reset về trạng thái Idle.
-6. **`onDestroy(): void`**: Giải phóng toàn bộ Event Bus cục bộ (`moduleEvent.destroy()`), dừng các tween đang chạy và gọi `super.onDestroy()`.
+### Phase 2: Audio & Cutscene Transition Handoff
+* **Actions**:
+  1. `SlotSoundPlayerModule` crossfades out the active background music.
+  2. Dispatches `GameUIEvents.CUTSCENES.SHOW_CUTSCENE` via `eventManager` to display modal dialogue (e.g., "Congratulations! You Won 10 Free Spins").
+  3. Awaits user confirmation click or automatic cutscene dismiss timer.
+
+### Phase 3: Mode Exit & Deactivation (`onExitGameMode`)
+* **Actions**:
+  1. Invokes `resetAllEffectAndTasks()` to abort lingering tweens and Spine skeleton tracks.
+  2. Unregisters mode-specific event listeners (`this.moduleEvent.targetOff(this)`).
+  3. Sets `this.node.active = false` to remove visual rendering overhead.
+
+### Phase 4: Mode Enter & Activation (`onEnterGameMode`)
+* **Actions**:
+  1. Sets target mode container `this.node.active = true`.
+  2. Calls `init()` followed by `resetGameMode()` to clear previous visual leftovers.
+  3. Ingests fresh state from `GameDataStore` (e.g., initial free spin count, base multiplier).
+
+### Phase 5: Mode Spin Loop Startup (`startSpinLoop`)
+* **Actions**:
+  1. Plays new mode background music (`playGameModeBGM()`).
+  2. If entering `FREE_GAME`, automatically starts the automated spin loop without requiring player click.
+
+---
+
+## 3. Lifecycle Invariant Checklist
+
+| Lifecycle Step | Required Guardrail | Risk If Violated |
+| :--- | :--- | :--- |
+| **Node Deactivation** | Must call `resetAllEffectAndTasks()` before `node.active = false`. | Orphaned tweens resume unexpectedly on re-entry. |
+| **Event Cleanup** | Must unbind scoped listeners or rely on `moduleEvent` scoped isolation. | Duplicate event callbacks trigger double payouts. |
+| **State Hydration** | Must check `playSession.isResume` during `onEnterGameMode`. | Broken table matrix display upon network reconnection. |
+| **BGM Management** | Must invoke `playGameModeBGM()` on enter. | Silent game session or overlapping background audio tracks. |

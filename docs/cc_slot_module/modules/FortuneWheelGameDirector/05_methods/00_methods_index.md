@@ -13,9 +13,10 @@ tags: ["FortuneWheelGameDirector", "fortune_wheel_director", "cc_slot_module", "
 
 | Method Signature | Visibility | Purpose |
 | :--- | :--- | :--- |
+| **[`onExtendedLoad(): void`](./onExtendedLoad.md)** | `public` | Calls `super.onExtendedLoad()` and registers `ON_SPIN_WHEEL` scoped listener. |
 | **[`onSpinWheel(): void`](./onSpinWheel.md)** | `public` | Dispatches `SEND_BONUS_GAME_REQUEST`, emits `START_SPIN_WHEEL`, blocks UI, and stops timer. |
 | **[`_showWheelResult(bonusValue: number): Promise<void>`](./_showWheelResult.md)** | `public` | Emits `STOP_SPIN_WHEEL` with target prize segment index/value. |
 | **[`_fastStopWheel(): Promise<void>`](./_fastStopWheel.md)** | `public` | Emits `FAST_STOP_WHEEL` to shorten deceleration time. |
 | **[`_runAutoTrigger(): void`](./_runAutoTrigger.md)** | `public` | Handles timeout by triggering `playAutoClick()`. |
-| **[`playAutoClick(): void`](./playAutoClick.md)** | `public` | Invokes `onSpinWheel()`. |
+| **[`playAutoClick(): void`](./playAutoClick.md)** | `public` | Invokes `onSpinWheel()` as the polymorphic auto-click implementation. |
 | **[`resetBonusGame(): void`](./resetBonusGame.md)** | `public` | Calls `super.resetBonusGame()` and emits `RESET_WHEEL`. |

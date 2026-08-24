@@ -2,83 +2,100 @@
 id: "cc_slot_module:systems:game_mode:anatomy_and_composition"
 title: "Game Mode Anatomy & Component Composition"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "game_mode", "anatomy", "composition", "director", "writer", "base_data_module"]
+tags: ["cc_slot_module", "systems", "game_mode", "anatomy", "composition", "ioc", "module_linkage", "flow"]
 ---
 
-# 🧬 Game Mode Anatomy & Component Composition
+# 🏗️ Game Mode Anatomy & Component Composition
 
 ---
 
-## 1. Cấu trúc Cây Node Phân cấp của 1 Game Mode
+## 1. The 5-Part Architectural Anatomy
 
-Trong Cocos Creator Editor, mỗi Game Mode được tổ chức thành một Prefab/Node độc lập:
-
-```text
-Canvas/Director/GameMode/NormalGameDirector
-│
-├── NormalGameDirectorModule (Component Điều phối / Scene Owner)
-├── NormalGameWriterModule (Component Lập trình Chuỗi lệnh)
-├── ScriptExecutor (Component Chạy hàng đợi lệnh)
-│
-└── moduleList (Mảng các Node UI con được tiêm Scoped moduleEvent)
-    ├── Table (Chứa SlotTableModule, SlotReelModule, SlotSymbolManager)
-    ├── TableData (Chứa SlotTableData - BaseDataModule)
-    ├── Payline (Chứa SlotTablePaylineModule)
-    ├── PaylineData (Chứa SlotTablePaylineData - BaseDataModule)
-    ├── WinAmount (Chứa WinAmountModule)
-    └── SlotButton (Chứa SlotButtonModule)
-```
+Every standard Game Mode in the `cc-common` Slot SDK is composed of 5 symbiotic layers operating within a single container node:
 
 ```mermaid
 graph TD
-    subgraph Game Mode Instance (e.g. NormalGameDirector)
-        Director[GameModeDirectorModule: Brain & Actions]
-        Writer[GameModeWriterModule: Script Generator]
-        Executor[ScriptExecutor: Command Queue Runner]
-        
-        Director <-->|Queries Data & Dispatches| Writer
-        Director -->|Feeds Command Queue| Executor
-        Executor -->|Calls Async Methods| Director
-        
-        Director -.->|Creates & Injects| Bus["Scoped moduleEvent (GameModuleEvent)"]
+    subgraph GameModeContainer [Canvas/Director/GameMode/NormalGame]
+        Dir[1. Mode Director: NormalGameDirectorModule]
+        Wrt[2. Mode Writer: NormalGameWriterModule]
+        Exec[3. Command Queue: ScriptExecutor]
+        Data[4. Reactive Data Models: BaseDataModule]
+        Mods[5. Attached Visual Modules: moduleList]
     end
 
-    subgraph Attached Sub-Modules (moduleList)
-        Bus --> TableUI[SlotTableModule: Visual Reels]
-        Bus --> PayUI[SlotTablePaylineModule: Visual Lines]
-        Bus --> WinUI[WinAmountModule: Rolling Counter]
-        Bus --> ButtonUI[SlotButtonModule: Spin Controls]
-    end
+    Dir -->|Generates Command Queue| Wrt
+    Wrt -->|Queues Command Step Array| Exec
+    Exec -->|Executes Methods via Promise Chain| Dir
+    Dir -->|Scoped Events: moduleEvent| Mods
+    Data -->|Listens to GameDataStore| Mods
+```
 
-    subgraph Reactive Data Layer (Sibling / Child Nodes)
-        GDS[GameDataStore] -->|updateDataModules| TableData[SlotTableData: BaseDataModule]
-        GDS -->|updateDataModules| PayData[SlotTablePaylineData: BaseDataModule]
-        
-        TableData --> TableUI
-        PayData --> PayUI
-    end
+### 1.1. Visual Director (`GameModeDirectorModule`)
+* Extends `BaseGameDirector` (which extends `SlotBaseModule`).
+* Coordinates local scene nodes, mounts child visual components, binds scoped events, and handles state mutations.
+* Exposes execution hook targets (`_startSpinningTable`, `_stopSpinningTable`, `_showResultEntry`, `_setUpPaylines`).
+
+### 1.2. Script Writer (`GameModeWriterModule`)
+* Extends `SlotBaseModule` and mounts onto `this.node["writer"]`.
+* Defines pure, declarative command queues as structured JSON arrays:
+  ```typescript
+  [{ command: "_stopSpinningTable" }, { command: "_setUpPaylines" }]
+  ```
+* Decouples the decision of *what* happens sequentially from *how* visual tweens are rendered.
+
+### 1.3. Execution Engine (`ScriptExecutor`)
+* Lightweight asynchronous pipeline processor instantiated inside the Director.
+* Iterates through the Writer's command array sequentially, converting method names into invocations on the Director (`this.target[command](data)`), awaiting returned `Promise` resolutions before advancing to the next step.
+
+### 1.4. Data Adapters (`BaseDataModule`)
+* Specialized observers subscribing to discrete data slices in `GameDataStore` via `registeredKeys` (e.g. `['matrix']`, `['payLines']`, `['winAmount']`).
+* Automatically converts raw server payloads into renderable coordinate matrices and win structs.
+
+### 1.5. Visual Subsystem Array (`moduleList: SlotBaseModule[]`)
+* Array of child components attached to the mode container (e.g., `SlotTableModule`, `SlotTablePaylineModule`, `SlotTableNearWinModule`).
+* Receives injected scoped `moduleEvent` instances and IoC services from the Director during `onLoad`.
+
+---
+
+## 2. Canonical Scene Hierarchy & Inter-Module Linkage
+
+In the Cocos Creator template scene graph (`g9000L.fire`), game mode containers are hosted under `Canvas/Director/GameMode`:
+
+```text
+Canvas
+└── Canvas/Director (GameDirector.ts, GameInit.ts, GameDataStore.ts)
+    └── Canvas/Director/GameMode (GameModeDirectorModule.ts)
+        ├── NormalGame (NormalGameDirectorModule.ts, NormalGameWriterModule.ts)
+        │   ├── BG_NormalGame (Sprite / Spine Background)
+        │   ├── Table (SlotTableModule.ts, SlotSymbolManager.ts)
+        │   ├── Payline (SlotTablePaylineModule.ts)
+        │   └── Sound (SlotTableSoundEffectModule.ts)
+        │
+        ├── FreeGame (FreeGameDirectorModule.ts, FreeGameWriterModule.ts)
+        │   ├── BG_FreeGame
+        │   ├── Table (Free Game SlotTableModule)
+        │   └── MultiplierBanner (Spine / Multiplier Label)
+        │
+        └── BonusGame (BonusGameDirectorModule.ts, BonusGameWriterModule.ts)
+            └── Table (BonusGameTableModule.ts, BonusGameItemModule.ts)
 ```
 
 ---
 
-## 2. 3 Tầng Trách Nhiệm trong một Game Mode
+## 3. Co-location & Dependency Injection Workflow
 
-### Tầng 1: Bộ Ba Điều Phối (The Orchestration Triad)
-* **`GameModeDirectorModule`**: Nắm quyền kiểm soát Scene, cung cấp các hàm thực thi diễn hoạt (`_startSpinningTable`, `_stopSpinningTable`, `_showWinPayline`, `_gameExit`...) và tạo Bus sự kiện nội bộ `moduleEvent`.
-* **`GameModeWriterModule`**: Thuần túy kiểm tra dữ liệu `dataStore.playSession` để sản xuất ra mảng danh sách tên hàm cần chạy (`string[]`). Không chứa code đồ họa hay Node.
-* **`ScriptExecutor`**: Cỗ máy trung gian nhận mảng lệnh từ Writer và thực thi lần lượt từng method trên Director theo cơ chế Async Promise chaining.
+```mermaid
+sequenceDiagram
+    participant Scene as Cocos Scene Graph
+    participant Root as GameInit (IoC Root)
+    participant Dir as NormalGameDirectorModule
+    participant Sub as Child SlotTableModule
 
-### Tầng 2: Tầng Dữ Liệu Phản Ứng (Reactive Data Observers)
-* **`BaseDataModule` Subclasses**: Các Component dữ liệu (`SlotTableData`, `SlotTablePaylineData`, `CascadeModuleData`) được gắn cùng Node hoặc làm con của Component hiển thị.
-* Đăng ký nhận dữ liệu từ `GameDataStore` qua mảng `registeredKeys`. Khi có dữ liệu mới, hàm `onDataUpdate(key, value)` được gọi tự động với giá trị đã được Deep Clone.
-
-### Tầng 3: Tầng Biểu Diễn Trực Quan (Presentation Layer)
-* Các Component hiển thị (`SlotTableModule`, `SlotTablePaylineModule`, `SpinTimes`, `SlotButton`...) không bao giờ giao tiếp trực tiếp với Server.
-* Chúng nhận lệnh từ `moduleEvent` của Director hoặc đọc trạng thái đã xử lý từ `BaseDataModule` gắn cùng Node.
-
----
-
-## 3. Quy Tắc Co-Location và Dependency Injection
-
-1. **Co-location Rule**: Mỗi `BaseDataModule` luôn được đặt trên cùng một Node với `SlotBaseModule` tương ứng (ví dụ: Node `Table` chứa cả `SlotTableModule` và `SlotTableData`).
-2. **IoC Resolution**: Khi `BaseDataModule.onLoad()` thực thi, nó tự động tìm Component cha/anh em `this.baseMode = this.getComponent(SlotBaseModule)` và nhận tiêm `@inject(GameDataStore)` từ Service Locator.
+    Scene->>Root: Scene Awakens
+    Root->>Root: Registers Singletons (GameDataStore, GameEventManager, SlotGameSettings)
+    Scene->>Dir: onLoad()
+    Dir->>Dir: applyInjections() resolves IoC Singletons
+    Dir->>Dir: new GameModuleEvent() creates scoped event bus
+    Dir->>Sub: Injects moduleEvent & Services into moduleList
+    Dir->>Dir: onLoadExtend() & node["writer"] = this
+```

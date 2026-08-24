@@ -2,55 +2,71 @@
 id: "cc_slot_module:systems:table_engine:matrix_geometry_and_buffer_rows"
 title: "Matrix Geometry, Coordinates & Buffer Rows"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "table_engine", "geometry", "coordinates", "buffer_rows"]
+tags: ["cc_slot_module", "systems", "table_engine", "geometry", "matrix", "buffer_rows", "coordinates", "flow"]
 ---
 
 # 📐 Matrix Geometry, Coordinates & Buffer Rows
 
 ---
 
-## 1. Hệ Tọa Độ Ma Trận Chuẩn: `[col][row]`
+## 1. 2D Matrix Indexing Standard
 
-Trong `cc-slot-module`, dữ liệu ma trận từ Server và hiển thị Client luôn tuân thủ quy ước **Cột trước - Dòng sau**:
+In the `cc-common` Slot Framework, table grids use a canonical **Column-Major 2D Array format**:
 
-```typescript
-matrix[col][row]
-```
+$$\text{Matrix}[\text{col}][\text{row}]$$
 
-```text
-       Col 0      Col 1      Col 2      Col 3      Col 4
-Row 2: [0][2]     [1][2]     [2][2]     [3][2]     [4][2]   <-- Dòng trên cùng
-Row 1: [0][1]     [1][1]     [2][1]     [3][1]     [4][1]   <-- Dòng giữa
-Row 0: [0][0]     [1][0]     [2][0]     [3][0]     [4][0]   <-- Dòng đáy
+Where:
+* **`col`** ranges from $0$ to $\text{NUMBER\_COL} - 1$ (Left to Right: Col 0 is leftmost).
+* **`row`** ranges from $0$ to $\text{NUMBER\_ROW} - 1$ (Bottom to Top: Row 0 is bottommost in visual coordinates, or Top to Bottom depending on game-specific `TABLE_FORMAT`).
+
+```mermaid
+graph TD
+    subgraph 3x5 Standard Matrix Layout
+        C0["Col 0<br>[0,2]<br>[0,1]<br>[0,0]"]
+        C1["Col 1<br>[1,2]<br>[1,1]<br>[1,0]"]
+        C2["Col 2<br>[2,2]<br>[2,1]<br>[2,0]"]
+        C3["Col 3<br>[3,2]<br>[3,1]<br>[3,0]"]
+        C4["Col 4<br>[4,2]<br>[4,1]<br>[4,0]"]
+    end
 ```
 
 ---
 
-## 2. Vai Trò của Vùng Đệm Ẩn (Top & Bottom Buffer Rows)
+## 2. Offscreen Buffer Rows Architecture
 
-Để các biểu tượng cuộn mượt mà từ trên xuống hoặc từ dưới lên mà người chơi không nhìn thấy biểu tượng đột ngột "xuất hiện từ hư vô" (pop-in):
+To prevent visual pop-in / flickering during vertical continuous reel scrolling, each reel column maintains extra **offscreen buffer rows**:
 
-```text
-+-------------------------------------------------------------+
-|         TOP BUFFER (topBuffer = 1 hoặc 2 dòng)              | <-- Symbol chuẩn bị cuộn vào khung hình
-+=============================================================+
-|                      REEL VIEWPORT                          |
-|         (Vùng hiển thị thực tế người chơi nhìn thấy)         |
-|                                                             |
-|           Row 2: [0][2]    [1][2]    [2][2]                 |
-|           Row 1: [0][1]    [1][1]    [2][1]                 |
-|           Row 0: [0][0]    [1][0]    [2][0]                 |
-|                                                             |
-+=============================================================+
-|        BOTTOM BUFFER (bottomBuffer = 1 dòng)                | <-- Symbol đã cuộn qua đáy, chờ thu hồi
-+-------------------------------------------------------------+
+```mermaid
+graph TD
+    subgraph Single Reel Column Structure
+        TopBuffer["Top Buffer Row (Row N+1) - Offscreen Hidden"]
+        VisibleTop["Visible Row 2 (Top)"]
+        VisibleMid["Visible Row 1 (Middle)"]
+        VisibleBot["Visible Row 0 (Bottom)"]
+        BotBuffer["Bottom Buffer Row (Row -1) - Offscreen Hidden"]
+    end
+
+    TopBuffer -->|Scrolls Downward| VisibleTop
+    VisibleTop -->|Scrolls Downward| VisibleMid
+    VisibleMid -->|Scrolls Downward| VisibleBot
+    VisibleBot -->|Scrolls Downward| BotBuffer
+    BotBuffer -.->|Wraps to Top & Re-assigned| TopBuffer
 ```
 
-### Thuật toán Dựng Cột với Buffer trong `TableModuleConfig`:
-```typescript
-// Tổng số ô Symbol thực tế cần tạo trên 1 cột:
-const totalNodesPerReel = visibleRows + topBuffer + bottomBuffer;
-```
-Khi cột cuộn xuống:
-1. Symbol ở `bottomBuffer` chạm ngưỡng đáy sẽ được gỡ ra và đưa về NodePool.
-2. Một Symbol mới được lấy từ NodePool, gán ID ngẫu nhiên (hoặc Blur texture), và gắn vào đỉnh của `topBuffer`.
+### Why Buffer Rows are Essential:
+1. **Zero Pop-in on Screen Edges**: When a symbol scrolls past the bottom viewport mask, it does not abruptly vanish; it scrolls smoothly into the bottom buffer area before being recycled.
+2. **Smooth Stopping Bounce (`easeBackOut`)**: When a reel stops and executes an overshoot bounce up-and-down, the top and bottom buffer symbols remain visible within the overshoot window, preventing empty black gaps inside the reel mask frame.
+
+---
+
+## 3. Position Calculation Math
+
+For any symbol at grid index `[col, row]`, its local Cocos node position is calculated as:
+
+$$X_{\text{local}} = (\text{col} - \frac{\text{NUMBER\_COL} - 1}{2}) \times \text{CELL\_WIDTH}$$
+
+$$Y_{\text{local}} = (\text{row} - \frac{\text{NUMBER\_ROW} - 1}{2}) \times \text{CELL\_HEIGHT} + Y_{\text{offset}}$$
+
+Where:
+* `CELL_WIDTH` and `CELL_HEIGHT` are defined in `TableModuleConfig`.
+* `Y_offset` accounts for custom top/bottom buffer spacing.

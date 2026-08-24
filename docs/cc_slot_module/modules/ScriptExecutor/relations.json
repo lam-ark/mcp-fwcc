@@ -14,6 +14,7 @@
   "emitsEvents": [],
   "listensToEvents": [],
   "gotchas": [
-    "Gotcha:Broken_Promise_Chain_Halts_executeNextScript_Progression"
+    "Gotcha:Broken_Promise_Chain_Halts_executeNextScript_Progression",
+    "Gotcha:Director_Methods_Must_Return_Promise"
   ]
 }

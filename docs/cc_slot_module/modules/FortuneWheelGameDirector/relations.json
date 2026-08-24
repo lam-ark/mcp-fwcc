@@ -3,18 +3,30 @@
   "title": "FortuneWheelGameDirector Wheel Mini-Game Orchestrator",
   "category": "cc_slot_module",
   "inheritsFrom": "BonusGameDirectorModule",
-  "manages": [],
+  "manages": [
+    "FortuneWheelModule"
+  ],
   "usedBy": [
-    { "target": "GameDirector", "relation": "managed_by_root_director" }
+    { "target": "GameDirector", "relation": "managed_by_root_director" },
+    { "target": "GameModeDirectorModule", "relation": "dispatched_by_game_mode" }
   ],
   "dependsOn": [
-    { "target": "GameDataStore", "relation": "reads_session_data" }
+    { "target": "GameDataStore", "relation": "reads_session_data" },
+    { "target": "SlotGameSettings", "relation": "reads_turbo_state" },
+    { "target": "BonusGameDirectorModule", "relation": "inherits_base_bonus_director" }
   ],
   "emitsEvents": [
-    "GameLogicUIEvents.SEND_BONUS_GAME_REQUEST"
+    "GameLogicUIEvents.SEND_BONUS_GAME_REQUEST",
+    "START_SPIN_WHEEL",
+    "STOP_SPIN_WHEEL",
+    "FAST_STOP_WHEEL",
+    "RESET_WHEEL"
   ],
   "listensToEvents": [
     "ON_SPIN_WHEEL"
   ],
-  "gotchas": []
+  "gotchas": [
+    "Gotcha:Missing_Stop_Spin_Wheel_Hang",
+    "Gotcha:Turbo_Timing_Desync_On_Fast_Stop"
+  ]
 }

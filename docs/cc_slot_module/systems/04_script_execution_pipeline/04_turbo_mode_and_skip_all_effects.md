@@ -1,62 +1,55 @@
 ---
 id: "cc_slot_module:systems:script_pipeline:turbo_mode_and_skip_all_effects"
-title: "Turbo Mode & Safe Fast-Forward with skipAllEffects"
+title: "Turbo Mode & Fast-To-Result (skipAllEffects)"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "script_pipeline", "turbo_mode", "skip_effects", "fast_forward"]
+tags: ["cc_slot_module", "systems", "script_pipeline", "turbo_mode", "fast_stop", "skipAllEffects", "performance", "flow"]
 ---
 
-# ⚡ Turbo Mode & Safe Fast-Forward with skipAllEffects
+# ⚡ Turbo Mode & Fast-To-Result (`skipAllEffects`)
 
 ---
 
-## 1. Cơ Chế Bỏ Qua Diễn Hoạt An Toàn (Safe Skip Architecture)
+## 1. Fast Stop & Turbo Execution Flow
 
-Khi người chơi bấm nút **Stop** nhanh hoặc đang bật chế độ **Turbo Spin**:
-* Cột quay phải dừng ngay lập tức.
-* Các khoảng chờ thời gian (`delayAction`, `_delayTimeScript`) phải bị ngắt ngay lập tức mà không làm treo hàng đợi `ScriptExecutor`.
+When Turbo mode is enabled or when the player taps the screen to fast-stop an active spin, the framework accelerates the timeline through **Fast-To-Result (FTR)**:
 
 ```mermaid
-graph TD
-    Trigger[Người chơi bấm Stop / Bật Turbo] --> Skip[Director.skipAllEffects]
-    
-    subgraph Safe Teardown
-        Skip --> ClearTween[1. Hủy tween Delay đang chạy: tween.stop]
-        Skip --> ResolvePromise[2. Gọi resolve callback ngay lập tức]
-        Skip --> FastReels[3. Bắn TABLE_FAST_STOP: Cột dừng không nảy]
-        Skip --> FastCount[4. Bắn WIN_AMOUNT_FAST_COUNT: Hiển thị ngay số cuối]
-    end
+sequenceDiagram
+    autonumber
+    participant UI as Player Click / Turbo Toggle
+    participant Settings as SlotGameSettings
+    participant Director as BaseGameDirector
+    participant Subsystems as Table & HUD Subsystems
+    participant Exec as ScriptExecutor
 
-    ResolvePromise --> NextStep[ScriptExecutor lập tức chuyển sang lệnh kế tiếp!]
+    UI->>Settings: isTurboActive = true / Fast Stop Clicked
+    UI->>Director: skipAllEffects()
+    Director->>Subsystems: resetAllEffectAndTasks()
+    Note over Subsystems: 1. Aborts active cc.tween instances<br/>2. Cuts Spine victory animations<br/>3. Completes money rolling counts instantly
+    Director->>Exec: Shortens delay timers & fast-tracks Promise resolutions
+    Subsystems-->>Director: Table stops at target matrix instantly
+    Director-->>UI: Next spin enabled immediately
 ```
 
 ---
 
-## 2. Kỹ Thuật Viết Hàm Delay Có Thể Bị Hủy An Toàn
+## 2. Granular Subsystem Acceleration Breakdown
 
-```typescript
-// Trong GameModeDirectorModule.ts
-delayAction(time: number = 0): Promise<void> {
-    if (time <= 0) {
-        return Promise.resolve();
-    }
-    return new Promise((resolve) => {
-        // Lưu trữ callback để skipAllEffects() có thể gọi trực tiếp
-        this._delayActionCB = () => {
-            this._delayActionCB = null;
-            resolve();
-        };
+### 1. Table & Reel Subsystem (`SlotTableModule`)
+* **Normal Mode**: Reels decelerate sequentially with column-by-column delays ($0.2\text{s}$ per reel) and bounce landing curves (`easeBackOut`).
+* **Turbo / Fast Stop Mode**: Delays between columns are set to $0\text{s}$, and deceleration curves are shortened to immediate snap-stops ($<0.1\text{s}$).
 
-        this.scheduleOnce(this._delayActionCB, time);
-    });
-}
+### 2. Payline & Win Presentation Subsystem (`PaylineInfoModule`)
+* **Normal Mode**: Blinks all winning paylines for $2.0\text{s}$, then enters cyclical single-line presentation.
+* **Turbo Mode**: Skips cyclical line blinking entirely, displaying final total win instantly.
 
-clearDelayAction(): void {
-    if (this._delayActionCB) {
-        this.unschedule(this._delayActionCB);
-        const cb = this._delayActionCB;
-        this._delayActionCB = null;
-        cb(); // Resolve Promise ngay lập tức
-    }
-}
-```
-Kỹ thuật này đảm bảo Promise không bao giờ bị "treo vĩnh viễn" (unresolved promise leak), giúp game chuyển cảnh siêu tốc mà không bao giờ bị đơ giao diện.
+### 3. Wallet & Win Amount Rolling (`WalletModule` & `WinAmountModule`)
+* **Normal Mode**: Performs numeric count-up tween over $1.5\text{s} - 4.0\text{s}$ using `MoneyTween`.
+* **Turbo Mode**: Sets label text directly to target total without tween delay.
+
+---
+
+## 3. Developer Invariant Rules for Fast Stop
+
+1. **Always Implement `resetAllEffectAndTasks()`**: Custom game components must override `resetAllEffectAndTasks()` to cancel local tweens, stop custom Spine skeleton tracks, and clear timeout callbacks (`this.unscheduleAllCallbacks()`).
+2. **Never Leave Unresolved Promises**: Any visual promise that is interrupted by `skipAllEffects()` must invoke its `resolve()` callback rather than remaining pending forever, ensuring `ScriptExecutor` can progress cleanly.

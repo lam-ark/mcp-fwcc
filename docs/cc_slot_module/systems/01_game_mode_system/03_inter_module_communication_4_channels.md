@@ -2,16 +2,16 @@
 id: "cc_slot_module:systems:game_mode:inter_module_communication_4_channels"
 title: "Inter-Module Communication: 4 Channels Architecture"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "game_mode", "communication_channels", "event_bus", "data_binding", "script_pipeline"]
+tags: ["cc_slot_module", "systems", "game_mode", "communication_channels", "event_bus", "data_binding", "script_pipeline", "flow"]
 ---
 
 # 📡 Inter-Module Communication: 4 Channels Architecture
 
 ---
 
-## 1. Tổng quan 4 Kênh Giao Tiếp Đa Tầng
+## 1. Multi-Tier Communication Architecture Overview
 
-Để đảm bảo kiến trúc Slot Framework có độ linh hoạt tối đa (High Cohesion, Low Coupling), `cc-slot-module` phân chia toàn bộ luồng thông tin trong game thành **4 kênh giao tiếp chuyên biệt**:
+To achieve high cohesion, low coupling, and zero race conditions, the `cc-common` Slot Framework segregates all runtime data and message flows into **4 specialized communication channels**:
 
 ```mermaid
 graph TD
@@ -20,7 +20,7 @@ graph TD
     end
 
     subgraph Channel 2: Command Script Pipeline
-        Dir[Director] -->|runAction| Wrt[Writer]
+        Dir[Director] -->|runAction / makeScript| Wrt[Writer]
         Wrt -->|command string array| Exec[ScriptExecutor]
         Exec -->|Promise Chaining| Dir
     end
@@ -36,40 +36,81 @@ graph TD
 
 ---
 
-## 2. Chi tiết 4 Kênh Giao Tiếp
+## 2. Granular Breakdown of the 4 Channels
 
-### 🔹 Kênh 1: Reactive Data Flow (`GameDataStore` ➔ `BaseDataModule`)
-- **Cơ chế**: Gọi hàm trực tiếp qua mảng Observer (`_dataModules: Set<BaseDataModule>`), zero event string overhead.
-- **Dữ liệu truyền**: Data slice nguyên bản từ Server (`matrix`, `payLines`, `winAmount`) đã được **Deep Clone** (`JSON.parse(JSON.stringify(val))`).
-- **Mục đích**: Cung cấp dữ liệu trạng thái mới nhất cho các module hiển thị mà không sợ bị sửa đổi dữ liệu gốc ngoài ý muốn.
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Socket as Network Socket
+    participant GDS as GameDataStore
+    participant BDM as BaseDataModule (TableData)
+    participant Wrt as NormalGameWriterModule
+    participant Exec as ScriptExecutor
+    participant Dir as NormalGameDirectorModule
+    participant Bus as Scoped moduleEvent
+    participant Sub as SlotTableModule
+    participant Global as Global EventManager
 
-### 🔹 Kênh 2: Command Script Pipeline (`Director` ➔ `Writer` ➔ `ScriptExecutor`)
-- **Cơ chế**: Mẫu thiết kế Command Pattern kết hợp Async Promise Chaining.
-- **Dữ liệu truyền**: Mảng danh sách tên hàm cần thực thi (ví dụ: `["_beforeSpinStart", "_startSpinningTable", "_stopSpinningTable"]`).
-- **Mục đích**: Tách rời hoàn toàn **Luồng logic kịch bản (Writer)** ra khỏi **Hiển thị đồ họa (Director)**. Cho phép dễ dàng viết Unit Test cho kịch bản mà không cần dựng Scene Cocos.
+    Socket->>GDS: mapNewKeys(serverPayload)
+    Note over GDS: Channel 1: Reactive Data Flow
+    GDS->>BDM: onDataUpdate(matrix, payLines)
+    BDM->>BDM: parseDataPS() deep clones matrix
+    
+    Dir->>Wrt: makeScriptStopSpinningTable()
+    Note over Wrt,Exec: Channel 2: Command Script Pipeline
+    Wrt-->>Exec: [{ command: "_stopSpinningTable" }, { command: "_setUpPaylines" }]
+    Exec->>Dir: Invokes Dir._stopSpinningTable()
+    
+    Note over Dir,Sub: Channel 3: Scoped Module Event Bus
+    Dir->>Bus: emit("TABLE_STOP_SPIN")
+    Bus->>Sub: SlotTableModule stops reels & updates symbols
+    Sub-->>Dir: Promise resolves
+    
+    Note over Dir,Global: Channel 4: Global Event Bus
+    Dir->>Global: emit(GameUIEvents.WALLET.RESUME_WALLET)
+    Global->>Dir: Promise.all() awaits HUD updates
+```
 
-### 🔹 Kênh 3: Scoped Module Event Bus (`this.moduleEvent: GameModuleEvent`)
-- **Cơ chế**: Event Bus nội bộ được Director tạo ra bằng `new GameModuleEvent()` và tiêm vào toàn bộ `this.moduleList`.
-- **Sự kiện tiêu biểu**: `SYNC_TABLE`, `TABLE_START_SPIN`, `TABLE_STOP_SPIN`, `BLINK_ALL_PAYLINES`, `SHOW_ALL_PAYLINES`, `CLEAR_PAYLINES`.
-- **Mục đích**: Cách ly hoàn toàn các sự kiện đồ họa giữa Normal Game, Free Game và Bonus Game. Bảng quay của Free Game nhận lệnh từ Free Game Director mà không bao giờ bị ảnh hưởng bởi Normal Game Director.
+### 🔹 Channel 1: Reactive Data Flow (`GameDataStore` ➔ `BaseDataModule`)
+* **Mechanism**: Direct observer pattern invoking `onDataUpdate(data)` on all registered `BaseDataModule` instances. Zero string parsing overhead.
+* **Payload Isolation**: Emits **Deep-Cloned** slices (`JSON.parse(JSON.stringify(val))`), preventing mutations in UI models from polluting the central reactive state.
+* **Purpose**: Synchronizes domain state (matrices, winnings, active bet, free spin counters) across UI components.
 
-### 🔹 Kênh 4: Global Event Bus (`this.eventManager: EventManager`)
-- **Cơ chế**: Event Bus toàn cục xuyên suốt vòng đời ứng dụng.
-- **Sự kiện tiêu biểu**:
+### 🔹 Channel 2: Command Script Pipeline (`Director` ➔ `Writer` ➔ `ScriptExecutor`)
+* **Mechanism**: Command Pattern paired with Sequential Asynchronous Promise Chaining.
+* **Payload Structure**: Plain JSON arrays specifying method execution names and optional parameters:
+  ```typescript
+  [
+      { command: "_syncJackpot" },
+      { command: "_playSureWinEffect" },
+      { command: "_playPreStopSpinningEffect" }
+  ]
+  ```
+* **Purpose**: Completely decouples **choreography flow logic (Writer)** from **visual animation rendering (Director)**, enabling unit testing of script flows in headless Node.js environments without loading Cocos scenes.
+
+### 🔹 Channel 3: Scoped Module Event Bus (`this.moduleEvent: GameModuleEvent`)
+* **Mechanism**: Local pub/sub event instance created via `new GameModuleEvent()` inside each `GameModeDirectorModule` and propagated to all child nodes in `this.moduleList`.
+* **Standard Topics**: `SYNC_TABLE`, `TABLE_START_SPIN`, `TABLE_STOP_SPIN`, `BLINK_ALL_PAYLINES`, `SHOW_ALL_PAYLINES`, `CLEAR_PAYLINES`.
+* **Purpose**: Strict memory and event isolation between game modes. Events dispatched in `FreeGameDirectorModule` will never collide with or trigger listeners in `NormalGameDirectorModule`.
+
+### 🔹 Channel 4: Global Event Bus (`this.eventManager: EventManager` & `this.gameLogic`)
+* **Mechanism**: Application-wide asynchronous event dispatcher where `emit()` returns `Promise.all()` over all registered asynchronous listeners.
+* **Standard Topics**:
   - `GameUIEvents.WALLET.PAUSE_WALLET`, `RESUME_WALLET`
   - `GameUIEvents.JACKPOT.UPDATE_JACKPOT_VALUE`, `PAUSE_JACKPOT`
-  - `GameUIEvents.CUTSCENES.PLAY_CUTSCENE`, `CLOSE_CUTSCENE`
-  - `GameUIEvents.GAME_MODE.SWITCH_GAME_MODE`, `EXIT_GAME_MODE`
-- **Mục đích**: Đồng bộ giữa các Subsystem cấp cao nằm ngoài Game Mode (như Hệ thống Ví tiền, Ticker Jackpot toàn server, Hộp thoại Popup cutscenes).
+  - `GameUIEvents.CUTSCENES.SHOW_CUTSCENE`, `CLOSE_CUTSCENE`
+  - `SlotCustomEvent.CHANGE_GAME_MODE`, `EXIT_GAME_MODE`
+* **Purpose**: Coordinates top-level subsystems operating outside individual game modes (e.g. Player Balance HUD, Progressive Jackpot Banners, Dialog Popups, Fullscreen Win Cutscenes).
 
 ---
 
-## 3. Ma Trận So Sánh Toàn Diện
+## 3. Comprehensive Comparison Matrix
 
-| Tiêu chí | Kênh 1: Reactive Data | Kênh 2: Command Script | Kênh 3: Scoped Bus | Kênh 4: Global Bus |
+| Metric | Channel 1: Reactive Data | Channel 2: Command Script | Channel 3: Scoped Bus | Channel 4: Global Bus |
 | :--- | :--- | :--- | :--- | :--- |
-| **Đối tượng Gửi** | `GameDataStore` | `GameModeDirector` | `GameModeDirector` | Mọi Component |
-| **Đối tượng Nhận** | `BaseDataModule` | `ScriptExecutor` | `moduleList` nodes | Toàn bộ Scene |
-| **Độ trễ** | Tức thì (<0.05ms) | Tuần tự bất đồng bộ | Tức thì (<0.05ms) | Bất đồng bộ `Promise.all` |
-| **Cô lập Bộ nhớ** | Có (Deep Clone) | Có (Command strings) | Có (Scoped Event Instance) | Toàn cục |
-| **Phạm vi** | Tầng dữ liệu | Tầng kịch bản | Trong 1 Game Mode | Toàn bộ trò chơi |
+| **Sender** | `GameDataStore` | `GameModeDirectorModule` | `GameModeDirectorModule` | Any Component / Subsystem |
+| **Receiver** | `BaseDataModule` instances | `ScriptExecutor` | Attached `moduleList` nodes | Entire Scene Subsystems |
+| **Dispatch Latency** | Instantaneous (<0.05ms) | Asynchronous Sequential | Instantaneous (<0.05ms) | Asynchronous `Promise.all()` |
+| **Memory Isolation** | High (Deep-Cloned Slices) | High (Command Strings) | High (Instance-scoped Bus) | Global (Application-wide) |
+| **Primary Scope** | Domain State Layer | Execution Orchestration | Intra-GameMode Boundaries | Cross-Subsystem Coordination |
+| **Failure Impact** | Desynced UI display data | Broken execution progression | Local visual glitch in mode | System-wide freeze or missing cutscene |

@@ -1,55 +1,91 @@
 ---
 id: "cc_slot_module:systems:script_pipeline:command_synthesis_and_payload_dispatch"
-title: "Command Synthesis & Dynamic Payload Dispatch"
+title: "Command Synthesis & Parameterized Action Dispatch"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "script_pipeline", "command_synthesis", "payload_dispatch", "writer_module"]
+tags: ["cc_slot_module", "systems", "script_pipeline", "command_synthesis", "dispatch", "writer", "flow"]
 ---
 
-# ✍️ Command Synthesis & Dynamic Payload Dispatch
+# ✍️ Command Synthesis & Parameterized Action Dispatch
 
 ---
 
-## 1. Cơ Chế Sinh Lệnh Dạng Chuỗi (`string[]`)
+## 1. Command Script Struct Formats
 
-Trong Writer, kịch bản được chia nhỏ thành các hàm `makeScript[ActionName]()`. Dựa trên trạng thái của ván quay, Writer lắp ghép mảng lệnh:
+Writers synthesize action queues using two valid formats:
 
+### Format A: Simple Method Name Strings
+Used for parameterless sequential actions:
 ```typescript
-// Trong FreeGameWriterModule.ts
-makeScriptShowResultFinal(): Array<string | object> {
-    const { freeGameRemain } = this.dataStore.playSession;
-    
-    if (freeGameRemain > 0) {
-        // Còn lượt quay: Cập nhật badge số lượt và tiếp tục
-        return this.getFreeGameRemainScript();
-    } else {
-        // Hết lượt: Hiện tổng kết Total Win và thoát về Base Game
-        return this.getFreeGameEndScript();
+let listScript = [
+    "_startSpinningTable",
+    "_playSpinSound"
+];
+```
+
+### Format B: Parametrized Command Objects
+Used when custom payload arguments must be passed to the target method:
+```typescript
+let listScript = [
+    {
+        command: "_showUnskippedCutscene",
+        data: { 
+            cutsceneType: CUTSCENE_TYPE_ENUM.TOTAL_WIN, 
+            amount: 50000 
+        }
+    },
+    {
+        command: "_updateSpinTimes",
+        data: 10
     }
+];
+```
+
+---
+
+## 2. Dynamic Command Synthesis Logic
+
+Writers evaluate conditions in `GameDataStore` to conditionally construct command pipelines:
+
+```typescript
+// Example from FreeGameWriterModule
+makeScriptShowResultEntry(): Object[] {
+    const { isJackpot, winAmount, freeGameRemain } = this.dataStore.playSession;
+    let listScript = [];
+
+    // 1. Conditionally inject Jackpot celebration
+    if (isJackpot) {
+        listScript.push({ command: "_playJackpotWin" });
+    }
+
+    // 2. Conditionally inject Big Win cutscene
+    if (winAmount > 0) {
+        listScript.push({ command: "_showResultEntry" });
+    }
+
+    // 3. Conditionally evaluate Free Spins conclusion
+    if (freeGameRemain === 0) {
+        listScript.push({
+            command: "_showUnskippedCutscene",
+            data: { cutsceneType: CUTSCENE_TYPE_ENUM.TOTAL_WIN }
+        });
+        listScript.push({ command: "_gameExit" });
+    }
+
+    return listScript;
 }
 ```
 
 ---
 
-## 2. Hỗ Trợ Truyền Tham Số Động (`{ command, data }`)
+## 3. Dispatch & Resolution Mechanism
 
-Bên cạnh các lệnh không tham số (`string`), Writer có thể gửi các lệnh kèm dữ liệu động:
-
+When `ScriptExecutor` parses an item from the queue:
 ```typescript
-// Writer trả về object chứa payload
-makeScriptShowWinPayline(): Array<string | object> {
-    const bigWinData = this.dataStore.getBigWinData();
-    
-    return [
-        {
-            command: "_showBigWin",
-            data: bigWinData
-        },
-        "_showWinPayline"
-    ];
-}
-```
+// ScriptExecutor execution step
+const item = this.script.shift();
+const command = typeof item === "string" ? item : item.command;
+const data = typeof item === "object" ? item.data : undefined;
 
-Khi `ScriptExecutor` thực thi, nó nhận biết đối tượng `object` và gọi hàm trên Director với tham số `data`:
-```typescript
-await targetDirector[cmd.command].call(targetDirector, cmd.data);
+// Dynamic dispatch on target Director
+const result = this.target[command](data);
 ```

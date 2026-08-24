@@ -2,74 +2,109 @@
 id: "cc_slot_module:systems:game_mode:concepts_and_types"
 title: "Game Mode Concepts & Standard Types"
 category: "cc_slot_module"
-tags: ["cc_slot_module", "systems", "game_mode", "concepts", "types", "fsm", "state_machine"]
+tags: ["cc_slot_module", "systems", "game_mode", "concepts", "types", "fsm", "state_machine", "flow"]
 ---
 
 # 🎮 Game Mode Concepts & Standard Types
 
 ---
 
-## 1. Bản chất của Game Mode: Finite State Machine (FSM)
+## 1. Architectural Role: Finite State Machine (FSM)
 
-Trong kiến trúc Slot Framework, một **Game Mode** là một trạng thái độc lập trong cỗ máy trạng thái hữu hạn (**Finite State Machine - FSM**).
+In the `cc-common` Slot Framework architecture, a **Game Mode** is an autonomous state node within a hierarchical **Finite State Machine (FSM)**.
 
-Mỗi Game Mode là một hệ sinh thái con tự quản lý hoàn chỉnh:
-* **Giao diện & Theme**: Bảng quay riêng, background riêng, animation chuyển cảnh.
-* **Quy tắc Trò chơi & Trả thưởng**: Tỷ lệ cược, bảng thanh toán (Paytable), hệ số nhân (Multiplier).
-* **Vòng đời Kịch bản (Script Execution)**: Quy trình điều phối spin, cascade, chớp line và tổng kết.
-* **Âm thanh (Audio Profile)**: BGM và SFX đặc trưng của chế độ đó.
+Each Game Mode operates as a self-contained, decoupled subsystem managing:
+* **Visual Presentation & Scene Subtree**: Dedicated background art, reels/grids, particle systems, and mode transitions.
+* **Math & Rule Engines**: Payout matrices, multiplier progressions, paylines, and scatter evaluation.
+* **Execution Scripting Pipeline**: Mode-specific command queues orchestrating spin start, pre-stop tension, deceleration, payline highlight, and settlement.
+* **Audio Choreography**: Dedicated BGM tracks, spin loops, win roll escalating SFX, and transition stingers.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> NORMAL_GAME: Bootstrap Complete
+    [*] --> NORMAL_GAME: Scene Bootstrap Complete
     
-    NORMAL_GAME --> FREE_OPTION: Scatter Trigger (Branching)
-    NORMAL_GAME --> FREE_GAME: Direct Scatter Trigger
-    NORMAL_GAME --> BONUS_GAME: Bonus Trigger
-    NORMAL_GAME --> CASCADE_GAME: Win Cascading Trigger
+    NORMAL_GAME --> FREE_OPTION: Scatter Trigger (Branching Choice)
+    NORMAL_GAME --> FREE_GAME: Direct Scatter Trigger (e.g. 3+ Scatters)
+    NORMAL_GAME --> BONUS_GAME: Bonus Symbol Trigger
+    NORMAL_GAME --> CASCADE_GAME: Winning Cluster / Avalanching Spin
     
-    FREE_OPTION --> FREE_GAME: Option Picked / Timer Expired
+    FREE_OPTION --> FREE_GAME: Option Selected / Auto-Timer Expired
     
-    FREE_GAME --> FREE_GAME: Auto-Spin (freeGameRemain > 0)
-    FREE_GAME --> NORMAL_GAME: Feature Concluded (TOTAL_WIN)
+    FREE_GAME --> FREE_GAME: Free Spin Loop (freeGameRemain > 0)
+    FREE_GAME --> NORMAL_GAME: Feature Complete (TOTAL_WIN Cutscene)
     
-    BONUS_GAME --> NORMAL_GAME: Bonus Finished
-    CASCADE_GAME --> NORMAL_GAME: No more cascading wins
+    BONUS_GAME --> NORMAL_GAME: Mini-Game Settlement Complete
+    CASCADE_GAME --> NORMAL_GAME: Avalanche Exhausted (No More Drops)
 ```
 
 ---
 
-## 2. Phân loại 5 Game Mode Chuẩn trong Framework
+## 2. The 5 Standard Game Mode Types
+
+```mermaid
+graph TD
+    subgraph 1. Base Gameplay
+        Normal[NORMAL_GAME: NormalGameDirectorModule]
+    end
+    
+    subgraph 2. Free Spins Subsystem
+        FreeOpt[FREE_OPTION: FreeOptionDirectorModule]
+        Free[FREE_GAME: FreeGameDirectorModule]
+    end
+    
+    subgraph 3. Mini-Games & Special Mechanics
+        Bonus[BONUS_GAME: BonusGameDirectorModule / FortuneWheel]
+        Cascade[CASCADE_GAME: VerticalCascadeModule]
+    end
+    
+    Normal -->|Scatter Hit| FreeOpt
+    Normal -->|Direct Scatter| Free
+    Normal -->|Bonus Hit| Bonus
+    Normal -->|Win Cluster| Cascade
+    FreeOpt -->|Player Choice| Free
+    Free -->|Summary Dialog| Normal
+    Bonus -->|Settlement| Normal
+    Cascade -->|Final Payout| Normal
+```
 
 ### 2.1. `NORMAL_GAME` (Base Game Mode)
-- **Mã Enum**: `GAME_MODE_ENUM.NORMAL_GAME` (Giá trị: `1`).
-- **Đặc điểm**:
-  - Chế độ chơi cơ sở, luôn được khởi động đầu tiên khi vào game.
-  - Nhận tương tác trực tiếp từ người chơi thông qua nút Quay (Spin), Quay Tự Động (Auto Spin), Quay Siêu Tốc (Turbo).
-  - Trừ tiền ví (`Wallet`) trên mỗi lần quay và kiểm tra kích hoạt các tính năng đặc biệt (Scatters, Bonus symbols).
+* **Enum Constant**: `GAME_MODE_ENUM.NORMAL_GAME` (Value: `1`).
+* **Core Controller**: `NormalGameDirectorModule` paired with `NormalGameWriterModule`.
+* **Flow & Behavioral Mechanics**:
+  1. Default entry mode loaded upon scene bootstrap.
+  2. Receives direct player inputs via GUI buttons (Spin, Auto Spin, Turbo Toggle, Bet Adjustments).
+  3. Deducts active bet amount from player wallet (`WalletModule`) at spin start.
+  4. Evaluates server packet for feature triggers (Scatters, Bonus symbols, Jackpots).
 
 ### 2.2. `FREE_GAME` (Free Spins Feature Mode)
-- **Mã Enum**: `GAME_MODE_ENUM.FREE_GAME` (Giá trị: `2`).
-- **Đặc điểm**:
-  - Chế độ quay miễn phí tự động liên tục mà không trừ tiền ví người chơi.
-  - Quản lý bộ đếm số lượt quay còn lại (`freeSpinTimes` / `freeGameRemain`).
-  - Cộng dồn tiền thắng lũy kế của toàn bộ vòng quay miễn phí (`winAmountPS`).
-  - Hỗ trợ tính năng Retrigger (thêm lượt quay) và kết thúc bằng Dialog tổng kết `TOTAL_WIN`.
+* **Enum Constant**: `GAME_MODE_ENUM.FREE_GAME` (Value: `2`).
+* **Core Controller**: `FreeGameDirectorModule` paired with `FreeGameWriterModule`.
+* **Flow & Behavioral Mechanics**:
+  1. Automated, looping spin execution without bet deduction from player balance.
+  2. Tracks remaining free spins (`freeGameRemain` / `freeSpinTimes`) and updates HUD countdown badge (`SpinTimesModule`).
+  3. Accumulates cumulative bonus session winnings (`winAmountPS`) across consecutive spins.
+  4. Supports feature retriggers (`_reTriggerFreeGame`) and concludes with a fullscreen unskippable `TOTAL_WIN` cutscene.
 
 ### 2.3. `FREE_OPTION` (Player Volatility Selection Mode)
-- **Mã Enum**: `GAME_MODE_ENUM.FREE_OPTION` (Giá trị: `3`).
-- **Đặc điểm**:
-  - Màn hình tương tác hiển thị danh sách các thẻ lựa chọn (ví dụ: 20 Free Spins nhân 2x-5x Wild vs 10 Free Spins nhân 5x-10x Wild vs Thẻ Bí Ẩn Mystery).
-  - Tích hợp đồng hồ đếm ngược 15 giây (`startCountDown()`). Nếu người chơi không chọn, hệ thống tự động chọn ngẫu nhiên 1 thẻ (`_runAutoTrigger()`).
-  - Gửi yêu cầu mạng `SEND_FREE_OPTION_REQUEST` lên Server để nhận cấu hình Free Spins tương ứng.
+* **Enum Constant**: `GAME_MODE_ENUM.FREE_OPTION` (Value: `3`).
+* **Core Controller**: `FreeOptionDirectorModule`.
+* **Flow & Behavioral Mechanics**:
+  1. Interactive selection panel offering multiple volatility options (e.g., 20 Free Spins with 2x–5x Wilds vs. 10 Free Spins with 5x–10x Wilds vs. Mystery Card).
+  2. Runs an automated countdown timer (e.g. 15s via `startCountDown()`). Upon expiry, triggers `_runAutoTrigger()` to randomly pick an option.
+  3. Emits `SEND_FREE_OPTION_REQUEST` to backend socket and transitions into `FREE_GAME` upon response.
 
 ### 2.4. `BONUS_GAME` (Pick & Win / Mini-Game Mode)
-- **Mã Enum**: `GAME_MODE_ENUM.BONUS_GAME` (Giá trị: `4`).
-- **Đặc điểm**:
-  - Trò chơi phụ tương tác như chọn rương báu (Chest Picking), quay bánh xe may mắn (Fortune Wheel), hoặc mini-game thẻ bài.
-  - Sử dụng bảng riêng (`BonusGameTableModule`) và các vật phẩm tương tác (`BonusGameItemModule`).
+* **Enum Constant**: `GAME_MODE_ENUM.BONUS_GAME` (Value: `4`).
+* **Core Controller**: `BonusGameDirectorModule`, `FortuneWheelGameDirector`.
+* **Flow & Behavioral Mechanics**:
+  1. Interactive mini-game screen (e.g., Chest Picking, Wheel of Fortune, Card Match).
+  2. Utilizes custom child grids (`BonusGameTableModule`) and clickable items (`BonusGameItemModule`, `FortuneWheelModule`).
+  3. Emits `SEND_BONUS_GAME_REQUEST` with user choice index, reveals multiplier rewards, and executes settlement sequence.
 
 ### 2.5. `CASCADE_GAME` (Avalanche / Tumble Mode)
-- **Đặc điểm**:
-  - Chế độ sụp đổ biểu tượng: các Symbol trúng thưởng phát nổ và biến mất, các biểu tượng phía trên rơi xuống lấp đầy ô trống.
-  - Mỗi bước sụp là một Step con được điều phối bởi `CascadeModuleData` và `CascadeModuleDirector`.
+* **Core Controller**: `VerticalCascadeModule` coordinating `CascadeModuleData` and `CascadeModuleConfig`.
+* **Flow & Behavioral Mechanics**:
+  1. Winning symbol combinations explode and dissolve (`_clearWinningSymbols`).
+  2. Non-winning floating symbols drop down to fill empty gaps (`_dropRemainingSymbols`).
+  3. New random refill symbols cascade from top buffer rows (`_dropRefillSymbols`).
+  4. Cascades repeat iteratively until no new winning combinations appear on the table matrix.
