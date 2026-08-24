@@ -1,0 +1,33 @@
+{
+  "id": "SlotBaseModule",
+  "title": "SlotBaseModule Universal Component Base",
+  "category": "cc_slot_module",
+  "inheritsFrom": "cc.Component",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotTableModule", "relation": "inherits_base_module" },
+    { "target": "SlotSymbolManager", "relation": "inherits_base_module" },
+    { "target": "PaylineInfoModule", "relation": "inherits_base_module" },
+    { "target": "WalletModule", "relation": "inherits_base_module" },
+    { "target": "BetModule", "relation": "inherits_base_module" },
+    { "target": "BaseGameDirector", "relation": "inherits_base_module" }
+  ],
+  "dependsOn": [
+    "GameEventManager",
+    "GameModuleEvent",
+    "SlotSoundPlayerModule",
+    "ObserverObject",
+    "GameLogic"
+  ],
+  "emitsEvents": [
+    "RESET_ALL_EFFECT_AND_TASKS"
+  ],
+  "listensToEvents": [
+    "RESET_ALL_EFFECT_AND_TASKS"
+  ],
+  "gotchas": [
+    "Gotcha:Direct_onLoad_Override_Drops_Injections",
+    "Gotcha:Multi_Mode_Registration_Conflict",
+    "Gotcha:Missing_TargetOff_Event_Leak"
+  ]
+}
