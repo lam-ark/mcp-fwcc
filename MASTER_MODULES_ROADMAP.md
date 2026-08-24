@@ -10,18 +10,19 @@
 
 - **Total SDK Clusters**: 10
 - **Total Modules & Core Components**: ~75
-- **Completed Modules (v3.0)**: **52 / 75 (70% Complete)**
+- **Completed Modules (v3.0)**: **54 / 75 (72% Complete)**
   - Cluster 1 (Core Foundation & Bootstrap): **9 / 9 (100%)**
   - Cluster 2 (Game Mode Directors, Writers & Mini-Games): **14 / 14 (100%)**
   - Cluster 3 (Matrix, Reels & Symbols): **11 / 11 (100%)**
   - Cluster 4 (Paylines, Win Frames & Line Numbers): **8 / 8 (100%)**
   - Cluster 5 (Cascade & Avalanche Engine): **3 / 3 (100%)**
   - Cluster 6 (Cutscenes & Celebratory Overlays): **7 / 7 (100%)**
-- **Completed Architecture Systems & Overviews**: **100% Complete** (14 Global Guides + 7 Core Architecture Systems)
-- **In-Progress / Upcoming Modules**: **23**
+  - Cluster 7 (GUI Dashboard, Controls & Betting System): **2 / 13 (15%)**
+- **Completed Architecture Systems & Overviews**: **100% Complete** (14 Global Guides + 8 Core Architecture Systems)
+- **In-Progress / Upcoming Modules**: **21**
 
 ```text
-[█████████████████████████████████████░░░░░░░░░░░░░░░] 70% Total Completed
+[██████████████████████████████████████░░░░░░░░░░░░░░] 72% Total Completed
 ```
 
 ---
@@ -39,6 +40,7 @@
 | [x] | **Payline & Win Presentation** | [`05_payline_and_win_presentation_system`](docs/cc_slot_module/systems/05_payline_and_win_presentation_system/00_index.md) | 4 payline modes (Lines/AllWays/Cluster/ScatterPay), 2-stage presentation lifecycle, Component Quad & 4 rendering layers, payLineEmitter bus. |
 | [x] | **Cascade & Avalanche Engine** | [`06_cascade_and_avalanche_system`](docs/cc_slot_module/systems/06_cascade_and_avalanche_system/00_index.md) | Deterministic elimination mapping, downward gravity drops with bounce easing, mega symbol offset math, 2-stage respin lifecycle. |
 | [x] | **Cutscenes & Celebrations** | [`07_cutscenes_and_celebration_system`](docs/cc_slot_module/systems/07_cutscenes_and_celebration_system/00_index.md) | Centralized Map registry, Promise wrapping, dynamic multiplier escalation (Big->Mega->Super), touch-to-skip fast forwarding, and FTR fallback. |
+| [x] | **GUI Dashboard & Betting** | [`08_gui_dashboard_and_controls_system`](docs/cc_slot_module/systems/08_gui_dashboard_and_controls_system/00_index.md) | Master HUD orchestration, spin button state machines, bet calculation matrices, currency wallet isolation, and trial play promotions. |
 
 ### 🌐 Global SDK Overviews (`docs/cc_slot_module/over_view/`)
 
@@ -159,8 +161,8 @@
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
 | :---: | :--- | :--- | :--- | :--- |
-| [ ] | **`UIManagerModule`** | `Canvas/Director/UIManager` | `assets/cc-common/cc-slot-module/Core/UIManagerModule.ts` | Master GUI orchestrator managing bottom control panel and states. |
-| [ ] | **`SlotButtonModule`** | `Canvas/Director/UIManager/SpinButton` | `assets/cc-common/cc-slot-module/GUI/SpinButton/SlotButtonModule.ts` | Master spin button supporting Normal, Auto, Turbo, and Lightning modes. |
+| [x] | **`UIManagerModule`** | `Canvas/Director/UIManager` | `assets/cc-common/cc-slot-module/Core/UIManagerModule.ts` | Master GUI orchestrator managing bottom control panel and states. |
+| [x] | **`SlotButtonModule`** | `Canvas/Director/UIManager/SpinButton` | `assets/cc-common/cc-slot-module/GUI/SpinButton/SlotButtonModule.ts` | Master spin button supporting Normal, Auto, Turbo, and Lightning modes. |
 | [ ] | **`BetModule`** | `Canvas/Director/UIManager/BetModule` | `assets/cc-common/cc-slot-module/GUI/Bet/BetModule.ts` | Bet selector, bet multiplier stepper, max bet toggle. |
 | [ ] | **`ExtraBetModule`** | `Canvas/Director/UIManager/ExtraBet` | `assets/cc-common/cc-slot-module/GUI/Bet/ExtraBetModule.ts` | Toggle switch for Ante-Bet / Golden Bet feature modifiers. |
 | [ ] | **`WalletModule`** | `Canvas/Director/UIManager/WalletModule` | `assets/cc-common/cc-slot-module/GUI/Wallet/WalletModule.ts` | Player cash balance display with rolling MoneyTween count-ups. |

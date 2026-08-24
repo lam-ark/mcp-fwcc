@@ -1,0 +1,40 @@
+{
+  "moduleId": "SlotButtonModule",
+  "category": "cc_slot_module",
+  "name": "SlotButtonModule",
+  "description": "Base spin input component managing touch hitboxes, hold-to-auto gestures, global spacebar triggers, and visual state broadcasts.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    },
+    {
+      "target": "GameModeDirectorModule",
+      "relation": "spin_input_receiver"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule"
+  ],
+  "emitsEvents": [
+    "SET_UP_BUTTON",
+    "TRIGGER_SPACE_BUTTON",
+    "NORMAL_SPIN_CLICKED",
+    "FREE_SPIN_CLICKED"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_unreleased_system_event_listener_leak",
+    "02_spacebar_trigger_when_popup_displayed"
+  ],
+  "related": [
+    "UIManagerModule",
+    "SlotButtonNormal",
+    "SlotButtonFree",
+    "SlotButtonLightning",
+    "TurboButton"
+  ]
+}
