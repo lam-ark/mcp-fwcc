@@ -34,6 +34,7 @@
 | [x] | **Table, Reels & Symbol Engine** | [`02_table_reel_symbol_engine`](docs/cc_slot_module/systems/02_table_reel_symbol_engine/00_index.md) | 7-part Table engine, 2D matrix coordinate math, buffer rows, Z-index sorting, mega symbols, zero-allocation pooling. |
 | [x] | **Reactive Data & Reconnection** | [`03_reactive_data_system`](docs/cc_slot_module/systems/03_reactive_data_system/00_index.md) | Ingestion pipeline, key normalization (`mapNewKeys`), state immutability & deep-cloning, `isResume` session hydration. |
 | [x] | **Script Execution & Pipeline** | [`04_script_execution_pipeline`](docs/cc_slot_module/systems/04_script_execution_pipeline/00_index.md) | 3-tier Scripting Triad (Director-Writer-Executor), command synthesis, async Promise chaining, Turbo / FTR, DevTools logging. |
+| [x] | **Payline & Win Presentation** | [`05_payline_and_win_presentation_system`](docs/cc_slot_module/systems/05_payline_and_win_presentation_system/00_index.md) | 4 payline modes (Lines/AllWays/Cluster/ScatterPay), 2-stage presentation lifecycle, Component Quad & 4 rendering layers, payLineEmitter bus. |
 
 ### 🌐 Global SDK Overviews (`docs/cc_slot_module/over_view/`)
 
