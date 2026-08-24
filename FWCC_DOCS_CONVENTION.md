@@ -52,6 +52,12 @@ docs/modules/[ModuleName]/
 │   ├── [recipe_slug_1].md                 # Live production code snippet (e.g. Red Cliff Slot)
 │   └── ...
 │
+├── 09_inheritance_and_customization/      # 🏗️ HOW TO EXTEND & CUSTOMIZE FOR NEW GAMES
+│   ├── 01_subclassing_guide.md            # Step-by-step inheritance rules (onLoadExtend, super calls)
+│   ├── 02_override_points_matrix.md       # Matrix of all hook methods & safe extension points
+│   ├── 03_game_creation_workflow.md       # 5-step checklist when building a new slot game
+│   └── 04_production_game_case_study.md   # Complete real-world case study (e.g. Red Cliff g9666L)
+│
 └── relations.json                         # Complete Knowledge Graph semantic edge manifest
 ```
 
@@ -302,15 +308,43 @@ Every module directory under `docs/modules/[ModuleName]/` MUST contain a `relati
 
 ---
 
-## 💻 IX. Code Completeness Standard (Zero-Truncation Policy)
+## 🏗️ XI. Game Creation & Customization Standard (`09_inheritance_and_customization/`)
 
-In atomic method documentation (`05_methods/`) and recipes (`08_recipes/`):
-* 🚫 **STRICT BAN ON TRUNCATION**: Never use placeholders like `// ...`, `/* other logic */`, `// TODO`, or incomplete function bodies.
-* ✅ **MANDATORY EXACT SOURCE**: The source code block under `## 5. Un-truncated Source Code Implementation` must be the exact, complete, copy-pasteable TypeScript method implementation copied verbatim from the SDK codebase.
+When developers build a **new slot game title** (e.g. `g9666L`, `g9000H`, `g9888P`), they must know exactly **how to inherit, override, and wire custom behaviors** without breaking SDK invariants.
+
+Every module's `09_inheritance_and_customization/` folder must contain the following 4 documents:
+
+### 1. `01_subclassing_guide.md`
+* **Declaration Syntax**: Proper `@ccclass("MyCustomModule9666")` decorator and `export default class` structure.
+* **Invariant Guardrails**:
+  * 🛑 **NEVER override `onLoad()` directly**; implement `onLoadExtend()` instead.
+  * 🛑 **NEVER omit `super.registerEvents()`** when overriding event listeners.
+  * 🛑 **ALWAYS override `resetAllEffectAndTasks()`** to cancel custom Spine animations / active tweens during Fast-To-Result (FTR).
+  * 🛑 **ALWAYS invoke `targetOff(this)` in `onDestroy()`**.
+
+### 2. `02_override_points_matrix.md`
+A complete table cataloging all hook methods and extension points:
+| Extension Method | Base Implementation | Safe to Override? | Required `super` Call | Customization Purpose |
+| :--- | :--- | :--- | :--- | :--- |
+| `onLoadExtend()` | Empty virtual hook | `YES (Recommended)` | None (Virtual) | Resolve node components, instantiate local models. |
+| `registerEvents()` | Binds base events | `YES` | `MANDATORY` | Subscribe to game-specific custom events. |
+| `resetAllEffectAndTasks()` | Clears base tweens | `YES` | `MANDATORY` | Abort custom character Spine tweens and timers. |
+| `onDestroy()` | Calls `targetOff` | `YES` | `MANDATORY` | Release custom singleton listeners and unbind observers. |
+
+### 3. `03_game_creation_workflow.md`
+A 5-step concrete checklist for integrating this customized module into a new slot game:
+1. **Scene Placement**: Where to mount or replace the component in the new game's scene/prefab.
+2. **Inspector Properties**: What custom Sprites, Spine Skeletons, AudioClips, and Fonts must be wired in the Cocos Editor.
+3. **Data Mapping**: Custom server payload adaptation via `mapNewKeys()` or `parseDataPS()`.
+4. **Event Wiring**: Scoped `moduleEvent` vs Global `eventManager` event topic mapping.
+5. **QA Verification**: Testing with Console Test mode, Turbo mode, and FTR Fast Stop.
+
+### 4. `04_production_game_case_study.md`
+A complete, un-truncated, real-world subclass implementation from a shipped slot title (e.g. Red Cliff `g9666L`), explaining why specific methods were overridden and how they interact with game-specific mechanics.
 
 ---
 
-## ✅ X. Automated Verification & Quality Checklist
+## ✅ XII. Automated Verification & Quality Checklist
 
 Before committing documentation to the MCP Knowledge Base, verify compliance against this checklist:
 
@@ -319,7 +353,9 @@ Before committing documentation to the MCP Knowledge Base, verify compliance aga
 - [ ] **Tags Array**: Contains 5 to 8 tokens including PascalCase and lowercase module names.
 - [ ] **H2 Chunking**: All sub-sections are formatted with `##` headings.
 - [ ] **Zero Truncation**: All TypeScript code blocks are complete without `...` placeholders.
+- [ ] **Customization Guide**: `09_inheritance_and_customization/` present with all 4 standard guides.
 - [ ] **relations.json**: Updated with all outbound and inbound relationships.
 - [ ] **MCP Index Test**: Run `npm test` in `mcp/mcp-fwcc` to verify MiniSearch indexing and GraphEngine edge resolution without errors.
+
 
 
