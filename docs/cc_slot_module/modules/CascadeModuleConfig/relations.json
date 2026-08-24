@@ -1,0 +1,30 @@
+{
+  "moduleId": "CascadeModuleConfig",
+  "category": "cc_slot_module",
+  "name": "CascadeModuleConfig",
+  "description": "Configuration component defining grid geometry, drop physics timing constants, elimination symbols codes, and symbol index maps for cascading avalanche slot games.",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "VerticalCascadeModule",
+      "relation": "config_provider"
+    },
+    {
+      "target": "CascadeModuleData",
+      "relation": "config_provider"
+    }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_cached_symbol_indexes_mutation"
+  ],
+  "related": [
+    "VerticalCascadeModule",
+    "CascadeModuleData",
+    "SlotTableModule",
+    "TableModuleConfig"
+  ]
+}

@@ -1,4 +1,4 @@
----
+ ---
 id: "cc_slot_module:SlotTableNearWinModule:method:_isNearWinScatter"
 title: "SlotTableNearWinModule._isNearWinScatter Method"
 category: "cc_slot_module"

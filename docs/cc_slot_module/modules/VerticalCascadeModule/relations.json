@@ -1,0 +1,40 @@
+{
+  "moduleId": "VerticalCascadeModule",
+  "category": "cc_slot_module",
+  "name": "VerticalCascadeModule",
+  "description": "Master cascading avalanche physics controller managing elimination of winning tiles, calculating downward gravity drop trajectories, spawning top influx symbols, and executing cubicIn tweens with bounce easing.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "GameModeDirectorModule",
+      "relation": "respin_cascade_controller"
+    },
+    {
+      "target": "NormalGameWriterModule",
+      "relation": "cascade_step_executor"
+    }
+  ],
+  "dependsOn": [
+    "CascadeModuleData",
+    "CascadeModuleConfig",
+    "SlotSymbolManager",
+    "SlotGameSettings"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "TABLE_START_RESPIN",
+    "TABLE_STOP_RESPIN"
+  ],
+  "gotchas": [
+    "01_respin_callback_timeout_leak",
+    "02_multi_height_symbol_position_offset_bug"
+  ],
+  "related": [
+    "CascadeModuleData",
+    "CascadeModuleConfig",
+    "SlotTableModule",
+    "SlotSymbolManager",
+    "SlotGameSettings"
+  ]
+}

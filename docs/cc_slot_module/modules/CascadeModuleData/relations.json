@@ -1,0 +1,29 @@
+{
+  "moduleId": "CascadeModuleData",
+  "category": "cc_slot_module",
+  "name": "CascadeModuleData",
+  "description": "Reactive state store component that converts network matrix packets and winning traceWay coordinate arrays into 2D vertical matrices with eliminated symbols flagged.",
+  "inheritsFrom": "BaseDataModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "VerticalCascadeModule",
+      "relation": "data_provider"
+    }
+  ],
+  "dependsOn": [
+    "CascadeModuleConfig",
+    "BaseDataModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_traceway_in_place_sort"
+  ],
+  "related": [
+    "VerticalCascadeModule",
+    "CascadeModuleConfig",
+    "GameDataStore",
+    "SlotTableData"
+  ]
+}
