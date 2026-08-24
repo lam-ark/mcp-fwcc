@@ -1,0 +1,36 @@
+{
+  "moduleId": "BetModule",
+  "category": "cc_slot_module",
+  "name": "BetModule",
+  "description": "HUD betting controller managing denomination selection, total wager formatting, min/max button states, and sound effects.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule",
+    "BetLabelModule",
+    "DenomLabel",
+    "TotalBetLabel"
+  ],
+  "emitsEvents": [
+    "INCREASE_BET",
+    "DECREASE_BET"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_stale_bet_label_null_leak",
+    "02_unhandled_min_max_interactable_lock"
+  ],
+  "related": [
+    "UIManagerModule",
+    "ExtraBetModule",
+    "WalletModule",
+    "WinAmountModule"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "moduleId": "ExtraBetModule",
+  "category": "cc_slot_module",
+  "name": "ExtraBetModule",
+  "description": "Ante-Bet controller managing optional feature bet modifier steppers and toggles.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule"
+  ],
+  "emitsEvents": [
+    "INCREASE_EXTRA_BET",
+    "DECREASE_EXTRA_BET"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_stale_extra_bet_label_sync",
+    "02_unhandled_extra_bet_min_max_lock"
+  ],
+  "related": [
+    "UIManagerModule",
+    "BetModule",
+    "WalletModule"
+  ]
+}
