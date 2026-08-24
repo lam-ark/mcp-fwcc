@@ -1,0 +1,24 @@
+{
+  "id": "SlotReelModule",
+  "title": "SlotReelModule Column Physics Engine",
+  "category": "cc_slot_module",
+  "inheritsFrom": "cc.Component",
+  "manages": [
+    "SlotSymbolModule"
+  ],
+  "usedBy": [
+    { "target": "SlotTableModule", "relation": "instantiates_and_controls_reels" }
+  ],
+  "dependsOn": [
+    { "target": "TableModuleConfig", "relation": "reads_geometry_and_timing_config" },
+    { "target": "SlotSymbolManager", "relation": "checks_out_and_recycles_symbols" }
+  ],
+  "emitsEvents": [
+    "PLAY_ANIMATION_APPEAR"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Reel_Bounce_Tween_Interrupt_Hang",
+    "Gotcha:Buffer_Top_Popin_Visual_Glitch"
+  ]
+}
