@@ -1,0 +1,33 @@
+{
+  "id": "SlotSymbolModule",
+  "title": "SlotSymbolModule Visual Symbol Entity",
+  "category": "cc_slot_module",
+  "inheritsFrom": "cc.Component",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotReelModule", "relation": "renders_and_recycles" },
+    { "target": "SlotSymbolManager", "relation": "pools_and_allocates" },
+    { "target": "SlotTablePaylineModule", "relation": "highlights_wins" }
+  ],
+  "dependsOn": [
+    { "target": "SlotSymbolResourceManager", "relation": "fetches_sprites_and_skeletons" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "INIT",
+    "PLAY_ANIMATION",
+    "STOP_ANIMATION",
+    "PLAY_ANIMATION_APPEAR",
+    "PLAY_ANIMATION_IDLE",
+    "PLAY_ANIMATION_WIN",
+    "ENABLE_HIGHLIGHT",
+    "DISABLE_HIGHLIGHT",
+    "RESET",
+    "CHANGE_TO_SYMBOL",
+    "CHANGE_TO_BLUR_SYMBOL"
+  ],
+  "gotchas": [
+    "Gotcha:Spine_Skeleton_Leak_On_Pool_Recycle",
+    "Gotcha:Multi_Cell_Symbol_Offset_Desync"
+  ]
+}
