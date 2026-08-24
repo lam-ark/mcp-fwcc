@@ -1,0 +1,41 @@
+{
+  "moduleId": "WinAmountModule",
+  "category": "cc_slot_module",
+  "name": "WinAmountModule",
+  "description": "Central on-screen win scoreboard managing rolling numeric count-ups via MoneyTween, async Promise lifecycles, and fast-forward skipping.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    },
+    {
+      "target": "GameModeDirectorModule",
+      "relation": "win_display"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule",
+    "GameDataStore"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "UPDATE_WIN_AMOUNT",
+    "FAST_UPDATE_WIN_AMOUNT",
+    "CLEAR_WIN_AMOUNT",
+    "FADE_OUT_NUMBER",
+    "SYNC_WIN_AMOUNT"
+  ],
+  "gotchas": [
+    "01_lower_value_speedup_logic_fail",
+    "02_unstopped_fade_tween_leak"
+  ],
+  "related": [
+    "UIManagerModule",
+    "WalletModule",
+    "WinEffectModule",
+    "PaylineControllerModule"
+  ]
+}

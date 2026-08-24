@@ -10,19 +10,19 @@
 
 - **Total SDK Clusters**: 10
 - **Total Modules & Core Components**: ~75
-- **Completed Modules (v3.0)**: **56 / 75 (75% Complete)**
+- **Completed Modules (v3.0)**: **58 / 75 (77% Complete)**
   - Cluster 1 (Core Foundation & Bootstrap): **9 / 9 (100%)**
   - Cluster 2 (Game Mode Directors, Writers & Mini-Games): **14 / 14 (100%)**
   - Cluster 3 (Matrix, Reels & Symbols): **11 / 11 (100%)**
   - Cluster 4 (Paylines, Win Frames & Line Numbers): **8 / 8 (100%)**
   - Cluster 5 (Cascade & Avalanche Engine): **3 / 3 (100%)**
   - Cluster 6 (Cutscenes & Celebratory Overlays): **7 / 7 (100%)**
-  - Cluster 7 (GUI Dashboard, Controls & Betting System): **4 / 13 (31%)**
+  - Cluster 7 (GUI Dashboard, Controls & Betting System): **6 / 13 (46%)**
 - **Completed Architecture Systems & Overviews**: **100% Complete** (14 Global Guides + 8 Core Architecture Systems)
-- **In-Progress / Upcoming Modules**: **19**
+- **In-Progress / Upcoming Modules**: **17**
 
 ```text
-[████████████████████████████████████████░░░░░░░░░░░░] 75% Total Completed
+[█████████████████████████████████████████░░░░░░░░░░░] 77% Total Completed
 ```
 
 ---
@@ -165,8 +165,8 @@
 | [x] | **`SlotButtonModule`** | `Canvas/Director/UIManager/SpinButton` | `assets/cc-common/cc-slot-module/GUI/SpinButton/SlotButtonModule.ts` | Master spin button supporting Normal, Auto, Turbo, and Lightning modes. |
 | [x] | **`BetModule`** | `Canvas/Director/UIManager/BetModule` | `assets/cc-common/cc-slot-module/GUI/Bet/BetModule.ts` | Bet selector, bet multiplier stepper, max bet toggle. |
 | [x] | **`ExtraBetModule`** | `Canvas/Director/UIManager/ExtraBet` | `assets/cc-common/cc-slot-module/GUI/Bet/ExtraBetModule.ts` | Toggle switch for Ante-Bet / Golden Bet feature modifiers. |
-| [ ] | **`WalletModule`** | `Canvas/Director/UIManager/WalletModule` | `assets/cc-common/cc-slot-module/GUI/Wallet/WalletModule.ts` | Player cash balance display with rolling MoneyTween count-ups. |
-| [ ] | **`WinAmountModule`** | `Canvas/Director/UIManager/WinAmount` | `assets/cc-common/cc-slot-module/GUI/WinAmount/WinAmountModule.ts` | Main win display label with rolling count-up animations. |
+| [x] | **`WalletModule`** | `Canvas/Director/UIManager/WalletModule` | `assets/cc-common/cc-slot-module/GUI/Wallet/WalletModule.ts` | Player cash balance display with rolling MoneyTween count-ups. |
+| [x] | **`WinAmountModule`** | `Canvas/Director/UIManager/WinAmount` | `assets/cc-common/cc-slot-module/GUI/WinAmount/WinAmountModule.ts` | Main win display label with rolling count-up animations. |
 | [ ] | **`JackpotModule`** | `Canvas/Director/Jackpot` | `assets/cc-common/cc-slot-module/GUI/Jackpot/JackpotModule.ts` | Progressive jackpot banner counters (Grand, Major, Minor, Mini). |
 | [ ] | **`SpinTimesModule`** | `Canvas/Director/UIManager/SpinTimes` | `assets/cc-common/cc-slot-module/GUI/SpinTimes/SpinTimesModule.ts` | Countdown badge displaying remaining Free Spins or Auto Spins. |
 | [ ] | **`TurboButton`** | `Canvas/Director/UIManager/TurboButton` | `assets/cc-common/cc-slot-module/GUI/Turbo/TurboButton.ts` | Turbo / Quick-spin mode toggle button with sprite state transitions. |

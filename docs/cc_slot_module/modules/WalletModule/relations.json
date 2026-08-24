@@ -1,0 +1,40 @@
+{
+  "moduleId": "WalletModule",
+  "category": "cc_slot_module",
+  "name": "WalletModule",
+  "description": "Dual currency wallet controller managing Real and Trial Demo player balances, pause/resume rolling animations, and reconnect sync.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    },
+    {
+      "target": "GameModeDirectorModule",
+      "relation": "balance_synchronizer"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule",
+    "GameDataStore",
+    "SlotGameSettings"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "PAUSE_WALLET",
+    "RESUME_WALLET",
+    "SYNC_WALLET"
+  ],
+  "gotchas": [
+    "01_unreleased_wallet_observer_leak",
+    "02_mode_transition_wallet_sync_skip"
+  ],
+  "related": [
+    "UIManagerModule",
+    "BetModule",
+    "WinAmountModule",
+    "WinEffectModule"
+  ]
+}
