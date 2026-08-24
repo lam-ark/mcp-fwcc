@@ -7,30 +7,27 @@ tags: ["cc_slot_module", "systems", "game_mode", "architecture", "index", "flow"
 
 # 🎮 Game Mode System Architecture Index
 
-Welcome to the comprehensive technical guide on the **Game Mode Subsystem** in `cc-slot-module`.
+Welcome to the technical guide on the **Game Mode Architecture & Finite State Machine (FSM)** in `cc-slot-module`.
 
 ---
 
 ## 🧭 Topic Breakdown & Navigation
 
 1. **[`01_game_mode_concepts_and_types.md`](./01_game_mode_concepts_and_types.md)**
-   * Theoretical foundation: Game Mode as a Finite State Machine (FSM).
-   * Detailed breakdown of the 5 canonical mode types: `NORMAL_GAME`, `FREE_GAME`, `FREE_OPTION`, `BONUS_GAME`, `CASCADE_GAME`.
-   * Inter-mode transition triggers and state diagrams.
+   * High-level concepts of Game Modes in slot machines.
+   * Catalog of 5 standard mode types (`NORMAL_GAME`, `FREE_GAME`, `BONUS_GAME`, `FREE_OPTION`, `FORTUNE_WHEEL`).
 
-2. **[`02_game_mode_anatomy_and_composition.md`](./02_game_mode_anatomy_and_composition.md)**
-   * Complete anatomical blueprint of a Game Mode: `Director` + `Writer` + `ScriptExecutor` + `DataModules` + `moduleList`.
-   * Co-location principles and IoC container dependency injection inside Mode containers.
-   * Direct node linkages in the scene hierarchy.
+2. **[`02_mode_anatomy_director_writer_data.md`](./02_mode_anatomy_director_writer_data.md)**
+   * The 3-layer internal anatomy of a Game Mode: `Director` (Visual & Scene Owner) + `Writer` (Script Sequence Planner) + `DataStore/DataModule` (Reactive State).
 
 3. **[`03_inter_module_communication_4_channels.md`](./03_inter_module_communication_4_channels.md)**
-   * Deep-dive into the 4 multi-tier communication channels:
-     * *Channel 1*: Reactive Data Flow (`GameDataStore` ➔ `BaseDataModule`).
-     * *Channel 2*: Command Script Pipeline (`Director` ➔ `Writer` ➔ `ScriptExecutor`).
-     * *Channel 3*: Scoped Module Event Bus (`this.moduleEvent`).
-     * *Channel 4*: Global Event Bus (`this.eventManager` & `this.gameLogic`).
-   * Complete comparative matrix and execution flowcharts.
+   * The 4 core communication channels: Scoped `moduleEvent`, Global `EventManager`, IoC `@inject`, and Direct Method Delegation.
 
-4. **[`04_mode_transitions_and_stack_lifecycle.md`](./04_mode_transitions_and_stack_lifecycle.md)**
-   * Full mode transition sequence (`transitionGameMode`, `enterGameMode`, `exitGameMode`).
-   * Memory management, audio crossfades, cutscene handoffs, and clean teardown lifecycles.
+4. **[`04_mode_transition_and_stack_fsm.md`](./04_mode_transition_and_stack_fsm.md)**
+   * Complete mode switching lifecycle: Enter / Resume / Exit hooks, mode stack preservation, transition overlay choreography.
+
+5. **[`05_custom_game_mode_extension_guide.md`](./05_custom_game_mode_extension_guide.md)**
+   * Step-by-step developer guide on implementing new game modes (e.g., Hold & Spin, Cascade Respin) with clean inheritance.
+
+6. **[`06_game_mode_prefabs_and_composition.md`](./06_game_mode_prefabs_and_composition.md)**
+   * Self-contained sub-scene packaging: `MainGamePrefab`, `FreeGamePrefab`, `BonusGamePrefab` node anatomy, component wiring matrix, memory management, and game setup guide.
