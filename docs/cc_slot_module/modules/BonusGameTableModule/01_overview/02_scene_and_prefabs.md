@@ -1,33 +1,32 @@
 ---
 id: "cc_slot_module:BonusGameTableModule:overview:scene_and_prefabs"
-title: "BonusGameTableModule Scene Structure & Prefabs"
+title: "BonusGameTableModule Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["BonusGameTableModule", "bonus_game_table", "cc_slot_module", "overview", "scene", "prefabs", "boxPrefab"]
+tags: ["BonusGameTableModule", "bonus_game_table", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 BonusGameTableModule Scene Structure & Prefabs
+# 🏛️ BonusGameTableModule Scene Node Placement & Prefab Structure
 
-## 1. Scene Graph Hierarchy
+---
 
-Mounted under `Canvas/Director/GameMode/BonusGame`:
+## 1. Inspected Scene Node Placement
+
+Inspected live from production scenes (`g9000L` / `g9666L`), `BonusGameTableModule` sits on `BonusTable` inside `BonusGamePrefab`:
 
 ```text
-Canvas (cc.Canvas)
-└── Canvas/Director
-    └── Canvas/Director/GameMode
-        └── BonusGame (BonusGameDirectorModule, BonusGameWriterModule)
-            └── Table ➔ [Mounted: BonusGameTableModule, BonusTableConfig, BonusTableData]
-                ├── (Dynamically instantiates child box nodes using boxPrefab)
-                ├── Box_0 (BonusGameItemModule)
-                ├── Box_1 (BonusGameItemModule)
-                └── Box_N (BonusGameItemModule)
+Canvas/Director/GameMode/BonusGamePrefab
+└── BonusTable [Node with Components]
+    ├── [Component 1] BonusGameTableModule (Item grid layout & pick router)
+    ├── [Component 2] BonusTableData (Ingests available picks and prizes)
+    ├── [Component 3] BonusTableConfig (Layout geometry & countdown timers)
+    └── [Dynamically Spawned Children]:
+        ├── Item_0 (BonusGameItemModule)
+        ├── Item_1 (BonusGameItemModule)
+        └── ...
 ```
 
 ---
 
-## 2. Inspector Properties Reference Table
+## 2. Interactive Item Spawning
 
-| Property Name | TypeScript Type | Default Value | Role |
-| :--- | :--- | :--- | :--- |
-| **`boxPrefab`** | `cc.Prefab` | `null` | Item prefab (containing `BonusGameItemModule`, `cc.Button`, and `cc.Sprite`). |
-| **`openAllBoxDelay`** | `number` | `3` | Delay (in seconds) during end-of-round reveal before closing bonus mode. |
+Dynamically spawns interactive chest/box instances (`BonusGameItemModule`) across the configured grid slots.

@@ -1,33 +1,32 @@
 ---
 id: "cc_slot_module:BonusGameDirectorModule:overview:scene_and_prefabs"
-title: "BonusGameDirectorModule Scene Structure & Inspector Bindings"
+title: "BonusGameDirectorModule Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["BonusGameDirectorModule", "bonus_game_director", "cc_slot_module", "overview", "scene", "prefabs"]
+tags: ["BonusGameDirectorModule", "bonus_game_director", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 BonusGameDirectorModule Scene Structure & Inspector Bindings
+# 🏛️ BonusGameDirectorModule Scene Node Placement & Prefab Structure
 
-## 1. Scene Graph Hierarchy
+---
 
-Mounted on the `BonusGame` container node under `Canvas/Director/GameMode`:
+## 1. Inspected Scene Node Placement (Cocos Creator 2.4 Production Tree)
+
+Inspected live from production scenes (`g9000L` / `g9666L`), `BonusGameDirectorModule` sits on `BonusGamePrefab` under `Canvas/Director/GameMode`:
 
 ```text
-Canvas (cc.Canvas)
-└── Canvas/Director
-    └── Canvas/Director/GameMode
-        └── BonusGame ➔ [Mounted: BonusGameDirectorModule, BonusGameWriterModule]
-            ├── BG_Bonus (Background Art)
-            ├── ChestGrid (Interactive Item Nodes listening to CLICK_ITEM)
-            └── LabelCountDown (cc.Label - 15s timer)
+Canvas/Director/GameMode/BonusGamePrefab [Node with Components]
+├── [Component 1] BaseGameMode
+├── [Component 2] BonusGameDirectorModule (Pick-and-click round director)
+├── [Component 3] BonusGameWriterModule (Bonus script sequence generator)
+├── [Component 4] GameLogicEventHandler
+├── [Component 5] OnAddSlotModule
+└── [Children Nodes]:
+    ├── BonusTable [Node] (BonusGameTableModule, BonusTableData, BonusTableConfig)
+    └── CountDown [Node] (cc.Label - Pick countdown timer)
 ```
 
 ---
 
-## 2. Inspector Properties Reference Table
+## 2. Interactive Table Wiring
 
-| Property Name | TypeScript Type | Default Value | Purpose |
-| :--- | :--- | :--- | :--- |
-| **`labelCountDown`** | `cc.Label` | `null` | Label node displaying auto-pick countdown timer (e.g. "Auto pick in: 14s"). |
-| **`defaultCountDown`** | `number` | `15` | Default duration (in seconds) before auto-selection triggers. |
-| **`gameMode`** | `GAME_MODE_ENUM` | `BONUS_GAME` (`4`) | Mode identifier enum. |
-| **`moduleList`** | `cc.Node[]` | `[]` | Array of child chest/item manager components. |
+`BonusGameDirectorModule` manages `BonusTable` which houses the interactive grid of clickable chests or envelopes.

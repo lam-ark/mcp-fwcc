@@ -1,32 +1,27 @@
 ---
 id: "cc_slot_module:SlotCustomNodePool:overview:scene_and_prefabs"
-title: "SlotCustomNodePool Instantiation & Template Registration"
+title: "SlotCustomNodePool Memory Pooling Integration"
 category: "cc_slot_module"
-tags: ["SlotCustomNodePool", "slot_custom_node_pool", "cc_slot_module", "overview", "scene_prefabs", "templates"]
+tags: ["SlotCustomNodePool", "node_pool", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 SlotCustomNodePool Instantiation & Template Registration
+# 🏛️ SlotCustomNodePool Memory Pooling Integration
 
 ---
 
-## 1. Context & Instantiation Layer
+## 1. Internal Pool Engine
 
-`SlotCustomNodePool` is a pure TypeScript helper class instantiated directly by `MultipleSymbolManager` in `initSymbolPool()`:
+`SlotCustomNodePool` is utilized internally by `SlotSymbolManager` and `PoolFactoryModule` instances mounted across the scene graph:
 
-```typescript
-this.symbolPool = new SlotCustomNodePool(this.template, this.initCount, this.specialSymbolTemplates);
-this.symbolPool.initSymbolPool();
+```text
+Canvas/Director/GameMode/MainGamePrefab
+├── SlotTableModule/SymbolPool (SlotSymbolManager ➔ uses SlotCustomNodePool)
+├── SlotTablePaylineModule/SymbolPool (SlotSymbolManager ➔ uses SlotCustomNodePool)
+└── TransformSymbolModule/VfxPool (PoolFactoryModule ➔ uses SlotCustomNodePool)
 ```
 
 ---
 
-## 2. Serialized Inspector Template Definition (`SpecialSymbolTemplates`)
+## 2. Zero Garbage Collection (GC) Guarantee
 
-```typescript
-@ccclass('SpecialSymbolTemplates')
-export class SpecialSymbolTemplates {
-    @property() symbolCode: string = '';        // e.g. "WILD", "SCATTER", "BONUS"
-    @property(cc.Prefab) template: cc.Prefab = null; // Custom Prefab asset
-    @property() initCount: number = 1;          // Pre-warmed pool capacity
-}
-```
+Pre-instantiates nodes and maintains a fixed-capacity FIFO/LIFO stack, eliminating runtime memory allocations during continuous auto-spins.

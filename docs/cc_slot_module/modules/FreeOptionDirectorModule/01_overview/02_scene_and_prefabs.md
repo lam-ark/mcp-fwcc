@@ -1,33 +1,34 @@
 ---
 id: "cc_slot_module:FreeOptionDirectorModule:overview:scene_and_prefabs"
-title: "FreeOptionDirectorModule Scene Hierarchy & Inspector Layout"
+title: "FreeOptionDirectorModule Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["FreeOptionDirectorModule", "free_option_director", "cc_slot_module", "overview", "scene"]
+tags: ["FreeOptionDirectorModule", "free_option_director", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 FreeOptionDirectorModule Scene Hierarchy & Inspector Layout
+# 🏛️ FreeOptionDirectorModule Scene Node Placement & Prefab Structure
 
-## 1. Scene Hierarchy Placement
+---
 
-Attached under `Canvas/Director/GameMode/FreeOptionDirector`:
+## 1. Inspected Scene Node Placement (Cocos Creator 2.4 Production Tree)
+
+Inspected live from production scenes (`g9000L` / `g9666L`), `FreeOptionDirectorModule` sits on `FreeOptionPrefab` under `Canvas/Director/GameMode`:
 
 ```text
-Canvas/Director/GameMode/FreeOptionDirector
-├── FreeOptionDirectorModule (Component)
-├── OptionContainer
-│   ├── Option_1 (cc.Button, optionId: "1" - e.g. 15 Spins, 2x Multiplier)
-│   ├── Option_2 (cc.Button, optionId: "2" - e.g. 10 Spins, 3x Multiplier)
-│   ├── Option_3 (cc.Button, optionId: "3" - e.g. 5 Spins, 5x Multiplier)
-│   └── Option_Mystery (cc.Button, optionId: "4" - Random Choice)
-└── CountDownLabel (cc.Label - "Auto select in 15s")
+Canvas/Director/GameMode/FreeOptionPrefab [Node with Components]
+├── [Component 1] BaseGameMode
+├── [Component 2] FreeOptionDirectorModule (Volatility modal director)
+├── [Component 3] GameLogicEventHandler
+├── [Component 4] OnAddSlotModule
+└── [Children Nodes]:
+    ├── Gradient (cc.Sprite, cc.BlockInputEvents - Modal backdrop)
+    ├── options (cc.Layout - Horizontal option cards layout)
+    │   ├── option_1 (cc.Sprite, cc.Button - High volatility choice)
+    │   └── option_2 (cc.Sprite, cc.Button - Low volatility choice)
+    └── CountDownText (cc.Label - Auto-pick fallback timer)
 ```
 
 ---
 
-## 2. Inspector Properties Reference Table
+## 2. Option Selection Routing
 
-| Property Name | TypeScript Type | Default Value | Role |
-| :--- | :--- | :--- | :--- |
-| **`options`** | `SlotCustomFreeGameOption[]` | `[]` | Array of objects `{ optionNode: cc.Node, optionId: string }`. |
-| **`countDownText`** | `cc.Label` | `null` | Target label node for rendering the timer message. |
-| **`countdownTime`** | `number` | `15` | Total countdown duration in seconds before auto-picking. |
+Clicking `option_1` or `option_2` triggers `FreeOptionDirectorModule.onOptionSelected(optionId)` to notify the backend and launch `FreeGamePrefab`.

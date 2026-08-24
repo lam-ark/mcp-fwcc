@@ -1,32 +1,29 @@
 ---
 id: "cc_slot_module:BonusGameItemModule:overview:scene_and_prefabs"
-title: "BonusGameItemModule Scene Structure & Prefabs"
+title: "BonusGameItemModule Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["BonusGameItemModule", "bonus_game_item", "cc_slot_module", "overview", "scene", "prefabs"]
+tags: ["BonusGameItemModule", "bonus_game_item", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 BonusGameItemModule Scene Structure & Prefabs
+# 🏛️ BonusGameItemModule Scene Node Placement & Prefab Structure
 
-## 1. Node Component Hierarchy
+---
 
-Attached to the root node of `BoxPrefab`:
+## 1. Runtime Instantiation inside `BonusTable`
+
+`BonusGameItemModule` prefabs are instantiated as dynamic children of `BonusGamePrefab/BonusTable`:
 
 ```text
-BoxPrefab (cc.Node) ➔ [Mounted: BonusGameItemModule, cc.Button]
-├── BoxBackground (cc.Sprite / Spine Skeleton)
-├── ItemSprite (cc.Sprite - displays revealed prize symbol)
-└── ScoreLabel (cc.Label - displays win multiplier/cash)
+Canvas/Director/GameMode/BonusGamePrefab/BonusTable
+├── Item_0 (BonusGameItemModule)
+│   ├── SpineChest (sp.Skeleton - Idle/Open animation)
+│   └── WinLabel (cc.Label - Prize amount)
+├── Item_1 (BonusGameItemModule)
+└── ...
 ```
 
 ---
 
-## 2. Inspector Properties Reference Table
+## 2. Interactive Click Events
 
-| Property Name | TypeScript Type | Default Value | Purpose |
-| :--- | :--- | :--- | :--- |
-| **`itemSprite`** | `cc.Sprite` | `null` | Sprite component displaying the revealed item graphic. |
-| **`itemSfList`** | `BonusItemSpriteFrame[]` | `[]` | Array mapping `symbolId` strings to `cc.SpriteFrame` assets. |
-| **`colorNormal`** | `cc.Color` | `#FFFFFF` | Default untinted color when player opens a prize chest. |
-| **`colorDim`** | `cc.Color` | `#646464` | Dimmed grayscale color applied to unselected chests at end of feature. |
-| **`soundBoxClick`**| `string` | `""` | SFX key played on chest tap. |
-| **`soundBoxOpen`** | `string` | `""` | SFX key played when chest reveals prize. |
+Each item attaches a `cc.Button` or touch event listener routing click coordinates back to `BonusGameTableModule.onItemClicked(itemIndex)`.

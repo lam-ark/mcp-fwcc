@@ -1,34 +1,30 @@
 ---
 id: "cc_slot_module:SlotSymbolManager:overview:scene_and_prefabs"
-title: "SlotSymbolManager Scene Placement & Prefab Templates"
+title: "SlotSymbolManager Scene Node Placement & Pool Structure"
 category: "cc_slot_module"
-tags: ["SlotSymbolManager", "slot_symbol_manager", "cc_slot_module", "overview", "scene", "prefabs"]
+tags: ["SlotSymbolManager", "symbol_manager", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 SlotSymbolManager Scene Placement & Prefab Templates
+# 🏛️ SlotSymbolManager Scene Node Placement & Pool Structure
 
-## 1. Scene Placement Hierarchy
+---
 
-Mounted as a sibling component on the Table node:
+## 1. Inspected Scene Node Placement (Cocos Creator 2.4 Production Tree)
+
+Inspected live from production scenes (`g9000L` / `g9666L`), `SlotSymbolManager` instances are mounted at 3 strategic locations for isolated pooling:
 
 ```text
-Canvas/Director/GameMode/BoardG/Table
-├── SlotTableModule (Grid orchestrator)
-├── TableModuleConfig (Geometrical format & index definitions)
-├── SlotTableData (State data model)
-└── SlotSymbolManager ➔ [Symbol pooling & Z-order sorting]
-    └── template: cc.Prefab ➔ SymbolTemplate.prefab
-        ├── cc.Sprite (Static visual sprite)
-        ├── cc.Sprite (Blur visual sprite)
-        └── sp.Skeleton (Spine animation skeleton)
+Canvas/Director/GameMode/MainGamePrefab
+├── SlotTableModule
+│   └── SymbolPool [Node] (Component: SlotSymbolManager - Main reel symbol pool)
+├── SlotTablePaylineModule
+│   └── SymbolPool [Node] (Component: SlotSymbolManager - Payline win symbol animation pool)
+└── SymbolManger [Node] (Component: SlotSymbolManager - Backup/Feature symbol manager)
 ```
 
 ---
 
-## 2. Inspector Properties Reference Table
+## 2. Dual Pool Architecture
 
-| Property Name | TypeScript Type | Default Value | Role |
-| :--- | :--- | :--- | :--- |
-| **`template`** | `cc.Prefab` | `null` | The base symbol prefab instantiated into `symbolPool`. Must contain `SlotSymbolModule`. |
-| **`initCount`** | `number` | `15` | Number of symbol instances pre-warmed during `onLoadExtend()`. |
-| **`isSymbolPool`**| `boolean` | `true` | `true`: Return nodes directly to `cc.NodePool`; `false`: Reparent nodes to `this.node`. |
+- **`SlotTableModule/SymbolPool`**: Pre-allocates and recycles symbols for normal column spinning in `SlotReelModule`.
+- **`SlotTablePaylineModule/SymbolPool`**: Dedicated node pool for win animation overlays, completely avoiding pool exhaustion during turbo spins.

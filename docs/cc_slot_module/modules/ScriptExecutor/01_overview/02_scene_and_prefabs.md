@@ -1,36 +1,30 @@
 ---
 id: "cc_slot_module:ScriptExecutor:overview:scene_and_prefabs"
-title: "ScriptExecutor Instantiation & Director Binding"
+title: "ScriptExecutor Placement & Director Integration"
 category: "cc_slot_module"
-tags: ["ScriptExecutor", "script_executor", "cc_slot_module", "overview", "scene", "prefabs", "instantiation"]
+tags: ["ScriptExecutor", "script_executor", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 ScriptExecutor Instantiation & Director Binding
+# 🏛️ ScriptExecutor Placement & Director Integration
 
-## 1. Instantiation Context
+---
 
-`ScriptExecutor` is a pure TypeScript helper class (not a `cc.Component`). It is instantiated inside `BaseGameDirector.init()` on each game mode node:
+## 1. Runtime Instantiation inside Mode Directors
 
-```typescript
-// BaseGameDirector.ts
-this.executor = new ScriptExecutor(
-    this.writer,
-    this.director,
-    this.gameLogic,
-    this.dataStore,
-    this.gameSettings,
-    this.node.name
-);
+`ScriptExecutor` is a pure TypeScript execution engine instantiated directly inside mode director components mounted across mode prefabs:
+
+```text
+Canvas/Director/GameMode/MainGamePrefab (NormalGameDirectorModule ➔ contains ScriptExecutor)
+Canvas/Director/GameMode/FreeGamePrefab (FreeGameDirectorModule ➔ contains ScriptExecutor)
+Canvas/Director/GameMode/BonusGamePrefab (BonusGameDirectorModule ➔ contains ScriptExecutor)
 ```
 
 ---
 
-## 2. Injected Companion Bridges
+## 2. Command Target Wiring
 
-| Parameter | Type | Source | Role in Executor |
-| :--- | :--- | :--- | :--- |
-| **`writer`** | `any` | `this.node["writer"]` | Pure script generator invoking `makeScript[ActionName](data)`. |
-| **`director`** | `any` | `this.node["director"]` | Target instance holding concrete async command methods. |
-| **`dataStore`** | `GameDataStore` | Injected via IoC | Reads `playSession` data and sets runtime game speed. |
-| **`gameSettings`**| `SlotGameSettings` | Injected via IoC | Queries `isTurboActive`, `isFastToResult`, and updates speed tiers. |
-| **`name`** | `string` | `this.node.name` | Logging prefix (e.g. `[NormalGame]`, `[FreeGame]`). |
+`ScriptExecutor` dispatches script steps to methods implemented across sibling components:
+- `SlotTableModule` (`TABLE_START_SPIN`, `TABLE_STOP_SPIN`, `TABLE_FAST_STOP`)
+- `SlotTablePaylineModule` (`SETUP_PAYLINES`)
+- `UIManager` (`UPDATE_WIN_AMOUNT`, `UPDATE_WALLET`)
+- `CutsceneControl` (`SHOW_WIN_EFFECT`, `HIDE_WIN_EFFECT`)
