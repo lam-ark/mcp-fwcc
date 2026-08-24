@@ -63,43 +63,63 @@ docs/modules/[ModuleName]/
 
 ---
 
-## 🌳 II. Canonical Template Scene Hierarchy (`g9000L.fire`)
+## 🌳 II. Canonical Template Scene Hierarchy (`g9000L.fire` / `g9666L.fire`)
 
-All modules have designated canonical anchors in the standard template scene hierarchy:
+All modules have designated canonical anchors in the standard template scene hierarchy inspected live via `cocos24-mcp-server`:
 
 ```text
-Canvas (cc.Canvas, cc.Widget)
+Canvas (cc.Canvas, CanvasModuleController, cc.Widget)
 ├── Main Camera (cc.Camera)
 └── Canvas/Director
     ├── [Components mounted on Canvas/Director]:
-    │   ├── GameInit.ts            ➔ (Bootstrap, IoC Container provide, Network auth)
-    │   ├── GameConfig.ts          ➔ (TABLE_FORMAT, PAY_SYSTEM, CURRENCY_CONFIG)
+    │   ├── GameInit.ts            ➔ (Bootstrap, IoC Container registration, Network auth)
+    │   ├── GameConfig.ts          ➔ (TABLE_FORMAT, PAY_SYSTEM, CURRENCY_CONFIG, 25+ parameters)
     │   ├── GameDataStore.ts       ➔ (playSession, wallet, winAmountPS, BaseDataModules)
-    │   └── GameDirector.ts        ➔ (BaseGameDirector spin loop orchestrator)
+    │   └── GameDirector.ts        ➔ (Master scene orchestrator, mode stack manager, network router)
     │
-    ├── Canvas/Director/GameMode   ➔ GameModeDirectorModule.ts & OnAddGameMode.ts
+    ├── Canvas/Director/GameMode   ➔ OnAddGameMode.ts
     │   ├── BG_MainG               ➔ (Main game background sprite)
-    │   └── BoardG                 ➔ (Matrix container & reel borders)
-    │       └── SlotTableModule    ➔ (Instantiates column reels Reel_0 .. Reel_N)
-    │           └── SlotSymbolManager ➔ (Object pooling container for symbols)
+    │   ├── BoardG                 ➔ (Matrix container & reel borders)
+    │   ├── MainGamePrefab         ➔ (Normal game mode: BaseGameMode, NormalGameDirectorModule, NormalGameWriterModule)
+    │   │   ├── SlotTableModule    ➔ (SlotTableModule, TableModuleConfig, SlotTableData, SlotTableNearWinModule)
+    │   │   │   ├── SymbolPool     ➔ (SlotSymbolManager - Main reel symbol pool)
+    │   │   │   ├── Table          ➔ (cc.Mask - Mask bounding column reels Reel_0..Reel_N)
+    │   │   │   └── VFX_NearWin    ➔ (sp.Skeleton - Anticipation VFX skeleton)
+    │   │   ├── SlotTablePaylineModule ➔ (SlotTablePaylineModule, PaylineConfig, SlotTablePaylineData)
+    │   │   │   ├── PaylineSymbolModule ➔ (Symbol win animations & dimming)
+    │   │   │   └── SymbolPool     ➔ (SlotSymbolManager - Dedicated win symbol pool)
+    │   │   ├── TransformSymbolModule ➔ (TransformSymbolModule, TransformSymbolConfig, TransformSymbolData)
+    │   │   └── SymbolManger       ➔ (SlotSymbolManager - Feature symbol manager)
+    │   ├── FreeGamePrefab         ➔ (Free spins mode: FreeGameDirectorModule, FreeGameWriterModule)
+    │   ├── BonusGamePrefab        ➔ (Bonus mini-game mode: BonusGameDirectorModule, BonusGameWriterModule)
+    │   │   ├── BonusTable         ➔ (BonusGameTableModule, BonusTableData, BonusTableConfig)
+    │   │   └── CountDown          ➔ (cc.Label - Auto-pick fallback timer)
+    │   └── FreeOptionPrefab       ➔ (Volatility modal: FreeOptionDirectorModule, options layout)
     │
     ├── Canvas/Director/UIManager  ➔ UIManagerModule.ts
     │   ├── BG_BottomUI            ➔ (Bottom control bar background)
-    │   ├── BetModule              ➔ (Bet controls, bet level selector)
-    │   ├── WalletModule           ➔ (Credit / balance display and rolling tweens)
-    │   ├── PaylineInfoModule      ➔ (Win amount label & bitmap font formatter)
-    │   ├── SlotButtonNormal       ➔ (Spin / FastStop / AutoSpin button)
-    │   └── TurboButton            ➔ (Fast play / Turbo mode toggle switcher)
+    │   ├── Bet                    ➔ (BetModule, TotalBetLabel, DenomLabel, BetIncrease, BetDecrease)
+    │   ├── Wallet                 ➔ (WalletModule, RealWallet, TrialWallet)
+    │   ├── NormalPaylineInfo      ➔ (PaylineInfoModule - Win amount label & bitmap font formatter)
+    │   ├── NormalSpinButton       ➔ (SlotButtonNormal - Spin / FastStop / AutoSpin button)
+    │   ├── TurboButton            ➔ (TurboButtonSwitcher - Fast play / Turbo mode toggle switcher)
+    │   ├── WinAmountPrefab        ➔ (WinAmountModule - Rolling win count-up label)
+    │   └── Jackpot                ➔ (JackpotModule, Grand JackpotLabel)
     │
-    ├── Canvas/Director/CutsceneControl ➔ CutsceneController.ts & WinEffectModule.ts
-    │   └── (Big Win, Mega Win, Super Win celebrations, Intro Free Game dialogs)
+    ├── Canvas/Director/CutsceneControl ➔ CutsceneController.ts
+    │   ├── WinEffect              ➔ (WinEffectModule - Big Win, Mega Win, Super Win celebration overlays)
+    │   ├── IntroFreeGame          ➔ (IntroFreeGameModule - Free spin introductory modal)
+    │   └── JackpotWin             ➔ (JackpotWinModule - Grand/Major jackpot banner celebration)
     │
     ├── Canvas/Director/PopupControl    ➔ PopupControllerModule.ts
-    │   ├── SettingPanel           ➔ (Audio toggles, language preferences)
-    │   ├── InfoPanel              ➔ (Paytable rules & symbol payouts)
-    │   └── BetHistoryModule       ➔ (Player bet history and round replay)
+    │   ├── SettingPanel           ➔ (SettingPanel - Audio toggles, language preferences)
+    │   ├── InfoPanel              ➔ (InfoPanel - Paytable rules & symbol payouts)
+    │   └── BetHistory             ➔ (BetHistoryModule - Player bet history and round replay)
     │
-    └── Canvas/Director/waitingScene    ➔ WaitingSceneModule.ts (Connection loader)
+    ├── Canvas/Director/SlotSoundPlayer ➔ (SlotSoundPlayerModule, SoundConvertList - SFX & BGM controller)
+    ├── Canvas/Director/Toast           ➔ (ToastInfoModule - In-game notification banners)
+    ├── Canvas/Director/DialogMessage   ➔ (DialogMessageModule - Network reconnect & error modals)
+    └── Canvas/Director/waitingScene    ➔ (WaitingSceneModule - Connection loader spinner)
 ```
 
 ---

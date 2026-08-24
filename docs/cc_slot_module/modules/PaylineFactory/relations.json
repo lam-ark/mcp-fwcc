@@ -1,0 +1,26 @@
+{
+  "moduleId": "PaylineFactory",
+  "category": "cc_slot_module",
+  "name": "PaylineFactory",
+  "description": "Multi-type zero-allocation object pool factory managing visual payline assets (win frames, line segments, particle effects).",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "SlotTablePaylineModule",
+      "relation": "pool_provider"
+    }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_lost_prefab_name_tag"
+  ],
+  "related": [
+    "SlotTablePaylineModule",
+    "PaylineWinFrameModule",
+    "PaylineLineModule",
+    "SlotCustomNodePool"
+  ]
+}

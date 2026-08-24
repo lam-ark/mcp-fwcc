@@ -1,0 +1,42 @@
+{
+  "moduleId": "PaylineLineModule",
+  "category": "cc_slot_module",
+  "name": "PaylineLineModule",
+  "description": "Visual line rendering component that connects winning symbol tracks across the reel matrix using pooled line prefabs.",
+  "inheritsFrom": "BasePaylineComponent",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "SlotTablePaylineModule",
+      "relation": "visual_line_follower"
+    }
+  ],
+  "dependsOn": [
+    "SlotTablePaylineModule",
+    "SlotTablePaylineData",
+    "BasePaylineComponent"
+  ],
+  "emitsEvents": [
+    "INIT",
+    "SHOW",
+    "HIDE",
+    "RESET"
+  ],
+  "listensToEvents": [
+    "PAYLINE_SET_DATA",
+    "PAYLINE_BLINK_ALL",
+    "PAYLINE_SHOW_LINE",
+    "PAYLINE_STOP_ALL",
+    "PAYLINE_CLEAR"
+  ],
+  "gotchas": [
+    "01_sparse_array_pooling_leak"
+  ],
+  "related": [
+    "SlotTablePaylineModule",
+    "PaylineSymbolModule",
+    "PaylineWinFrameModule",
+    "PaylineNumberModule",
+    "SlotPaylineSchedule"
+  ]
+}

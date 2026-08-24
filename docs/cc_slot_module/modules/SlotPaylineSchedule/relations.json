@@ -1,0 +1,48 @@
+{
+  "moduleId": "SlotPaylineSchedule",
+  "category": "cc_slot_module",
+  "name": "SlotPaylineSchedule",
+  "description": "Timing scheduler orchestrating async Stage 1 full-grid win animations and recurring Stage 2 sequential single payline presentation.",
+  "inheritsFrom": "BasePaylineComponent",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "SlotTablePaylineModule",
+      "relation": "timing_engine"
+    }
+  ],
+  "dependsOn": [
+    "SlotTablePaylineModule",
+    "PaylineConfig",
+    "BasePaylineComponent"
+  ],
+  "emitsEvents": [
+    "PAYLINE_BLINK_ALL",
+    "PAYLINE_SHOW_LINE",
+    "PAYLINE_SHOW_SPECIAL_SYMBOL",
+    "PAYLINE_STOP_ALL",
+    "PAYLINE_CLEAR",
+    "ON_SHOW_PAYLINE_INFO",
+    "ON_HIDE_PAYLINE_INFO"
+  ],
+  "listensToEvents": [
+    "BLINK_ALL_PAYLINES",
+    "SHOW_ALL_PAYLINES",
+    "SHOW_SCATTER_PAYLINE",
+    "SHOW_BONUS_PAYLINE",
+    "SHOW_JACKPOT_PAYLINE",
+    "CLEAR_PAYLINES",
+    "STOP_PAYLINES",
+    "PAYLINE_SET_DATA"
+  ],
+  "gotchas": [
+    "01_unstopped_tween_schedule"
+  ],
+  "related": [
+    "SlotTablePaylineModule",
+    "PaylineSymbolModule",
+    "PaylineWinFrameModule",
+    "PaylineLineModule",
+    "PaylineNumberModule"
+  ]
+}

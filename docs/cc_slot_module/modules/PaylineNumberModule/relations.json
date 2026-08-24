@@ -1,0 +1,36 @@
+{
+  "moduleId": "PaylineNumberModule",
+  "category": "cc_slot_module",
+  "name": "PaylineNumberModule",
+  "description": "Visual controller that manages left and right gutter line number markers, illuminating active hit lines in sync with payLineEmitter.",
+  "inheritsFrom": "BasePaylineComponent",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "SlotTablePaylineModule",
+      "relation": "visual_line_number_follower"
+    }
+  ],
+  "dependsOn": [
+    "SlotTablePaylineModule",
+    "BasePaylineComponent",
+    "PaylineNumberItem"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "PAYLINE_SET_DATA",
+    "PAYLINE_BLINK_ALL",
+    "PAYLINE_SHOW_LINE",
+    "PAYLINE_STOP_ALL",
+    "PAYLINE_CLEAR"
+  ],
+  "gotchas": [
+    "01_number_id_naming_mismatch"
+  ],
+  "related": [
+    "SlotTablePaylineModule",
+    "PaylineLineModule",
+    "PaylineSymbolModule",
+    "SlotPaylineSchedule"
+  ]
+}
