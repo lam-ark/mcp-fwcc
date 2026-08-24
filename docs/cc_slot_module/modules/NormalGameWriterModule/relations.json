@@ -1,0 +1,19 @@
+{
+  "id": "NormalGameWriterModule",
+  "title": "NormalGameWriterModule Base Game Script Generator",
+  "category": "cc_slot_module",
+  "inheritsFrom": "GameModeWriterModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "NormalGameDirectorModule", "relation": "generates_action_scripts_for_base_game" }
+  ],
+  "dependsOn": [
+    { "target": "GameDataStore", "relation": "inspects_game_state" },
+    { "target": "SlotGameSettings", "relation": "inspects_speed_preferences" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Missing_makeScript_Generator_in_Companion_Writer"
+  ]
+}

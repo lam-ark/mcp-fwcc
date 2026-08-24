@@ -1,0 +1,21 @@
+{
+  "id": "NormalGameDirectorModule",
+  "title": "NormalGameDirectorModule Base Game Controller",
+  "category": "cc_slot_module",
+  "inheritsFrom": "GameModeDirectorModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "GameDirector", "relation": "managed_by_root_director" }
+  ],
+  "dependsOn": [
+    { "target": "NormalGameWriterModule", "relation": "companion_script_generator" },
+    { "target": "GameDataStore", "relation": "evaluates_spin_payouts" }
+  ],
+  "emitsEvents": [
+    "GameUIEvents.GAME_MODE.JOIN_GAME_SUCCESS"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Missing_moduleList_Wiring_Breaks_Scoped_Event_Bus"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "GameModeDirectorModule",
+  "title": "GameModeDirectorModule Mode Controller Base Class",
+  "category": "cc_slot_module",
+  "inheritsFrom": "BaseGameDirector",
+  "manages": [
+    "GameModuleEvent"
+  ],
+  "usedBy": [
+    { "target": "NormalGameDirectorModule", "relation": "subclasses_mode_director" },
+    { "target": "FreeGameDirectorModule", "relation": "subclasses_mode_director" },
+    { "target": "BonusGameDirectorModule", "relation": "subclasses_mode_director" }
+  ],
+  "dependsOn": [
+    { "target": "BaseGameDirector", "relation": "inherits_base_director_functionality" },
+    { "target": "GameDataStore", "relation": "parses_state_updates" },
+    { "target": "SlotGameSettings", "relation": "syncs_speed_and_auto_spin" }
+  ],
+  "emitsEvents": [
+    "GameUIEvents.GAME_MODE.SWITCH_GAME_MODE",
+    "GameUIEvents.GAME_MODE.EXIT_GAME_MODE",
+    "GameUIEvents.WIN_AMOUNT.SYNC_WIN_AMOUNT"
+  ],
+  "listensToEvents": [
+    "GameUIEvents.SPIN_BUTTON.SET_UP_BUTTON",
+    "GameUIEvents.SPIN_TIMES.SET_UP_SPIN_TIMES"
+  ],
+  "gotchas": [
+    "Gotcha:Missing_moduleList_Wiring_Breaks_Scoped_Event_Bus"
+  ]
+}
