@@ -1,0 +1,19 @@
+{
+  "id": "GameEventManager",
+  "title": "GameEventManager Asynchronous Global Event Bus",
+  "category": "cc_slot_module",
+  "inheritsFrom": "Object",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotBaseModule", "relation": "injected_global_event_bus" },
+    { "target": "GameInit", "relation": "instantiates_and_provides" },
+    { "target": "BaseGameDirector", "relation": "coordinates_transitions" },
+    { "target": "WalletModule", "relation": "syncs_balance_updates" }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Missing_TargetOff_Event_Leak"
+  ]
+}

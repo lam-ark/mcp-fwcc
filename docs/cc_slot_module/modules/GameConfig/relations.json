@@ -1,0 +1,18 @@
+{
+  "id": "GameConfig",
+  "title": "GameConfig Master Mathematical & Geometric Configuration",
+  "category": "cc_slot_module",
+  "inheritsFrom": "cc.Component",
+  "manages": [],
+  "usedBy": [
+    { "target": "GameInit", "relation": "configures_bootstrap" },
+    { "target": "GameDataStore", "relation": "configures_data_models" },
+    { "target": "SlotTableModule", "relation": "provides_grid_format" },
+    { "target": "SlotSymbolManager", "relation": "provides_symbol_priorities" },
+    { "target": "PaylineInfoModule", "relation": "provides_win_levels" }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": []
+}

@@ -1,0 +1,31 @@
+{
+  "id": "GameInit",
+  "title": "GameInit Bootstrap Entry Point & Service Provider",
+  "category": "cc_slot_module",
+  "inheritsFrom": "cc.Component",
+  "manages": [
+    "GameDataStore",
+    "GameConfig",
+    "GameEventManager",
+    "SlotSoundPlayerModule",
+    "UIManagerModule"
+  ],
+  "usedBy": [
+    { "target": "BaseGameDirector", "relation": "provides_injected_environment" },
+    { "target": "SlotBaseModule", "relation": "provides_injected_services" }
+  ],
+  "dependsOn": [
+    "GameConfig",
+    "GameDataStore",
+    "GameEventManager",
+    "SlotSoundPlayerModule",
+    "UIManagerModule",
+    "SlotGameSettings"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Early_Inject_Access_Before_Provide",
+    "Gotcha:Singleton_Dependency_Leak_Scene_Reload"
+  ]
+}
