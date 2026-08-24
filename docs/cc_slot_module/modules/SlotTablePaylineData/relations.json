@@ -1,0 +1,18 @@
+{
+  "id": "SlotTablePaylineData",
+  "title": "SlotTablePaylineData Reactive Payline State & Conversion Model",
+  "category": "cc_slot_module",
+  "inheritsFrom": "BaseDataModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotTablePaylineModule", "relation": "provides_converted_paylines" }
+  ],
+  "dependsOn": [
+    { "target": "PaylineConfig", "relation": "reads_payline_type_and_format" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "Gotcha:Registered_Keys_Desync_Missing_Paylines"
+  ]
+}

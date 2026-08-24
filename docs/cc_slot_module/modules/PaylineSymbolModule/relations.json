@@ -1,0 +1,35 @@
+{
+  "id": "PaylineSymbolModule",
+  "title": "PaylineSymbolModule Winning Symbol Blinking & Spine Win Presentation",
+  "category": "cc_slot_module",
+  "inheritsFrom": "BasePaylineComponent",
+  "manages": [
+    "SlotSymbolModule"
+  ],
+  "usedBy": [
+    { "target": "SlotTablePaylineModule", "relation": "managed_by_payline_orchestrator" },
+    { "target": "SlotPaylineSchedule", "relation": "receives_cyclic_line_display_commands" }
+  ],
+  "dependsOn": [
+    { "target": "SlotSymbolManager", "relation": "allocates_and_reparents_symbols" },
+    { "target": "PaylineConfig", "relation": "reads_debug_and_loop_settings" }
+  ],
+  "emitsEvents": [
+    "SYMBOL_PLAY_ANIMATION_WIN"
+  ],
+  "listensToEvents": [
+    "PAYLINE_SET_DATA",
+    "PAYLINE_BLINK_ALL",
+    "PAYLINE_STOP_ALL",
+    "PAYLINE_DIM_ALL",
+    "PAYLINE_SHOW_LINE",
+    "PAYLINE_SHOW_SPECIAL_SYMBOL",
+    "PAYLINE_SHOW_JACKPOT_LINE",
+    "PAYLINE_CLEAR",
+    "SHOW_IDLE_SYMBOLS"
+  ],
+  "gotchas": [
+    "Gotcha:Z_Index_Sorting_Clipping_Glitch",
+    "Gotcha:Symbol_Parent_Mutation_Memory_Leak"
+  ]
+}

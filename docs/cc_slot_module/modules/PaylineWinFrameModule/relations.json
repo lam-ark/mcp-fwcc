@@ -1,0 +1,21 @@
+{
+  "id": "PaylineWinFrameModule",
+  "title": "PaylineWinFrameModule Glowing Win Box Borders & Pooling System",
+  "category": "cc_slot_module",
+  "inheritsFrom": "BasePaylineComponent",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotTablePaylineModule", "relation": "managed_by_payline_orchestrator" },
+    { "target": "PaylineSymbolModule", "relation": "synchronizes_with_symbol_win_animation" }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "SYMBOL_PLAY_ANIMATION_WIN",
+    "PAYLINE_STOP_ALL",
+    "PAYLINE_CLEAR"
+  ],
+  "gotchas": [
+    "Gotcha:Unpooled_WinFrame_Instantiation_Lag"
+  ]
+}

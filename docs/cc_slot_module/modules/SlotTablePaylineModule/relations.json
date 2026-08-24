@@ -1,0 +1,34 @@
+{
+  "id": "SlotTablePaylineModule",
+  "title": "SlotTablePaylineModule Payline & Win Presentation Orchestrator",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [
+    "BasePaylineComponent",
+    "SlotPaylineSchedule",
+    "PaylineSymbolModule",
+    "PaylineWinFrameModule",
+    "PaylineLineModule",
+    "PaylineNumberModule"
+  ],
+  "usedBy": [
+    { "target": "GameModeDirectorModule", "relation": "orchestrates_win_presentation" },
+    { "target": "NormalGameWriterModule", "relation": "generates_show_paylines_commands" }
+  ],
+  "dependsOn": [
+    { "target": "SlotTablePaylineData", "relation": "reads_normalized_payline_data" },
+    { "target": "PaylineConfig", "relation": "reads_table_format_and_pay_types" },
+    { "target": "SlotPaylineSchedule", "relation": "schedules_line_cycling" }
+  ],
+  "emitsEvents": [
+    "PAYLINE_SET_DATA"
+  ],
+  "listensToEvents": [
+    "SETUP_PAYLINES",
+    "TABLE_FORMAT_CHANGED"
+  ],
+  "gotchas": [
+    "Gotcha:Missing_Module_Event_Init_Crash",
+    "Gotcha:Desynced_Table_Format_Payline_Glitch"
+  ]
+}
