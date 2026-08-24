@@ -1,31 +1,44 @@
 ---
 id: "cc_slot_module:SlotGameSettings:overview:architecture_and_role"
-title: "SlotGameSettings User Preferences & Runtime Flags Architecture"
+title: "SlotGameSettings Runtime Preferences & State Coordination Architecture"
 category: "cc_slot_module"
-tags: ["SlotGameSettings", "slot_game_settings", "cc_slot_module", "overview", "architecture", "preferences", "turbo", "auto_spin", "game_speed"]
+tags: ["SlotGameSettings", "slot_game_settings", "cc_slot_module", "overview", "architecture", "preferences", "turbo", "fast_to_result", "game_state"]
 ---
 
-# 🏛️ SlotGameSettings User Preferences & Runtime Flags Architecture
+# 🏛️ SlotGameSettings Runtime Preferences & State Coordination Architecture
 
 ## 1. Executive Summary & Purpose
 
-`SlotGameSettings` (`assets/cc-common/cc-slot-module/Core/SlotGameSettings.ts`) is the **State & User Preference Registry** of the `cc-common` Slot SDK.
+`SlotGameSettings` (`assets/cc-common/cc-slot-module/Core/SlotGameSettings.ts`) is the **Global Runtime Preferences & Game State Registry** in the `cc-common` Slot SDK.
 
-Provided to the IoC container by `GameInit`, it maintains live runtime flags including Turbo Mode state (`isTurboActive`), Auto-Spin status (`isAutoSpin`), current game speed (`gameSpeed`), trial mode state (`isTrialMode`), and login authorization state (`isJoinGameSuccess`).
+Instantiated and registered into the IoC container by `GameInit`, `SlotGameSettings` acts as the single source of truth for **Turbo Mode** (`isTurboActive`), **Fast-To-Result (FTR)** (`isFastToResult`), **Auto-Spin** (`isAutoSpin`), **Trial Mode** (`isTrialMode`), and the overarching **State Machine Phase** (`currentGameState`).
 
 ```mermaid
 graph TD
-    UI[GUI Controls] -->|Toggle Turbo / AutoSpin| SGS[SlotGameSettings<br/>State Container]
-    
-    SGS -->|isFastToResult / isTurboActive| Director[GameDirector & ScriptExecutor]
-    SGS -->|isAutoSpin| AutoPanel[AutoSpinPanel]
-    SGS -->|currentGameState| ButtonState[SlotButtonNormal & TurboButton]
+    SGS[SlotGameSettings<br/>Global State Singleton]
+
+    subgraph State Mutation Sources
+        TurboBtn[TurboButton / Switcher] -->|set isTurboActive / gameSpeed| SGS
+        AutoPanel[AutoSpinPanel] -->|set isAutoSpin| SGS
+        Director[GameDirector] -->|set currentGameState| SGS
+        NetInit[GameInit.setUpGame] -->|set isJoinGameSuccess| SGS
+        TrialBtn[TrialModeButton] -->|set isTrialMode| SGS
+    end
+
+    subgraph Downstream Consumers
+        SGS -->|isFastToResult / gameSpeed| ScriptExec[ScriptExecutor & Directors]
+        SGS -->|isTurboActive| TableModule[SlotTableModule<br/>Short Reel Spin Tweens]
+        SGS -->|currentGameState| SpinButton[SlotButtonNormal & UI Buttons]
+        SGS -->|isTrialMode| Wallet[WalletModule & Trial Badges]
+        SGS -->|isFastToResult| FX[Payline & NearWin Refill Modules]
+    end
 ```
 
 ---
 
 ## 2. Core Responsibilities
 
-1. **Turbo & Game Speed Management**: Exposes `isTurboActive`, `gameSpeed`, and `isFastToResult` (`gameSpeed === GAME_SPEED_ENUM.INSTANTLY`).
-2. **Auto Spin Coordination**: Tracks active auto-spin loop state.
-3. **Session Context Verification**: Stores `isJoinGameSuccess` preventing premature spin submissions.
+1. **Turbo & FTR Speed Regulation**: Provides `gameSpeed` (`NORMAL`, `TURBO`, `INSTANTLY`) and computed `isFastToResult` to bypass or shorten tween durations.
+2. **State Machine Phase Broadcasting**: Stores `currentGameState` (`IDLE`, `SPINNING`, `WIN_EFFECT`, `TRANSITION`) enabling UI controls to dynamically lock/unlock.
+3. **Session Context Integrity**: Holds `isJoinGameSuccess` to ensure player interaction is barred until the socket auth handshake finishes.
+4. **Auto-Spin Loop Continuity**: Retains `isAutoSpin` flag so directors know to re-trigger spin sequences upon settlement.
