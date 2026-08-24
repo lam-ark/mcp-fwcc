@@ -10,19 +10,19 @@
 
 - **Total SDK Clusters**: 10
 - **Total Modules & Core Components**: ~75
-- **Completed Modules (v3.0)**: **62 / 75 (83% Complete)**
+- **Completed Modules (v3.0)**: **65 / 75 (87% Complete)**
   - Cluster 1 (Core Foundation & Bootstrap): **9 / 9 (100%)**
   - Cluster 2 (Game Mode Directors, Writers & Mini-Games): **14 / 14 (100%)**
   - Cluster 3 (Matrix, Reels & Symbols): **11 / 11 (100%)**
   - Cluster 4 (Paylines, Win Frames & Line Numbers): **8 / 8 (100%)**
   - Cluster 5 (Cascade & Avalanche Engine): **3 / 3 (100%)**
   - Cluster 6 (Cutscenes & Celebratory Overlays): **7 / 7 (100%)**
-  - Cluster 7 (GUI Dashboard, Controls & Betting System): **10 / 13 (77%)**
+  - Cluster 7 (GUI Dashboard, Controls & Betting System): **13 / 13 (100%)**
 - **Completed Architecture Systems & Overviews**: **100% Complete** (14 Global Guides + 8 Core Architecture Systems)
-- **In-Progress / Upcoming Modules**: **13**
+- **In-Progress / Upcoming Modules**: **10**
 
 ```text
-[██████████████████████████████████████████████░░░░░░] 83% Total Completed
+[████████████████████████████████████████████████░░░░] 87% Total Completed
 ```
 
 ---
@@ -171,9 +171,9 @@
 | [x] | **`SpinTimesModule`** | `Canvas/Director/UIManager/SpinTimes` | `assets/cc-common/cc-slot-module/GUI/SpinTimes/SpinTimesModule.ts` | Countdown badge displaying remaining Free Spins or Auto Spins. |
 | [x] | **`TurboButton`** | `Canvas/Director/UIManager/TurboButton` | `assets/cc-common/cc-slot-module/GUI/Turbo/TurboButton.ts` | Turbo / Quick-spin mode toggle button with sprite state transitions. |
 | [x] | **`PaylineInfoModule`** | `Canvas/Director/UIManager/PaylineInfo` | `assets/cc-common/cc-slot-module/GUI/PaylineInfo/PaylineInfoModule.ts` | Floating notification bar showing win amounts per hit payline. |
-| [ ] | **`TrialModeManager`** | `Canvas/Director/TrialMode` | `assets/cc-common/cc-slot-module/GUI/TrialMode/TrialModeManager.ts` | Trial play banner, demo credits simulation, Back to Real mode button. |
-| [ ] | **`IconPromotion`** | `Canvas/Director/UIManager/Promotion` | `assets/cc-common/cc-slot-module/GUI/Promotion/IconPromotion.ts` | Promotional event badges and free round counters. |
-| [ ] | **`ToastInfoModule`** | `Canvas/Director/Toast` | `assets/cc-common/cc-slot-module/GUI/ToastInfo/ToastInfoModule.ts` | Transient toast notification popups for low balance / error alerts. |
+| [x] | **`TrialModeManager`** | `Canvas/Director/TrialMode` | `assets/cc-common/cc-slot-module/GUI/TrialMode/TrialModeManager.ts` | Trial play banner, demo credits simulation, Back to Real mode button. |
+| [x] | **`IconPromotion`** | `Canvas/Director/UIManager/Promotion` | `assets/cc-common/cc-slot-module/GUI/Promotion/IconPromotion.ts` | Promotional event badges and free round counters. |
+| [x] | **`ToastInfoModule`** | `Canvas/Director/Toast` | `assets/cc-common/cc-slot-module/GUI/ToastInfo/ToastInfoModule.ts` | Transient toast notification popups for low balance / error alerts. |
 
 ---
 

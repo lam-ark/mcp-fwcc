@@ -1,0 +1,37 @@
+{
+  "moduleId": "TrialModeManager",
+  "category": "cc_slot_module",
+  "name": "TrialModeManager",
+  "description": "Trial and demo practice mode manager handling feature scenario selection popups, currency step validation, and real/demo mode transitions.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    },
+    {
+      "target": "WalletModule",
+      "relation": "mode_switch_notifier"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule"
+  ],
+  "emitsEvents": [
+    "INIT_TRIAL_MODE",
+    "PLAY_TUTORIAL_OPTION",
+    "SKIP_TRIAL_DATA"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_unconfigured_currency_trial_data_error",
+    "02_trial_panel_selection_lockout"
+  ],
+  "related": [
+    "UIManagerModule",
+    "WalletModule",
+    "BetModule"
+  ]
+}

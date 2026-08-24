@@ -1,0 +1,28 @@
+{
+  "moduleId": "IconPromotion",
+  "category": "cc_slot_module",
+  "name": "IconPromotion",
+  "description": "Promotional event marketing icon and free rounds badge controller observing PromotionData.isActive.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_promotional_state_observer_leak",
+    "02_promotional_badge_occlusion"
+  ],
+  "related": [
+    "UIManagerModule",
+    "SpinTimesModule"
+  ]
+}

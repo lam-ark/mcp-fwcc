@@ -1,0 +1,33 @@
+{
+  "moduleId": "ToastInfoModule",
+  "category": "cc_slot_module",
+  "name": "ToastInfoModule",
+  "description": "Transient toast notification popup banner displaying system network warnings and alert messages with auto-dismissal.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "UIManagerModule",
+      "relation": "hud_child"
+    },
+    {
+      "target": "GameLogic",
+      "relation": "network_warning_listener"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "UIManagerModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "NETWORK_WARNING"
+  ],
+  "gotchas": [
+    "01_rapid_toast_tween_conflict",
+    "02_unstopped_toast_tween_on_destroy"
+  ],
+  "related": [
+    "UIManagerModule"
+  ]
+}
