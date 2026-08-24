@@ -10,7 +10,7 @@
 
 - **Total SDK Clusters**: 10
 - **Total Modules & Core Components**: ~75
-- **Completed Modules (v3.0)**: **65 / 75 (87% Complete)**
+- **Completed Modules (v3.0)**: **67 / 75 (89% Complete)**
   - Cluster 1 (Core Foundation & Bootstrap): **9 / 9 (100%)**
   - Cluster 2 (Game Mode Directors, Writers & Mini-Games): **14 / 14 (100%)**
   - Cluster 3 (Matrix, Reels & Symbols): **11 / 11 (100%)**
@@ -18,11 +18,12 @@
   - Cluster 5 (Cascade & Avalanche Engine): **3 / 3 (100%)**
   - Cluster 6 (Cutscenes & Celebratory Overlays): **7 / 7 (100%)**
   - Cluster 7 (GUI Dashboard, Controls & Betting System): **13 / 13 (100%)**
+  - Cluster 8 (Popups, History, Settings & Info Panels): **2 / 9 (22%)**
 - **Completed Architecture Systems & Overviews**: **100% Complete** (14 Global Guides + 8 Core Architecture Systems)
-- **In-Progress / Upcoming Modules**: **10**
+- **In-Progress / Upcoming Modules**: **8**
 
 ```text
-[████████████████████████████████████████████████░░░░] 87% Total Completed
+[█████████████████████████████████████████████████░░░] 89% Total Completed
 ```
 
 ---
@@ -181,8 +182,8 @@
 
 | Status | Module Name | Canonical Scene Node Path | Source Path | Key Responsibilities |
 | :---: | :--- | :--- | :--- | :--- |
-| [ ] | **`PopupControllerModule`**| `Canvas/Director/Popup` | `assets/cc-common/cc-slot-module/Popup/PopupControllerModule.ts` | Master popup manager with queueing, modal backgrounds, and transitions. |
-| [ ] | **`BaseUIPopup`** | Base Class for Popups | `assets/cc-common/cc-slot-module/Popup/BaseUIPopup.ts` | Base modal class providing `show()`, `hide()`, and behavior hooks. |
+| [x] | **`PopupControllerModule`**| `Canvas/Director/Popup` | `assets/cc-common/cc-slot-module/Popup/PopupControllerModule.ts` | Master popup manager with queueing, modal backgrounds, and transitions. |
+| [x] | **`BaseUIPopup`** | Base Class for Popups | `assets/cc-common/cc-slot-module/Popup/BaseUIPopup.ts` | Base modal class providing `show()`, `hide()`, and behavior hooks. |
 | [ ] | **`BetHistoryModule`** | `Canvas/Director/Popup/BetHistory` | `assets/cc-common/cc-slot-module/Popup/BetHistory/BetHistoryModule.ts` | Comprehensive spin history viewer with paginated round details. |
 | [ ] | **`BetHistoryDetailModule`**| Sub-panel in BetHistory | `assets/cc-common/cc-slot-module/Popup/BetHistory/BetHistoryDetailModule.ts` | Granular round replay showing matrix snapshots, payouts, and bonus steps. |
 | [ ] | **`JackpotHistoryModule`**| `Canvas/Director/Popup/JackpotHistory` | `assets/cc-common/cc-slot-module/Popup/JackpotHistory/JackpotHistoryModule.ts` | Tabular record of recent jackpot winners and timestamps. |

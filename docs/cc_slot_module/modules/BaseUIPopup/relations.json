@@ -1,0 +1,33 @@
+{
+  "moduleId": "BaseUIPopup",
+  "category": "cc_slot_module",
+  "name": "BaseUIPopup",
+  "description": "Abstract base class for all modal dialog popups managing animation behavior delegation, audio feedback, and global close events.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "PopupControllerModule",
+      "relation": "managed_modal_child"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "PopupBehavior"
+  ],
+  "emitsEvents": [
+    "CLOSE_ALL_POPUPS"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_missing_popup_behavior_component",
+    "02_rapid_toggle_state_desync"
+  ],
+  "related": [
+    "PopupControllerModule",
+    "BetHistoryModule",
+    "JackpotHistoryModule",
+    "SettingPanel",
+    "InfoPanel"
+  ]
+}

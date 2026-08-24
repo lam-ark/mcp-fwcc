@@ -1,0 +1,29 @@
+{
+  "moduleId": "PopupControllerModule",
+  "category": "cc_slot_module",
+  "name": "PopupControllerModule",
+  "description": "Master popup container managing child modal lifecycle initialization and active modal querying.",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "GameModeDirectorModule",
+      "relation": "input_blocker_query"
+    }
+  ],
+  "dependsOn": [
+    "BaseUIPopup"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_initial_child_activation_gotcha",
+    "02_unreported_active_popup_check"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "BetHistoryModule",
+    "SettingPanel",
+    "InfoPanel"
+  ]
+}
