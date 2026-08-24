@@ -15,7 +15,8 @@
   "emitsEvents": [],
   "listensToEvents": [],
   "gotchas": [
-    "01_lost_prefab_name_tag"
+    "01_lost_prefab_name_tag",
+    "02_double_pool_get_leak"
   ],
   "related": [
     "SlotTablePaylineModule",
