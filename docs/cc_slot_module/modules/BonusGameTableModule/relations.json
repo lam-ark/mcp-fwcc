@@ -1,0 +1,30 @@
+{
+  "id": "BonusGameTableModule",
+  "title": "BonusGameTableModule Interactive Pick Grid Orchestrator",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [
+    "BonusGameItemModule"
+  ],
+  "usedBy": [
+    { "target": "BonusGameDirectorModule", "relation": "managed_by_bonus_director" }
+  ],
+  "dependsOn": [
+    { "target": "BonusTableConfig", "relation": "reads_grid_dimensions" },
+    { "target": "BonusTableData", "relation": "reads_bonus_matrix_data" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "INIT_BONUS_GAME",
+    "START_BONUS_GAME",
+    "AUTO_PLAY_BONUS_GAME",
+    "OPEN_ITEM",
+    "OPEN_FINAL_ITEM",
+    "OPEN_ALL_ITEMS",
+    "RESUME_BONUS_GAME",
+    "RESET_BONUS_GAME",
+    "BLOCK_BONUS_GAME",
+    "UNBLOCK_BONUS_GAME"
+  ],
+  "gotchas": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "BonusGameItemModule",
+  "title": "BonusGameItemModule Individual Pick Item & Animation Controller",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "BonusGameTableModule", "relation": "managed_by_bonus_table" }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [
+    "CLICK_ITEM"
+  ],
+  "listensToEvents": [
+    "INIT",
+    "DIM",
+    "UNDIM",
+    "BOX_OPEN",
+    "BOX_RESET",
+    "ON_CLICK_ITEM",
+    "ENABLE_CLICK",
+    "DISABLE_CLICK"
+  ],
+  "gotchas": []
+}

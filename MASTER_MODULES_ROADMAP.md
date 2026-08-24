@@ -49,8 +49,8 @@
 | [x] | **`FreeGameWriterModule`** | Helper Class in Free Director | `assets/cc-common/cc-slot-module/GameMode/FreeGame/FreeGameWriterModule.ts` | **COMPLETED (v3.1)** - Action script queue definition for free spins. |
 | [x] | **`BonusGameDirectorModule`** | `Canvas/Director/GameMode/BonusGame` | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameDirectorModule.ts` | **COMPLETED (v3.1)** - Pick-and-click / Mini-game director. |
 | [x] | **`BonusGameWriterModule`** | Helper Class in Bonus Director | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameWriterModule.ts` | **COMPLETED (v3.1)** - Script queue definition for bonus rounds. |
-| [ ] | **`BonusGameTableModule`** | `Canvas/Director/GameMode/BonusGame/Table` | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameTableModule.ts` | Manages the interactive grid of pickable items/chests. |
-| [ ] | **`BonusGameItemModule`** | Child Item in Bonus Table | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameItemModule.ts` | Individual clickable chest/box Spine animation & prize display. |
+| [x] | **`BonusGameTableModule`** | `Canvas/Director/GameMode/BonusGame/Table` | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameTableModule.ts` | **COMPLETED (v3.1)** - Manages the interactive grid of pickable items/chests. |
+| [x] | **`BonusGameItemModule`** | Child Item in Bonus Table | `assets/cc-common/cc-slot-module/GameMode/BonusGame/BonusGameItemModule.ts` | **COMPLETED (v3.1)** - Individual clickable chest/box Spine animation & prize display. |
 | [ ] | **`FreeOptionDirectorModule`**| `Canvas/Director/GameMode/FreeOption` | `assets/cc-common/cc-slot-module/GameMode/FreeOption/FreeOptionDirectorModule.ts` | Player choice modal for selecting Free Spin volatility options. |
 | [ ] | **`FortuneWheelGameDirector`**| `Canvas/Director/GameMode/FortuneWheel` | `assets/cc-common/cc-slot-module/GameMode/FortuneWheelGame/Scripts/Director/FortuneWheelGameDirector.ts` | Wheel of Fortune mini-game director, spin physics, target segment settling. |
 
