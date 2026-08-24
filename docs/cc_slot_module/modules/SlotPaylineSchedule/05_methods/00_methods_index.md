@@ -16,6 +16,7 @@ tags: ["SlotPaylineSchedule", "slot_payline_schedule", "cc_slot_module", "method
 | **[`setConfig`](./setConfig.md)** | `protected` | `void` | Caches `TIMELINE_CONFIG` duration. |
 | **[`registerPaylineEvents`](./registerPaylineEvents.md)** | `protected` | `void` | Subscribes to `moduleEvent` and `payLineEmitter`. |
 | **[`setData`](./setData.md)** | `protected` | `void` | Ingests `payLines` and `jackpotPayline`. |
+| **[`resetAllEffectAndTasks`](./resetAllEffectAndTasks.md)** | `protected` | `void` | Emergency cleanup resetting effects on spin interrupt. |
 | **[`cleanUp`](./cleanUp.md)** | `protected` | `void` | Stops schedule and emits `PAYLINE_CLEAR`. |
 | **[`stopPaylines`](./stopPaylines.md)** | `protected` | `void` | Stops schedule and emits `PAYLINE_STOP_ALL`. |
 | **[`showAllPaylines`](./showAllPaylines.md)** | `protected` | `void` | Builds and launches infinite looping `cc.tween` sequence. |
