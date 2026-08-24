@@ -27,3 +27,6 @@ Welcome to the technical guide on the **Script Execution & Command Pipeline** in
 
 4. **[`04_turbo_mode_and_skip_all_effects.md`](./04_turbo_mode_and_skip_all_effects.md)**
    * Fast Stop and Turbo mode mechanics: how `skipAllEffects()` aborts active tweens, accelerates delays, and resolves Promises immediately.
+
+5. **[`05_diagnostic_logging_and_devtools.md`](./05_diagnostic_logging_and_devtools.md)**
+   * Diagnostic Logging with `eno.Logger`, CSS-styled console badges (`[Action]`, `[Running]`, `[Skipping]`, `[Finish]`), and collapsible `console.group` execution tracing.
