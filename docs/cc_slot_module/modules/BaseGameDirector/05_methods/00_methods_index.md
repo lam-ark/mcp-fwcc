@@ -13,10 +13,11 @@ tags: ["BaseGameDirector", "base_game_director", "cc_slot_module", "methods", "i
 
 | Method Signature | Visibility | Purpose |
 | :--- | :--- | :--- |
-| **[`init(): void`](./init.md)** | `public` | Binds `writer` and `director` from node properties and instantiates `ScriptExecutor`. |
-| **[`runAction(actionName: string, data?: any): Promise<void>`](./runAction.md)** | `public` | Generates command queue via `writer.makeScript[ActionName]` and executes steps sequentially. |
-| **[`executeNextScript(script: any): void`](./executeNextScript.md)** | `public` | Delegates execution of the subsequent command step to `executor`. |
-| **[`onResetScript(actionName: string): Promise<void>`](./onResetScript.md)** | `public` | Clears and resets a specific named action queue. |
-| **[`onResetAllScripts(): void`](./onResetAllScripts.md)** | `public` | Aborts all currently running script queues across the director. |
-| **[`forceToExit(script): void`](./forceToExit.md)** | `public` | Forcefully aborts mode execution to switch scenes or exit to real mode. |
-| **[`setGameSpeed(mode): void`](./setGameSpeed.md)** | `public` | Sets speed tier inside `ScriptExecutor`. |
+| **[`init(): void`](./init.md)** | `public` | Binds `this.writer` and `this.director` to instantiate the `ScriptExecutor` instance. |
+| **[`runAction(actionName: string, data?: any): Promise<void>`](./runAction.md)** | `public` | Generates declarative script via writer and runs action queue asynchronously. |
+| **[`executeNextScript(script: any): void`](./executeNextScript.md)** | `public` | Shifts the next action step descriptor from the queue and triggers step dispatch. |
+| **[`onResetScript(actionName: string): Promise<void>`](./onResetScript.md)** | `public` | Converts in-flight skippable commands to `_reset[Command]` to fast-forward execution. |
+| **[`onResetAllScripts(): void`](./onResetAllScripts.md)** | `public` | Aborts all active action queues and rejects pending promises with mode abort error. |
+| **[`forceToExit(script: any): void`](./forceToExit.md)** | `public` | Sets `forceToExitMode = true` and runs mandatory exit teardown script. |
+| **[`setGameSpeed(mode: number): void`](./setGameSpeed.md)** | `public` | Mutates runtime game speed level across `ScriptExecutor`, `GameDataStore`, and `SlotGameSettings`. |
+| **[`onDestroy(): void`](./onDestroy.md)** | `protected` | Invokes `executor.destroy()` to abort and clean up all in-flight queues. |
