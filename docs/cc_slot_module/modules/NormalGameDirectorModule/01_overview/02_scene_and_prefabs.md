@@ -1,31 +1,28 @@
 ---
 id: "cc_slot_module:NormalGameDirectorModule:overview:scene_and_prefabs"
-title: "NormalGameDirectorModule Scene Hierarchy & Component Placement"
+title: "NormalGameDirectorModule Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["NormalGameDirectorModule", "normal_game_director", "cc_slot_module", "overview", "scene", "prefabs", "hierarchy"]
+tags: ["NormalGameDirectorModule", "normal_game_director", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 NormalGameDirectorModule Scene Hierarchy & Component Placement
+# 🏛️ NormalGameDirectorModule Scene Node Placement & Prefab Structure
 
-## 1. Scene Graph Hierarchy
+---
 
-Mounted on the `NormalGame` container node under `Canvas/Director/GameMode`:
+## 1. Inspected Scene Node Placement
+
+Inspected live from production scenes (`g9000L` / `g9666L`), `NormalGameDirectorModule` sits on `MainGamePrefab`:
 
 ```text
-Canvas (cc.Canvas)
-└── Canvas/Director
-    └── Canvas/Director/GameMode
-        └── NormalGame ➔ [Mounted: NormalGameDirectorModule, NormalGameWriterModule]
-            ├── BG_MainG (Sprite)
-            └── BoardG (SlotTableModule, SlotTablePaylineData)
+Canvas/Director/GameMode/MainGamePrefab [Node]
+├── BaseGameMode
+├── NormalGameDirectorModule (Spin loop director)
+├── NormalGameWriterModule (Script queue generator)
+├── GameLogicEventHandler
+├── OnAddSlotModule
+└── [Child Modules Managed via moduleList]:
+    ├── SlotTableModule (SlotTableModule, TableModuleConfig, SlotTableData, SlotTableNearWinModule)
+    ├── SlotTablePaylineModule (SlotTablePaylineModule, PaylineConfig, SlotTablePaylineData)
+    ├── TransformSymbolModule (TransformSymbolModule, TransformSymbolConfig, TransformSymbolData)
+    └── SymbolManger (SlotSymbolManager)
 ```
-
----
-
-## 2. Injected Services Reference
-
-| Service Token | Injected Property | Provider Source | Purpose |
-| :--- | :--- | :--- | :--- |
-| **`GameDataStore`** | `@inject(GameDataStore) dataStore` | `GameInit` | Ingests `playSession` and evaluates paylines. |
-| **`SlotGameSettings`** | `@inject(SlotGameSettings) gameSettings` | `GameInit` | Queries `isAutoSpin` and toggles FTR speed. |
-| **`Logger`** | `@inject(Logger) logger` | `GameInit` | Stylized debug logging. |

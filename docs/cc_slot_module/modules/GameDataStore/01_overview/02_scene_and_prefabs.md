@@ -1,38 +1,33 @@
 ---
 id: "cc_slot_module:GameDataStore:overview:scene_and_prefabs"
-title: "GameDataStore Scene Hierarchy & IoC Registration"
+title: "GameDataStore Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["GameDataStore", "game_data_store", "cc_slot_module", "overview", "scene", "ioc"]
+tags: ["GameDataStore", "game_data_store", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 GameDataStore Scene Hierarchy & IoC Registration
+# 🏛️ GameDataStore Scene Node Placement & Prefab Structure
 
-## 1. Scene Hierarchy Placement
+---
 
-`GameDataStore` is attached at the root Director level so it is instantiated before child UI modules:
+## 1. Inspected Scene Node Placement
+
+Inspected live from production scenes (`g9000L` / `g9666L`), `GameDataStore` resides on the `Canvas/Director` node:
 
 ```text
-Canvas/Director
-├── GameDataStore (Global Single Source of Truth, IoC container provided)
-├── GameDirector (Root game coordinator)
-└── GameMode
-    ├── NormalGameDirector
-    ├── FreeGameDirector
-    └── BoardG
-        ├── Table (contains SlotTableData extending BaseDataModule)
-        └── Payline (contains SlotTablePaylineData extending BaseDataModule)
+Canvas/Director [Node]
+├── GameConfig (GameConfig)
+├── GameDataStore (GameDataStore)
+├── GameInit (GameInit)
+└── GameDirector (GameDirector)
 ```
 
 ---
 
-## 2. Auto-Discovery in `onLoad`
+## 2. Downstream Reactive Consumers
 
-During scene bootstrapping, `GameDataStore.onLoad()` automatically crawls all descendant nodes:
-```typescript
-protected onLoad(): void {
-    this.getComponentsInChildren("BaseDataModule").forEach((module) => {
-        this.registerModule(module as BaseDataModule);
-    });
-}
-```
-Any `BaseDataModule` dynamically instantiated later also registers itself explicitly via `BaseDataModule.start() ➔ dataStore.registerModule(this)`.
+`GameDataStore` syncs state across all active mode sub-nodes via `updateDataModules()`:
+- `Canvas/Director/GameMode/MainGamePrefab/SlotTableModule` (`SlotTableData`)
+- `Canvas/Director/GameMode/MainGamePrefab/SlotTablePaylineModule` (`SlotTablePaylineData`)
+- `Canvas/Director/GameMode/BonusGamePrefab/BonusTable` (`BonusTableData`)
+- `Canvas/Director/UIManager/Wallet` (`WalletModule`)
+- `Canvas/Director/UIManager/Bet` (`BetModule`)

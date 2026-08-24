@@ -1,40 +1,40 @@
 ---
 id: "cc_slot_module:GameModeDirectorModule:overview:scene_and_prefabs"
-title: "GameModeDirectorModule Scene Node Anchors & moduleList Mapping"
+title: "GameModeDirectorModule Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["GameModeDirectorModule", "game_mode_director", "cc_slot_module", "overview", "scene", "prefabs", "moduleList"]
+tags: ["GameModeDirectorModule", "game_mode_director", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 GameModeDirectorModule Scene Node Anchors & moduleList Mapping
+# 🏛️ GameModeDirectorModule Scene Node Placement & Prefab Structure
 
-## 1. Scene Graph Hierarchy
+---
 
-`GameModeDirectorModule` instances are attached directly to mode container nodes under `Canvas/Director/GameMode`:
+## 1. Inspected Scene Node Placement
+
+Inspected live from production scenes (`g9000L` / `g9666L`), mode directors sit on individual mode prefabs under `Canvas/Director/GameMode`:
 
 ```text
-Canvas (cc.Canvas)
-└── Canvas/Director
-    └── Canvas/Director/GameMode
-        ├── NormalGame ➔ [Mounted: NormalGameDirectorModule, NormalGameWriterModule]
-        │   ├── BG_MainG
-        │   └── BoardG (SlotTableModule, SlotTablePaylineData)
-        │
-        ├── FreeGame ➔ [Mounted: FreeGameDirectorModule, FreeGameWriterModule]
-        │   ├── BG_FreeG
-        │   └── BoardFree (SlotTableModule, SlotTablePaylineData)
-        │
-        └── BonusGame ➔ [Mounted: BonusGameDirectorModule, BonusGameWriterModule]
+Canvas/Director/GameMode
+├── MainGamePrefab [Node]
+│   ├── [Component 1] BaseGameMode
+│   ├── [Component 2] NormalGameDirectorModule (Extends GameModeDirectorModule)
+│   ├── [Component 3] NormalGameWriterModule (Extends GameModeWriterModule)
+│   ├── [Component 4] GameLogicEventHandler
+│   └── [Component 5] OnAddSlotModule
+└── FreeGamePrefab [Node]
+    ├── [Component 1] BaseGameMode
+    ├── [Component 2] FreeGameDirectorModule (Extends GameModeDirectorModule)
+    ├── [Component 3] FreeGameWriterModule (Extends GameModeWriterModule)
+    ├── [Component 4] GameLogicEventHandler
+    └── [Component 5] OnAddSlotModule
 ```
 
 ---
 
-## 2. Inspector `moduleList` Reference Mapping
+## 2. Injected Mode Children (`moduleList`)
 
-In Cocos Creator Editor, drag and drop sibling components into the `moduleList` array on each mode director:
-
-| Target Component Node | Purpose in `moduleList` |
-| :--- | :--- |
-| **`BoardG` / `Table`** | Receives `TABLE_START_SPIN`, `TABLE_STOP_SPIN`, `TABLE_FAST_STOP`. |
-| **`PaylineModule`** | Receives `SHOW_PAYLINES`, `CLEAR_PAYLINES`. |
-| **`WinEffectModule`** | Receives `TRIGGER_WIN_EFFECT`, `STOP_WIN_EFFECT`. |
-| **`MultiplierModule`** | Receives `UPDATE_MULTIPLIER`, `RESET_MULTIPLIER`. |
+The active director manages sibling modules placed directly beneath its mode prefab:
+- `SlotTableModule` (Matrix & reel table orchestrator)
+- `SlotTablePaylineModule` (Payline visual presentation)
+- `TransformSymbolModule` (Symbol transformations & mega symbols)
+- `SymbolManger` (SlotSymbolManager)

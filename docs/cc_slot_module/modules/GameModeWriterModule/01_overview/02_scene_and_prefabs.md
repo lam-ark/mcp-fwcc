@@ -1,27 +1,30 @@
 ---
 id: "cc_slot_module:GameModeWriterModule:overview:scene_and_prefabs"
-title: "GameModeWriterModule Placement & Injected Services"
+title: "GameModeWriterModule Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["GameModeWriterModule", "game_mode_writer", "cc_slot_module", "overview", "scene", "prefabs"]
+tags: ["GameModeWriterModule", "game_mode_writer", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 GameModeWriterModule Placement & Injected Services
+# 🏛️ GameModeWriterModule Scene Node Placement & Prefab Structure
 
-## 1. Node Placement & Self-Binding
+---
 
-Mounted alongside companion directors on game mode nodes under `Canvas/Director/GameMode/*`:
+## 1. Inspected Scene Node Placement
 
-```typescript
-onLoadExtend(): void {
-    this.node["writer"] = this;
-}
+Inspected live from production scenes (`g9000L` / `g9666L`), concrete subclasses of `GameModeWriterModule` (`NormalGameWriterModule`, `FreeGameWriterModule`, `BonusGameWriterModule`) are co-located on their respective mode prefabs:
+
+```text
+Canvas/Director/GameMode
+├── MainGamePrefab (NormalGameDirectorModule, NormalGameWriterModule)
+├── FreeGamePrefab (FreeGameDirectorModule, FreeGameWriterModule)
+└── BonusGamePrefab (BonusGameDirectorModule, BonusGameWriterModule)
 ```
 
 ---
 
-## 2. Injected Services Reference
+## 2. Co-Location with Director
 
-| Service Token | Injected Property | Role |
-| :--- | :--- | :--- |
-| **`GameDataStore`** | `@inject(GameDataStore) dataStore` | Reads `playSession.nextMode` and `playSession.jackpot` to branch scripts dynamically. |
-| **`SlotGameSettings`** | `@inject(SlotGameSettings) gameSettings` | Queries active speed preferences. |
+Attaching the writer directly alongside its director enables the director to initialize the writer in `onLoad()`:
+```typescript
+this.writer = this.getComponent(GameModeWriterModule);
+```

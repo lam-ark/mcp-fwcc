@@ -1,29 +1,32 @@
 ---
 id: "cc_slot_module:GameConfig:overview:scene_and_prefabs"
-title: "GameConfig Scene Node & Companions"
+title: "GameConfig Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["GameConfig", "gameconfig", "cc_slot_module", "overview", "scene", "prefabs", "director"]
+tags: ["GameConfig", "game_config", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 GameConfig Scene Node & Companions
+# 🏛️ GameConfig Scene Node Placement & Prefab Structure
 
-## 1. Canonical Scene Anchor
+---
 
-`GameConfig` is attached to `Canvas/Director` alongside `GameInit` and `GameDataStore`.
+## 1. Inspected Scene Node Placement
+
+Inspected live from production scenes (`g9000L` / `g9666L`), `GameConfig` resides on the `Canvas/Director` node:
 
 ```text
-Canvas
-└── Canvas/Director [GameInit.ts, GameConfig.ts, GameDataStore.ts, GameDirector.ts]
+Canvas/Director [Node]
+├── GameConfig (Component: GameConfig)
+├── GameDataStore (Component: GameDataStore)
+├── GameInit (Component: GameInit)
+└── GameDirector (Component: GameDirector)
 ```
 
 ---
 
-## 2. Downstream Module Ingestion Map
+## 2. Inspector Properties
 
-| Consumer Component | Properties Read from `GameConfig` | Purpose in Consumer |
-| :--- | :--- | :--- |
-| **`SlotTableModule`** | `TABLE_FORMAT`, `SYMBOL_WIDTH`, `SYMBOL_HEIGHT` | Instantiates reel column nodes and calculates reel matrix dimensions. |
-| **`SlotSymbolManager`**| `SYMBOL_CONFIG` | Sorts symbol visual layers by special symbol priority. |
-| **`BetModule`** | `DEFAULT_BET`, `TOTAL_BET_CREDIT`, `CURRENCY_CONFIG` | Configures bet multiplier steps and currency symbols. |
-| **`PaylineInfoModule`**| `WIN_LEVEL_CONFIG` | Sets count-up sound durations and celebration thresholds. |
-| **`GameDataStore`** | Ingests whole `GameConfig` via `setConfig(config)` | Caches configuration for runtime queries across spin sessions. |
+| Property | Type | Default | Usage |
+| :--- | :--- | :--- | :--- |
+| `TABLE_FORMAT` | `number[]` | `[3, 3, 3, 3, 3]` | Default table grid format (columns and row count). |
+| `PAY_SYSTEM` | `PAY_SYSTEM_ENUM` | `PAY_SYSTEM_ENUM.ALL_WAY` | Active win evaluation paradigm. |
+| `IS_DEBUG` | `boolean` | `false` | Enables runtime verbose logs. |

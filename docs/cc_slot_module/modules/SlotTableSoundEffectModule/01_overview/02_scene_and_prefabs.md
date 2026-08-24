@@ -1,33 +1,28 @@
 ---
 id: "cc_slot_module:SlotTableSoundEffectModule:overview:scene_and_prefabs"
-title: "SlotTableSoundEffectModule Scene Placement & Dependencies"
+title: "SlotTableSoundEffectModule Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["SlotTableSoundEffectModule", "slot_table_sound_effect_module", "cc_slot_module", "overview", "scene_prefabs"]
+tags: ["SlotTableSoundEffectModule", "slot_table_sound_effect_module", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🏛️ SlotTableSoundEffectModule Scene Placement & Dependencies
+# 🏛️ SlotTableSoundEffectModule Scene Node Placement & Prefab Structure
 
 ---
 
-## 1. Scene Graph Placement
+## 1. Inspected Scene Node Placement
 
-`SlotTableSoundEffectModule` is mounted on the Table container node alongside `SlotTableModule` and `TableModuleConfig`:
+`SlotTableSoundEffectModule` is attached as an optional audio bridge on `SlotTableModule` or managed as a sub-module under `MainGamePrefab`:
 
 ```text
-Canvas
-└── Canvas/Director
-    └── Canvas/Director/GameMode
-        └── BoardG
-            └── Table (SlotTableModule, TableModuleConfig, SlotTableSoundEffectModule)
+MainGamePrefab
+└── SlotTableModule [Node]
+    ├── SlotTableModule
+    ├── SlotTableSoundEffectModule (Audio event listener bridge)
+    └── Table (cc.Mask)
 ```
 
 ---
 
-## 2. Audio ID Configurations
+## 2. Audio Service Linkage
 
-| Property | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `sfxReelStopId` | `string` | `"REEL_STOP"` | Sound identifier for standard reel stop click. |
-| `sfxScatterIds` | `string[]` | `["SCATTER_1", "SCATTER_2", ...]` | Tiered audio clips for 1st, 2nd, 3rd Scatter landing. |
-| `sfxBonusIds` | `string[]` | `["BONUS_1", "BONUS_2", ...]` | Tiered audio clips for 1st, 2nd, 3rd Bonus landing. |
-| `sfxJackpotIds` | `string[]` | `["JACKPOT_1", "JACKPOT_2", ...]` | Tiered audio clips for progressive Jackpot symbols. |
+`SlotTableSoundEffectModule` forwards spin start, reel stop, and scatter anticipation cues directly to `Canvas/Director/SlotSoundPlayer` (`SlotSoundPlayerModule`).

@@ -1,58 +1,52 @@
 ---
 id: "cc_slot_module:GameInit:overview:scene_and_prefabs"
-title: "GameInit Canonical Scene Node & Prefab Setup"
+title: "GameInit Scene Node Placement & Prefab Structure"
 category: "cc_slot_module"
-tags: ["GameInit", "gameinit", "cc_slot_module", "overview", "scene", "prefabs", "hierarchy", "director"]
+tags: ["GameInit", "game_init", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 GameInit Canonical Scene Node & Prefab Hierarchy
+# 🏛️ GameInit Scene Node Placement & Prefab Structure
 
-## 1. Canonical Scene Anchor (`g9000L.fire`)
+---
 
-`GameInit` is permanently attached to the root **`Canvas/Director`** node in all standard template scenes (`g9000L.fire`, `g9000H.fire`, `g9000P.fire`).
+## 1. Inspected Scene Node Placement (Cocos Creator 2.4 Production Tree)
+
+Inspected live from production scenes (`g9000L` / `g9666L`), `GameInit` is attached directly to the root `Canvas/Director` node alongside the core orchestrator suite:
 
 ```text
-Canvas (cc.Canvas)
-└── Canvas/Director [GameInit.ts, GameConfig.ts, GameDataStore.ts, GameDirector.ts]
-    ├── Canvas/Director/GameMode        ➔ (GameModeDirectorModule)
-    ├── Canvas/Director/UIManager       ➔ (UIManagerModule, BetModule, WalletModule)
-    ├── Canvas/Director/SlotSound       ➔ (SlotSoundPlayerModule)
-    ├── Canvas/Director/CutsceneControl ➔ (CutsceneController, WinEffectModule)
-    └── Canvas/Director/PopupControl    ➔ (PopupControllerModule)
+Canvas (cc.Canvas, CanvasModuleController, cc.Widget)
+├── Main Camera (cc.Camera)
+└── Director [Root Node]
+    ├── [Component 1] GameInit (Bootstrap orchestrator & Service Locator registration)
+    ├── [Component 2] GameConfig (Master game configuration)
+    ├── [Component 3] GameDataStore (Reactive state store)
+    ├── [Component 4] GameDirector (Scene orchestrator & network router)
+    └── [Children Nodes]:
+        ├── GameMode (OnAddGameMode)
+        │   ├── BG_MainG (cc.Sprite)
+        │   ├── BoardG (cc.Sprite)
+        │   ├── MainGamePrefab (Normal game mode)
+        │   ├── FreeGamePrefab (Free spins mode)
+        │   ├── BonusGamePrefab (Bonus mini-game mode)
+        │   └── FreeOptionPrefab (Free spin option selection)
+        ├── UIManager (UIManagerModule)
+        ├── CutsceneControl (CutsceneController)
+        ├── PopupControl (PopupControllerModule)
+        ├── Toast (ToastInfoModule)
+        ├── DialogMessage (DialogMessageModule)
+        ├── waitingScene (WaitingSceneModule)
+        └── SlotSoundPlayer (SlotSoundPlayerModule, SoundConvertList)
 ```
 
 ---
 
-## 2. Co-located Components on `Canvas/Director`
+## 2. Component Co-Location on `Canvas/Director`
 
-`GameInit` expects the following companion components to be mounted on either the same node or immediate sibling/child nodes:
+`GameInit` runs on Frame 0 at `onLoad()` to instantiate and register all shared singletons into the Service Locator container:
 
-| Component Name | Node Location | Relationship to `GameInit` |
+| Attached Component | Type | Responsibility |
 | :--- | :--- | :--- |
-| **`GameConfig`** | `Canvas/Director` | Resolved via `this.getComponent(GameConfig)` or auto-added. Provides `GAME_ID`, `PAY_SYSTEM`, and `TABLE_FORMAT`. |
-| **`GameDataStore`** | `Canvas/Director` | Resolved via `this.getComponent(GameDataStore)`. Configured with `_gameConfig`. |
-| **`UIManagerModule`** | `Canvas/Director/UIManager` | Located via `this.getComponentInChildren(UIManagerModule)` and provided to IoC. |
-| **`SlotSoundPlayerModule`** | `Canvas/Director/SlotSound` | Located via `this.getComponentInChildren(SlotSoundPlayerModule)` and provided to IoC. |
-
----
-
-## 3. Companion Subsystems Discovered on Boot
-
-```mermaid
-graph LR
-    subgraph DirectorNode [Canvas/Director]
-        GI[GameInit.ts]
-        GC[GameConfig.ts]
-        GDS[GameDataStore.ts]
-    end
-
-    subgraph ChildrenNodes [Child Subsystems]
-        SoundNode[Canvas/Director/SlotSound] --> SSP[SlotSoundPlayerModule.ts]
-        UINode[Canvas/Director/UIManager] --> UIM[UIManagerModule.ts]
-    end
-
-    GI -->|this.getComponent| GC
-    GI -->|this.getComponent| GDS
-    GI -->|getComponentInChildren| SSP
-    GI -->|getComponentInChildren| UIM
-```
+| **`GameInit`** | `cc.Component` | Bootstrap lifecycle, IoC registration, network initialization. |
+| **`GameConfig`** | `cc.Component` | Master config parameters (`PAY_SYSTEM`, `TABLE_FORMAT`). |
+| **`GameDataStore`** | `cc.Component` | Central reactive store (`playSession`, `wallet`, `bet`, `winAmount`). |
+| **`GameDirector`** | `cc.Component` | Top-level scene loop, mode switching, network dispatching. |

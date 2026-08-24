@@ -1,39 +1,48 @@
 ---
 id: "cc_slot_module:SlotTableModule:overview:scene_and_prefabs"
-title: "SlotTableModule Scene Hierarchy & Inspector Properties"
+title: "SlotTableModule Scene Node Placement & Prefab Wiring"
 category: "cc_slot_module"
-tags: ["SlotTableModule", "slot_table", "cc_slot_module", "overview", "scene", "prefabs"]
+tags: ["SlotTableModule", "slot_table", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 SlotTableModule Scene Hierarchy & Inspector Properties
+# 🏛️ SlotTableModule Scene Node Placement & Prefab Wiring
 
-## 1. Scene Graph Hierarchy
+---
 
-Mounted under `Canvas/Director/GameMode/BoardG/Table`:
+## 1. Inspected Scene Node Placement (Cocos Creator 2.4 Production Tree)
+
+Inspected live from production scenes (`g9000L` / `g9666L`), `SlotTableModule` sits inside each mode prefab (`MainGamePrefab` / `FreeGamePrefab`) with its complete companion component quad:
 
 ```text
-Canvas (cc.Canvas)
-└── Canvas/Director
-    └── Canvas/Director/GameMode
-        └── NormalGame (or FreeGame)
-            └── BoardG
-                └── Table ➔ [Mounted: SlotTableModule, TableModuleConfig, SlotTableData, SlotSymbolManager]
-                    ├── SlotTableNearWinModule (Anticipation VFX overlays)
-                    ├── SlotTableSoundEffectModule (Reel spin/stop audio triggers)
-                    └── ReelsContainer (table node)
-                        ├── Reel_0 (SlotReelModule - instantiated from reelPrefab)
-                        ├── Reel_1 (SlotReelModule)
-                        ├── Reel_2 (SlotReelModule)
-                        ├── Reel_3 (SlotReelModule)
-                        └── Reel_4 (SlotReelModule)
+MainGamePrefab (or FreeGamePrefab)
+└── SlotTableModule [Node with Components]
+    ├── [Component 1] SlotTableModule
+    ├── [Component 2] TableModuleConfig
+    ├── [Component 3] SlotTableData
+    ├── [Component 4] SlotTableNearWinModule
+    ├── [Component 5] SlotModuleEditorTag
+    └── [Children Nodes]:
+        ├── SymbolPool (SlotSymbolManager - Main reel symbol pool)
+        ├── Table (cc.Mask - Mask bounding the spinning reel columns)
+        └── VFX_NearWin (sp.Skeleton - Near-win anticipation spine effect)
 ```
 
 ---
 
-## 2. Inspector Properties Reference Table
+## 2. Component Co-Location on `SlotTableModule`
 
-| Property Name | TypeScript Type | Default Value | Role |
-| :--- | :--- | :--- | :--- |
-| **`table`** | `cc.Node` | `null` | Parent container node that holds all instantiated reel columns. |
-| **`reelPrefab`** | `cc.Prefab` | `null` | Column prefab containing `SlotReelModule`, mask component, and symbol slots. |
-| **`symbolManager`** | `SlotSymbolManager` | `null` | Symbol recycling and Spine pool manager (auto-fetched via `getComponent` if empty). |
+| Attached Component | Responsibility |
+| :--- | :--- |
+| **`SlotTableModule`** | Master table engine; handles `initTable()`, `startSpin()`, `stopSpin()`, `fastStop()`. |
+| **`TableModuleConfig`** | Stores reel timing constants, speed easing curves, and deceleration bounces. |
+| **`SlotTableData`** | Reactive state conversion; ingests backend matrices into 2D column arrays. |
+| **`SlotTableNearWinModule`** | Evaluates scatter anticipation tension and extends reel stop delays. |
+| **`SlotModuleEditorTag`** | Editor helper component for hierarchy tagging. |
+
+---
+
+## 3. Child Node Structure
+
+- **`SymbolPool` (`SlotSymbolManager`)**: Dedicated pool for spawning static, blur, and spinning symbol nodes.
+- **`Table` (`cc.Mask`)**: Houses dynamically instantiated column reels (`SlotReelModule`), clipping symbols to the visible display frame.
+- **`VFX_NearWin` (`sp.Skeleton`)**: Anticipation frame animation shifted above individual reels during near-win suspense.

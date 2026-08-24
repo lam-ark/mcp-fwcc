@@ -1,39 +1,32 @@
 ---
 id: "cc_slot_module:SlotReelModule:overview:scene_and_prefabs"
-title: "SlotReelModule Scene Placement, Prefabs & Companion Hierarchy"
+title: "SlotReelModule Dynamic Instantiation & Scene Placement"
 category: "cc_slot_module"
-tags: ["SlotReelModule", "slot_reel_module", "cc_slot_module", "overview", "scene_prefabs", "hierarchy", "node_tree"]
+tags: ["SlotReelModule", "slot_reel", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🌳 SlotReelModule Scene Placement & Companion Hierarchy
+# 🏛️ SlotReelModule Dynamic Instantiation & Scene Placement
 
 ---
 
-## 1. Canonical Scene Node Hierarchy
+## 1. Runtime Instantiation inside `SlotTableModule/Table`
 
-`SlotReelModule` instances (`Reel_0` through `Reel_N`) are instantiated as children of `SlotTableModule` inside column clipping masks:
+`SlotReelModule` instances are not hardcoded in the scene hierarchy; they are dynamically instantiated on startup inside `SlotTableModule/Table` (`cc.Mask`):
 
 ```text
-Canvas/Director/GameMode/BoardG/Table (SlotTableModule.ts)
-├── ReelContainer_0 (cc.Mask)
-│   └── Reel_0 (SlotReelModule.ts)
-│       ├── Symbol_0 (SlotSymbolModule.ts)
-│       ├── Symbol_1 (SlotSymbolModule.ts)
-│       ├── Symbol_2 (SlotSymbolModule.ts)
-│       └── TopBuffer_Symbol (SlotSymbolModule.ts)
-├── ReelContainer_1 (cc.Mask)
-│   └── Reel_1 (SlotReelModule.ts)
-└── ReelContainer_N (cc.Mask)
-    └── Reel_N (SlotReelModule.ts)
+MainGamePrefab
+└── SlotTableModule
+    └── Table [Node with cc.Mask]
+        ├── Reel_0 (Instantiated Node with SlotReelModule Component)
+        ├── Reel_1 (Instantiated Node with SlotReelModule Component)
+        ├── Reel_2 (Instantiated Node with SlotReelModule Component)
+        ├── Reel_3 (Instantiated Node with SlotReelModule Component)
+        └── Reel_4 (Instantiated Node with SlotReelModule Component)
 ```
 
 ---
 
-## 2. Companion Subsystems & Dependency Quad
+## 2. Parent-Child Relationship
 
-| Role | Class Name | Asset / Node Location | Interaction Purpose |
-| :--- | :--- | :--- | :--- |
-| **Parent Table** | `SlotTableModule` | `Canvas/Director/GameMode/BoardG/Table` | Triggers `runReelSpin()`, `showResult()`, and handles stop callbacks. |
-| **Symbol Pool** | `SlotSymbolManager` | `Canvas/Director/GameMode/BoardG/Table/SymbolManager` | Provides pooled nodes via `createSymbol()` / `createBlurSymbol()`. |
-| **Configuration** | `TableModuleConfig` | Embedded in Table component | Provides `SYMBOL_WIDTH`, `SYMBOL_HEIGHT`, `TABLE_FORMAT`, buffer sizes. |
-| **Symbol Module** | `SlotSymbolModule` | Attached to child symbol nodes | Controls visual state (Static, Blur, Spine) and size coordinates. |
+- **Parent Container**: `SlotTableModule/Table` (`cc.Mask`) clips symbols outside the visible reel window.
+- **Child Symbols**: Each `SlotReelModule` column hosts symbol instances retrieved from sibling `SlotTableModule/SymbolPool` (`SlotSymbolManager`).
