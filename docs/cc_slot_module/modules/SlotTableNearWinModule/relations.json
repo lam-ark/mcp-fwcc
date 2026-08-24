@@ -1,0 +1,26 @@
+{
+  "id": "SlotTableNearWinModule",
+  "title": "SlotTableNearWinModule Anticipation Overlay & Tension System",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotTableModule", "relation": "dispatches_near_win_events" },
+    { "target": "SlotReelModule", "relation": "extends_spin_duration" }
+  ],
+  "dependsOn": [
+    { "target": "TableModuleConfig", "relation": "reads_symbol_width_and_counts" },
+    { "target": "SlotSoundPlayerModule", "relation": "plays_near_win_sfx" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "SETUP_NEARWIN",
+    "REEL_STOP_NEARWIN",
+    "PRE_REEL_STOP_NEARWIN",
+    "RESET_NEARWIN"
+  ],
+  "gotchas": [
+    "Gotcha:NearWin_Sound_Stuck_On_FTR",
+    "Gotcha:Missing_Spine_Animation_Fallback"
+  ]
+}

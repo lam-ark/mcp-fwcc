@@ -1,0 +1,22 @@
+{
+  "id": "SlotTableSoundEffectModule",
+  "title": "SlotTableSoundEffectModule Table Audio Choreography",
+  "category": "cc_slot_module",
+  "inheritsFrom": "SlotBaseModule",
+  "manages": [],
+  "usedBy": [
+    { "target": "SlotTableModule", "relation": "dispatches_sound_triggers" }
+  ],
+  "dependsOn": [
+    { "target": "TableModuleConfig", "relation": "reads_special_symbol_keys" },
+    { "target": "SlotSoundPlayerModule", "relation": "plays_sfx_clips" }
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "REEL_START_SOUND",
+    "REEL_STOP_SOUND"
+  ],
+  "gotchas": [
+    "Gotcha:SFX_Array_Index_Out_Of_Bounds"
+  ]
+}
