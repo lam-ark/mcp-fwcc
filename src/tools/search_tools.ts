@@ -89,6 +89,68 @@ export function createSearchTools(docsEngine: DocsSearchEngine, graphEngine: Gra
       },
     },
 
+    // 3b. fwcc_read_chunk
+    {
+      name: "fwcc_read_chunk",
+      description: "Read a specific section chunk by chunkId (from search results) or by topic/section keyword to save tokens and focus context.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          chunkId: { type: "string", description: "Exact chunk ID from search results (e.g. 'NormalGameDirectorModule#sec-1') or query snippet" },
+        },
+        required: ["chunkId"],
+      },
+      handler: async (args: any) => {
+        const chunkId = String(args.chunkId || "");
+        const res = docsEngine.getChunk(chunkId);
+
+        if (!res.found || !res.chunk) {
+          return {
+            content: [{ type: "text", text: `Chunk '${chunkId}' not found in index.` }],
+          };
+        }
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(res.chunk, null, 2),
+            },
+          ],
+        };
+      },
+    },
+
+    // 3c. fwcc_read_batch
+    {
+      name: "fwcc_read_batch",
+      description: "Read multiple documentation files or topics in a single tool call to accelerate agent comprehension without looping.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          pathsOrTopics: {
+            type: "array",
+            items: { type: "string" },
+            description: "List of relative paths or topic IDs to read (e.g. ['NormalGameDirectorModule/05_methods/enter.md', 'NormalGameWriterModule/05_methods/makeScriptResumeNormalGame.md'])",
+          },
+        },
+        required: ["pathsOrTopics"],
+      },
+      handler: async (args: any) => {
+        const list = Array.isArray(args.pathsOrTopics) ? args.pathsOrTopics : [];
+        const results = docsEngine.readBatch(list);
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify({ totalRequested: list.length, results }, null, 2),
+            },
+          ],
+        };
+      },
+    },
+
     // 4. fwcc_list_topics
     {
       name: "fwcc_list_topics",

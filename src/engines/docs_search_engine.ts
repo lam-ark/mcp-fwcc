@@ -124,6 +124,7 @@ function extractSmartSnippet(content: string, query: string, maxLength: number =
 export class DocsSearchEngine implements IEngine {
   private searchEngine: MiniSearch<DocChunk> | null = null;
   private topicsList: TopicInfo[] = [];
+  private chunksMap: Map<string, DocChunk> = new Map();
   private isInitialized = false;
 
   constructor(private docsDir: string = CONFIG.DOCS_DIR) {}
@@ -135,37 +136,39 @@ export class DocsSearchEngine implements IEngine {
 
     this.searchEngine = new MiniSearch<DocChunk>({
       fields: ["topic", "tags", "methods", "section", "content"],
-      storeFields: ["file", "relPath", "topic", "section", "content", "category", "tags"],
+      storeFields: ["id", "file", "relPath", "topic", "section", "content", "category", "tags"],
       searchOptions: {
-        boost: { tags: 3.5, methods: 3.0, section: 2.0, topic: 1.5, content: 1.0 },
+        boost: {
+          topic: 4.0,
+          tags: 3.0,
+          methods: 2.5,
+          section: 2.0,
+          content: 1.0,
+        },
         fuzzy: 0.2,
         prefix: true,
       },
     });
 
-    const scannedFiles = scanMarkdownFiles(this.docsDir);
+    const mdFiles = scanMarkdownFiles(this.docsDir);
     const chunks: DocChunk[] = [];
+    this.chunksMap.clear();
     this.topicsList = [];
 
-    for (const item of scannedFiles) {
+    for (const item of mdFiles) {
       try {
         const rawContent = fs.readFileSync(item.fullPath, "utf8");
         const { data, content } = parseFrontmatter(rawContent);
 
-        const fallbackId = item.relPath.replace(/\.md$/, "").replace(/[\/\\]/g, ":");
-        const topicId = String(data.id || fallbackId);
-        
-        const titleMatch = content.match(/^#\s+(.+)$/m);
-        const title = String(data.title || (titleMatch ? titleMatch[1] : item.fileName.replace(/\.md$/, "")));
-        const category = String(data.category || item.categoryHint || "general");
-        
-        const tags: string[] = Array.isArray(data.tags) ? data.tags.map(String) : [];
-        const methodsFromYaml: string[] = Array.isArray(data.methods) ? data.methods.map(String) : [];
+        const topicId = data.id || item.fileName.replace(/\.md$/, "");
+        const title = data.title || topicId;
+        const category = data.category || (item.relPath.split(path.sep)[0] || "general");
+        const tags = Array.isArray(data.tags) ? data.tags : [];
 
-        // Extract classes & methods from Markdown text patterns
-        const classMatches = [...content.matchAll(/-\s+\*\*`(\w+)`\*\*/g)].map(m => m[1]);
-        const methodMatchesFromText = [...content.matchAll(/-\s+`(\w+)\(\):/g)].map(m => m[1]);
-        const allMethods = Array.from(new Set([...methodsFromYaml, ...methodMatchesFromText]));
+        // Extract class and method signatures
+        const classMatches = Array.from(content.matchAll(/class\s+(\w+)/g)).map(m => m[1]);
+        const methodMatches = Array.from(content.matchAll(/(?:public|protected|private)?\s*(\w+)\s*\([^)]*\)\s*:/g)).map(m => m[1]);
+        const allMethods = Array.from(new Set(methodMatches));
 
         const firstParagraphMatch = content.replace(/^#\s+.+\n+/, "").match(/^[^\n#]+/);
         const description = firstParagraphMatch ? firstParagraphMatch[0].slice(0, 160).trim() : `Documentation for ${title}`;
@@ -191,7 +194,7 @@ export class DocsSearchEngine implements IEngine {
           const sectionTitle = secMatch ? secMatch[1].trim() : "Overview";
           const chunkId = `${topicId}#sec-${sectionIdx++}`;
 
-          chunks.push({
+          const docChunk: DocChunk = {
             id: chunkId,
             file: item.fileName,
             relPath: item.relPath,
@@ -201,7 +204,11 @@ export class DocsSearchEngine implements IEngine {
             methods: allMethods.join(" "),
             section: sectionTitle,
             content: sec.trim(),
-          });
+          };
+
+          chunks.push(docChunk);
+          this.chunksMap.set(chunkId.toLowerCase(), docChunk);
+          this.chunksMap.set(`${item.relPath.toLowerCase()}#sec-${sectionIdx - 1}`, docChunk);
         }
       } catch (err) {
         console.error(`[DocsSearchEngine] Error parsing ${item.relPath}:`, err);
@@ -210,7 +217,7 @@ export class DocsSearchEngine implements IEngine {
 
     this.searchEngine.addAll(chunks);
     this.isInitialized = true;
-    console.log(`[DocsSearchEngine] Indexed ${chunks.length} chunks with Frontmatter & Tag weights across ${this.topicsList.length} cc-common modules.`);
+    console.log(`[DocsSearchEngine] Indexed ${chunks.length} chunks across ${this.topicsList.length} topics.`);
   }
 
   public search(query: string, limit: number = 10, category?: string, tag?: string): SearchResultItem[] {
@@ -233,6 +240,7 @@ export class DocsSearchEngine implements IEngine {
       const normalizedRelPath = String(r.relPath || "").replace(/\\/g, "/");
       return {
         score: r.score,
+        chunkId: r.id,
         topic: r.topic,
         section: r.section,
         relPath: normalizedRelPath,
@@ -240,6 +248,34 @@ export class DocsSearchEngine implements IEngine {
         category: r.category,
         tags: rawTags,
         snippet: extractSmartSnippet(r.content, query, 320),
+      };
+    });
+  }
+
+  public getChunk(chunkIdOrQuery: string): { found: boolean; chunk?: DocChunk } {
+    const q = chunkIdOrQuery.toLowerCase().trim();
+    if (this.chunksMap.has(q)) {
+      return { found: true, chunk: this.chunksMap.get(q) };
+    }
+
+    // Fuzzy matching by chunk ID prefix or topic
+    for (const [key, chunk] of this.chunksMap.entries()) {
+      if (key.includes(q) || chunk.id.toLowerCase().includes(q)) {
+        return { found: true, chunk };
+      }
+    }
+
+    return { found: false };
+  }
+
+  public readBatch(pathsOrTopics: string[]): Array<{ pathOrTopic: string; found: boolean; content?: string; relPath?: string }> {
+    return pathsOrTopics.map((p) => {
+      const doc = this.getDoc(p);
+      return {
+        pathOrTopic: p,
+        found: doc.found,
+        relPath: doc.relPath,
+        content: doc.content,
       };
     });
   }
