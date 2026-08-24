@@ -1,34 +1,33 @@
 ---
 id: "cc_slot_module:SlotTablePaylineData:overview:scene_and_prefabs"
-title: "SlotTablePaylineData Placement & Companions"
+title: "SlotTablePaylineData Placement & Node Structure"
 category: "cc_slot_module"
-tags: ["SlotTablePaylineData", "slot_table_payline_data", "cc_slot_module", "overview", "scene_prefabs"]
+tags: ["SlotTablePaylineData", "slot_table_payline_data", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🏛️ SlotTablePaylineData Placement & Companions
+# 🏛️ SlotTablePaylineData Placement & Node Structure
 
 ---
 
-## 1. Scene Graph Placement
+## 1. Inspected Scene Node Placement
 
-Mounted on the `Payline` node directly beside `SlotTablePaylineModule` and `PaylineConfig`:
+Inspected live from production scenes (`g9000L` / `g9666L`), `SlotTablePaylineData` is co-located directly on the `SlotTablePaylineModule` node:
 
 ```text
-Canvas/Director/GameMode/BoardG
-└── Payline
+MainGamePrefab (or FreeGamePrefab)
+└── SlotTablePaylineModule [Node]
     ├── SlotTablePaylineModule (Visual Controller)
-    ├── SlotTablePaylineData (Data Layer)
     ├── PaylineConfig (Configuration)
-    └── SlotPaylineSchedule (Timer Scheduler)
+    ├── SlotTablePaylineData (Data Layer Component)
+    └── SlotModuleEditorTag (Editor Tag)
 ```
 
 ---
 
-## 2. Companion Quad
+## 2. Component Co-Location
 
-| Companion | Class Name | Function |
-| :--- | :--- | :--- |
-| **Visual Controller** | `SlotTablePaylineModule` | Dispatches `PAYLINE_SET_DATA` to child layers. |
-| **Data Model** | `SlotTablePaylineData` | Ingests reactive keys and parses win symbol coordinates. |
-| **Configuration** | `PaylineConfig` | Specifies `PAYLINE_TYPE` and `TABLE_CONFIG`. |
-| **Scheduler** | `SlotPaylineSchedule` | Handles sequential single-line timers. |
+| Component | Responsibility |
+| :--- | :--- |
+| **`SlotTablePaylineData`** | Ingests reactive keys (`payLines`, `matrix`) and converts coordinates on demand. |
+| **`PaylineConfig`** | Supplies table dimensions (`format`) and `PAYLINE_TYPE` to `SlotTablePaylineData`. |
+| **`SlotTablePaylineModule`** | Queries `SlotTablePaylineData.getPayLines()` and broadcasts `PAYLINE_SET_DATA`. |

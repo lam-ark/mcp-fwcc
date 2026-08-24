@@ -1,42 +1,59 @@
 ---
 id: "cc_slot_module:SlotTablePaylineModule:overview:scene_and_prefabs"
-title: "SlotTablePaylineModule Scene Hierarchy & Component Tree"
+title: "SlotTablePaylineModule Scene Hierarchy & Prefab Wiring"
 category: "cc_slot_module"
-tags: ["SlotTablePaylineModule", "slot_table_payline_module", "cc_slot_module", "overview", "scene_prefabs"]
+tags: ["SlotTablePaylineModule", "slot_table_payline_module", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🏛️ SlotTablePaylineModule Scene Hierarchy & Component Tree
+# 🏛️ SlotTablePaylineModule Scene Hierarchy & Prefab Wiring
 
 ---
 
-## 1. Canonical Hierarchy Placement
+## 1. Inspected Scene Node Placement (Cocos Creator 2.4 Production Tree)
 
-`SlotTablePaylineModule` sits inside `BoardG` alongside `Table`:
+Inspected live from production scenes (`g9000L` / `g9666L`), `SlotTablePaylineModule` is mounted as a sibling to `SlotTableModule` inside mode prefabs (`MainGamePrefab`, `FreeGamePrefab`):
 
 ```text
 Canvas
-└── Canvas/Director
-    └── Canvas/Director/GameMode
-        └── BoardG
-            ├── Table (SlotTableModule)
-            └── Payline (SlotTablePaylineModule, PaylineConfig, SlotTablePaylineData, SlotPaylineSchedule)
-                ├── WinSymbolsLayer (PaylineSymbolModule)
-                ├── WinFramesLayer (PaylineWinFrameModule)
-                ├── LineDrawingLayer (PaylineLineModule)
-                └── LineNumberLayer (PaylineNumberModule)
+└── Director (GameConfig, GameDataStore, GameInit, GameDirector)
+    └── GameMode (OnAddGameMode)
+        ├── BG_MainG (cc.Sprite)
+        ├── BoardG (cc.Sprite)
+        └── MainGamePrefab (BaseGameMode, NormalGameDirectorModule, NormalGameWriterModule, OnAddSlotModule)
+            ├── SlotTableModule (SlotTableModule, TableModuleConfig, SlotTableData, SlotTableNearWinModule)
+            │   ├── SymbolPool (SlotSymbolManager)
+            │   ├── Table (cc.Mask - Reel column container)
+            │   └── VFX_NearWin (sp.Skeleton)
+            ├── SlotTablePaylineModule [Node with Components]
+            │   ├── [Component 1] SlotTablePaylineModule
+            │   ├── [Component 2] PaylineConfig
+            │   ├── [Component 3] SlotTablePaylineData
+            │   ├── [Component 4] SlotModuleEditorTag
+            │   └── [Children Nodes]:
+            │       ├── PaylineSymbolModule (PaylineSymbolModule)
+            │       ├── SymbolPool (SlotSymbolManager - dedicated payline symbol pool)
+            │       ├── WinFramesLayer (PaylineWinFrameModule - optional frame layer)
+            │       └── LineDrawingLayer (PaylineLineModule - optional vector line layer)
+            └── TransformSymbolModule (TransformSymbolModule, TransformSymbolConfig, TransformSymbolData)
 ```
 
 ---
 
-## 2. Component Composition
+## 2. Component Quad on Single Node
 
-| Component | Class Type | Role |
+In the production SDK, `SlotTablePaylineModule`, `PaylineConfig`, and `SlotTablePaylineData` are co-located on the **same Node** (`SlotTablePaylineModule`), maximizing cohesion:
+
+| Attached Component | Type | Responsibility |
 | :--- | :--- | :--- |
-| **`SlotTablePaylineModule`** | `SlotBaseModule` | Orchestrator holding `payLineEmitter` and routing `SETUP_PAYLINES`. |
-| **`PaylineConfig`** | `cc.Component` | Configuration specifying `PAYLINE_TYPE` (Lines, AllWays, Cluster, ScatterPay), `TABLE_CONFIG`, `PAY_LINE_MATRIX`. |
-| **`SlotTablePaylineData`** | `BaseDataModule` | Reactive store parsing `payLines`, `rightPayLines`, `jackpotPayline`, and `matrix`. |
-| **`SlotPaylineSchedule`** | `BasePaylineComponent` | Controls the step timer iterating through individual paylines during idle states. |
-| **`PaylineSymbolModule`** | `BasePaylineComponent` | Highlights and animates winning symbols on top of the reel table. |
-| **`PaylineWinFrameModule`**| `BasePaylineComponent` | Draws decorative borders around winning coordinate cells. |
-| **`PaylineLineModule`** | `BasePaylineComponent` | Draws vector lines connecting symbol positions across the matrix. |
-| **`PaylineNumberModule`** | `BasePaylineComponent` | Activates payline index numbers on the left and right borders of the reel window. |
+| **`SlotTablePaylineModule`** | `SlotBaseModule` | Event router, instantiates `payLineEmitter`, discovers child components. |
+| **`PaylineConfig`** | `cc.Component` | Specifies `PAYLINE_TYPE` (Lines, AllWays, Cluster, ScatterPay), `TABLE_CONFIG.format`, cell sizes. |
+| **`SlotTablePaylineData`** | `BaseDataModule` | Listens to reactive keys (`payLines`, `matrix`) and normalizes geometric win data. |
+| **`SlotModuleEditorTag`** | `cc.Component` | Editor metadata and visual gizmo helper. |
+
+---
+
+## 3. Child Symbol Pool Layer
+
+Notice that `SlotTablePaylineModule` contains a dedicated child `SymbolPool` node equipped with `SlotSymbolManager`:
+- **Isolation**: Prevents win symbol animation pooling from corrupting or exhausting the active spinning reel symbol pool in `SlotTableModule/SymbolPool`.
+- **Top-Level Rendering**: Sits above the column masks of `SlotTableModule/Table`, ensuring winning Spine animations are never truncated.

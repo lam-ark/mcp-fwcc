@@ -1,31 +1,30 @@
 ---
 id: "cc_slot_module:PaylineSymbolModule:overview:scene_and_prefabs"
-title: "PaylineSymbolModule Scene Graph Placement"
+title: "PaylineSymbolModule Scene Graph Placement & SymbolPool"
 category: "cc_slot_module"
-tags: ["PaylineSymbolModule", "payline_symbol_module", "cc_slot_module", "overview", "scene_prefabs"]
+tags: ["PaylineSymbolModule", "payline_symbol_module", "cc_slot_module", "overview", "scene_prefabs", "cocos_inspection"]
 ---
 
-# 🏛️ PaylineSymbolModule Scene Graph Placement
+# 🏛️ PaylineSymbolModule Scene Graph Placement & SymbolPool
 
 ---
 
-## 1. Scene Placement
+## 1. Inspected Scene Node Placement
 
-Attached as a child node under `Payline` inside `BoardG`:
+Inspected live from production scenes (`g9000L` / `g9666L`), `PaylineSymbolModule` is attached to a dedicated child node under `SlotTablePaylineModule`:
 
 ```text
-Canvas/Director/GameMode/BoardG/Payline
-└── WinSymbolsLayer (PaylineSymbolModule)
-    ├── Container (cc.Node - Top visual layer)
-    └── DisableHighlightContainer (cc.Node - Dimmed symbol background)
+MainGamePrefab
+└── SlotTablePaylineModule (SlotTablePaylineModule, PaylineConfig, SlotTablePaylineData)
+    ├── PaylineSymbolModule [Node with PaylineSymbolModule Component]
+    │   └── container (Top-level Node outside of reel mask)
+    └── SymbolPool [Node with SlotSymbolManager Component]
 ```
 
 ---
 
-## 2. Dependencies & Injected Components
+## 2. Component Wiring
 
-| Property / Component | Type | Function |
-| :--- | :--- | :--- |
-| `container` | `cc.Node` | Parent node hosting actively animating winning symbols. |
-| `factory` | `SlotSymbolManager` | Symbol pooling factory providing instances by index. |
-| `disableHighlightContainer` | `cc.Node` | Optional parent holding dimmed/darkened unhit symbols. |
+- **`factory`**: Wired in Inspector to sibling `SymbolPool` node's `SlotSymbolManager`.
+- **`container`**: Wired to the top-level overlay Node above all reel columns.
+- **`disableHighlightContainer`**: Optional background node for darkened/dimmed symbols.
