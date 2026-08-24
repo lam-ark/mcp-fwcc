@@ -1,0 +1,32 @@
+{
+  "moduleId": "IntroFreeGameModule",
+  "category": "cc_slot_module",
+  "name": "IntroFreeGameModule",
+  "description": "Introductory modal cutscene displayed upon triggering Free Spins, scheduling a timed display before transitioning to FreeGame mode.",
+  "inheritsFrom": "BaseCutscene",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "CutsceneController",
+      "relation": "cutscene_child"
+    },
+    {
+      "target": "NormalGameWriterModule",
+      "relation": "free_game_intro_command"
+    }
+  ],
+  "dependsOn": [
+    "BaseCutscene"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_unbound_exit_scope_on_schedule_once"
+  ],
+  "related": [
+    "BaseCutscene",
+    "CutsceneController",
+    "FreeGameDirectorModule",
+    "TotalWinModule"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "moduleId": "CutsceneController",
+  "category": "cc_slot_module",
+  "name": "CutsceneController",
+  "description": "Master cutscene manager coordinating modal dialog discovery, Map-based type routing, Promise-wrapped async execution, and global touch skip handling.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "GameDirector",
+      "relation": "cutscene_manager"
+    },
+    {
+      "target": "NormalGameWriterModule",
+      "relation": "cutscene_pipeline_executor"
+    }
+  ],
+  "dependsOn": [
+    "BaseCutscene",
+    "GameEventManager"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "GameUIEvents.CUTSCENES.PLAY_CUTSCENE",
+    "GameUIEvents.CUTSCENES.CLOSE_CUTSCENE",
+    "GameUIEvents.CUTSCENES.SKIP_CUTSCENES",
+    "GameUIEvents.CUTSCENES.CLOSE_ALL_NOTICES"
+  ],
+  "gotchas": [
+    "01_unregistered_cutscene_silent_drop"
+  ],
+  "related": [
+    "BaseCutscene",
+    "WinEffectModule",
+    "TotalWinModule",
+    "JackpotWinModule",
+    "IntroFreeGameModule",
+    "UIManagerModule"
+  ]
+}

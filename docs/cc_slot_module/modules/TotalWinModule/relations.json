@@ -1,0 +1,34 @@
+{
+  "moduleId": "TotalWinModule",
+  "category": "cc_slot_module",
+  "name": "TotalWinModule",
+  "description": "Aggregate free spin conclusion cutscene modal presenting total accumulated round winnings, driving rolling number count-ups, and handling single-tap skip fast forwarding.",
+  "inheritsFrom": "BaseCutscene",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "CutsceneController",
+      "relation": "cutscene_child"
+    },
+    {
+      "target": "FreeGameWriterModule",
+      "relation": "total_win_command"
+    }
+  ],
+  "dependsOn": [
+    "BaseCutscene",
+    "CoinsEffect",
+    "GameDataStore"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_fallback_winamountps_mismatch"
+  ],
+  "related": [
+    "BaseCutscene",
+    "CutsceneController",
+    "FreeGameDirectorModule",
+    "WinEffectModule"
+  ]
+}

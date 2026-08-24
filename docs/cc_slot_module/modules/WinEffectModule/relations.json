@@ -1,0 +1,39 @@
+{
+  "moduleId": "WinEffectModule",
+  "category": "cc_slot_module",
+  "name": "WinEffectModule",
+  "description": "Celebratory victory overlay controller managing dynamic title scaling, rolling number count-ups, coin particle showers, touch-to-skip fast-forwarding, and Turbo mode fast particle bursts.",
+  "inheritsFrom": "BaseCutscene",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "CutsceneController",
+      "relation": "cutscene_overlay"
+    },
+    {
+      "target": "NormalGameWriterModule",
+      "relation": "win_effect_command"
+    }
+  ],
+  "dependsOn": [
+    "BaseCutscene",
+    "CoinsEffect",
+    "SlotGameSettings"
+  ],
+  "emitsEvents": [
+    "SHOW_COINS_EFFECT",
+    "HIDE_COINS_EFFECT"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_missing_coins_effect_node_crash",
+    "02_turbo_money_tween_unhandled_completion"
+  ],
+  "related": [
+    "BaseCutscene",
+    "CutsceneController",
+    "CoinsEffect",
+    "TotalWinModule",
+    "JackpotWinModule"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "moduleId": "CoinsEffect",
+  "category": "cc_slot_module",
+  "name": "CoinsEffect",
+  "description": "Celebratory particle system manager controlling activation, fading, and teardown of falling coin and sparkling particle effects during win celebrations.",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "WinEffectModule",
+      "relation": "particle_subsystem"
+    },
+    {
+      "target": "TotalWinModule",
+      "relation": "particle_subsystem"
+    }
+  ],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "SHOW_COINS_EFFECT",
+    "HIDE_COINS_EFFECT"
+  ],
+  "gotchas": [
+    "01_unreset_particles_on_quick_close"
+  ],
+  "related": [
+    "WinEffectModule",
+    "TotalWinModule",
+    "JackpotWinModule",
+    "CutsceneController"
+  ]
+}

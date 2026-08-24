@@ -1,0 +1,53 @@
+{
+  "moduleId": "BaseCutscene",
+  "category": "cc_slot_module",
+  "name": "BaseCutscene",
+  "description": "Abstract base class for all modal dialogs, victory celebrations, and transition animations in the slot framework, providing standardized lifecycle hooks, node event bindings, and fullscreen input blocking coordination.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "CutsceneController",
+      "relation": "managed_cutscene_child"
+    },
+    {
+      "target": "WinEffectModule",
+      "relation": "inherits_base_cutscene"
+    },
+    {
+      "target": "TotalWinModule",
+      "relation": "inherits_base_cutscene"
+    },
+    {
+      "target": "JackpotWinModule",
+      "relation": "inherits_base_cutscene"
+    },
+    {
+      "target": "IntroFreeGameModule",
+      "relation": "inherits_base_cutscene"
+    }
+  ],
+  "dependsOn": [
+    "GameDataStore",
+    "GameEventManager",
+    "SlotGameSettings"
+  ],
+  "emitsEvents": [
+    "GameUIEvents.CUTSCENES.SHOW_FULL_DISPLAY_CUTSCENE",
+    "GameUIEvents.CUTSCENES.HIDE_FULL_DISPLAY_CUTSCENE",
+    "GameLogicUIEvents.ON_CUTSCENE_CLOSE"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_missing_exit_callback_hang",
+    "02_fullscreen_input_blocking_leak"
+  ],
+  "related": [
+    "CutsceneController",
+    "WinEffectModule",
+    "TotalWinModule",
+    "JackpotWinModule",
+    "IntroFreeGameModule",
+    "UIManagerModule"
+  ]
+}

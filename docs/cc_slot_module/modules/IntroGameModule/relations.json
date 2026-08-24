@@ -1,0 +1,34 @@
+{
+  "moduleId": "IntroGameModule",
+  "category": "cc_slot_module",
+  "name": "IntroGameModule",
+  "description": "Game intro splash screen controller handling promo artwork display, join game tap triggers, reconnect auto-skipping, and localStorage preference caching.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "BaseGameDirector",
+      "relation": "splash_gatekeeper"
+    }
+  ],
+  "dependsOn": [
+    "GameConfig",
+    "GameEventManager"
+  ],
+  "emitsEvents": [
+    "GameUIEvents.INTRO_GAME.SKIP_INTRO_GAME",
+    "GameUIEvents.INTRO_GAME.ON_CLICK_JOIN_GAME",
+    "GameUIEvents.INTRO_GAME.HIDE_INTRO_GAME"
+  ],
+  "listensToEvents": [
+    "GameUIEvents.GAME_MODE.JOIN_GAME_SUCCESS"
+  ],
+  "gotchas": [
+    "01_local_storage_parse_corrupt_crash"
+  ],
+  "related": [
+    "BaseCutscene",
+    "CutsceneController",
+    "UIManagerModule"
+  ]
+}
