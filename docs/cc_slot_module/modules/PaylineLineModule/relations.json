@@ -14,7 +14,10 @@
   "dependsOn": [
     "SlotTablePaylineModule",
     "SlotTablePaylineData",
-    "BasePaylineComponent"
+    "BasePaylineComponent",
+    "SlotLineItem",
+    "SpinePaylineLineItem",
+    "SpritePaylineLineItem"
   ],
   "emitsEvents": [
     "INIT",
@@ -37,6 +40,9 @@
     "PaylineSymbolModule",
     "PaylineWinFrameModule",
     "PaylineNumberModule",
-    "SlotPaylineSchedule"
+    "SlotPaylineSchedule",
+    "SlotLineItem",
+    "SpinePaylineLineItem",
+    "SpritePaylineLineItem"
   ]
 }
