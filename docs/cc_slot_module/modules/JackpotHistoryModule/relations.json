@@ -1,0 +1,33 @@
+{
+  "moduleId": "JackpotHistoryModule",
+  "category": "cc_slot_module",
+  "name": "JackpotHistoryModule",
+  "description": "Jackpot winner history popup controller managing tier filtering and pagination.",
+  "inheritsFrom": "BaseUIPopup",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "SettingPanel",
+      "relation": "launches_modal"
+    }
+  ],
+  "dependsOn": [
+    "BaseUIPopup",
+    "GameEventManager",
+    "SlotSoundPlayerModule"
+  ],
+  "emitsEvents": [
+    "INIT_JACKPOT_HISTORY",
+    "REQUEST_JACKPOT_NEXT_PAGE",
+    "REQUEST_JACKPOT_PREVIOUS_PAGE",
+    "CLOSE_JACKPOT_HISTORY_PANEL"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_deep_clone_record_mutation_gotcha"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "SettingPanel"
+  ]
+}

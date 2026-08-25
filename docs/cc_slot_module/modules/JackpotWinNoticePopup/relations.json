@@ -1,0 +1,22 @@
+{
+  "moduleId": "JackpotWinNoticePopup",
+  "category": "cc_slot_module",
+  "name": "JackpotWinNoticePopup",
+  "description": "Global real-time jackpot winner broadcast banner overlay with queueing and auto-dismissal.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotBaseModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_unscheduled_callback_leak_on_destroy"
+  ],
+  "related": [
+    "SlotBaseModule",
+    "JackpotModule",
+    "JackpotWinModule"
+  ]
+}

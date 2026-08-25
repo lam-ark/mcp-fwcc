@@ -1,0 +1,26 @@
+{
+  "moduleId": "SymbolPaytableViewer",
+  "category": "cc_slot_module",
+  "name": "SymbolPaytableViewer",
+  "description": "Interactive reel symbol touch inspector calculating grid positions and showing payout callouts.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotBaseModule",
+    "SlotTableModule",
+    "TableModuleConfig",
+    "SlotTableData"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "START_SPIN"
+  ],
+  "gotchas": [
+    "01_screen_boundary_callout_clipping"
+  ],
+  "related": [
+    "SlotTableModule",
+    "SlotSymbolModule"
+  ]
+}

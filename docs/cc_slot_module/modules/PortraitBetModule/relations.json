@@ -1,0 +1,25 @@
+{
+  "moduleId": "PortraitBetModule",
+  "category": "cc_slot_module",
+  "name": "PortraitBetModule",
+  "description": "Mobile portrait betting HUD component with min/max bet boundary shortcut buttons.",
+  "inheritsFrom": "BetModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "BetModule",
+    "GameEventManager"
+  ],
+  "emitsEvents": [
+    "HIT_MAX_BET",
+    "HIT_MIN_BET"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_inverted_active_logic_gotcha"
+  ],
+  "related": [
+    "BetModule",
+    "BetSelectionPanel"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "moduleId": "InfoPanel",
+  "category": "cc_slot_module",
+  "name": "InfoPanel",
+  "description": "Multi-page rulebook and paytable viewer supporting PageView navigation and title swapping.",
+  "inheritsFrom": "BaseUIPopup",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "InfoButton",
+      "relation": "launches_modal"
+    }
+  ],
+  "dependsOn": [
+    "BaseUIPopup",
+    "SlotSoundPlayerModule"
+  ],
+  "emitsEvents": [
+    "CLOSE_INFO_PANEL"
+  ],
+  "listensToEvents": [
+    "NEXT_GAME_INFO",
+    "PREVIOUS_GAME_INFO"
+  ],
+  "gotchas": [
+    "01_pageview_content_offset_glitch"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "PageViewIndicatorModule"
+  ]
+}

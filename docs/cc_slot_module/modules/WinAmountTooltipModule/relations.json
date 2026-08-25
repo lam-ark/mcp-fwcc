@@ -1,0 +1,28 @@
+{
+  "moduleId": "WinAmountTooltipModule",
+  "category": "cc_slot_module",
+  "name": "WinAmountTooltipModule",
+  "description": "Mobile portrait floating status ticker and rolling win amount presentation component.",
+  "inheritsFrom": "WinAmountModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "WinAmountModule",
+    "GameEventManager"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "SHOW_TOOLTIP_WIN_AMOUNT",
+    "SHOW_TOOLTIP_TOTAL_WIN_AMOUNT",
+    "SHOW_TOOLTIP_TEXT",
+    "HIDE_TOOLTIP",
+    "JOIN_GAME_SUCCESS"
+  ],
+  "gotchas": [
+    "01_infinite_tween_leak_on_destroy"
+  ],
+  "related": [
+    "WinAmountModule",
+    "WalletModule"
+  ]
+}

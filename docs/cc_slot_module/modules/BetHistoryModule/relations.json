@@ -1,0 +1,44 @@
+{
+  "moduleId": "BetHistoryModule",
+  "category": "cc_slot_module",
+  "name": "BetHistoryModule",
+  "description": "Master betting history popup controller handling pagination, session summaries, and detail view delegation.",
+  "inheritsFrom": "BaseUIPopup",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "SettingPanel",
+      "relation": "launches_modal"
+    },
+    {
+      "target": "PopupControllerModule",
+      "relation": "managed_popup"
+    }
+  ],
+  "dependsOn": [
+    "BaseUIPopup",
+    "BetHistoryDetailModule",
+    "GameEventManager",
+    "SlotSoundPlayerModule"
+  ],
+  "emitsEvents": [
+    "INIT_BET_HISTORY",
+    "BET_HISTORY_NEXT_PAGE",
+    "BET_HISTORY_PREVIOUS_PAGE",
+    "CLOSE_BET_HISTORY_PANEL",
+    "OPEN_BET_HISTORY_DETAIL_PANEL"
+  ],
+  "listensToEvents": [
+    "OPEN_BET_DETAIL"
+  ],
+  "gotchas": [
+    "01_missing_observer_release_leak",
+    "02_double_popup_open_during_animation"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "BetHistoryDetailModule",
+    "SettingPanel",
+    "PopupControllerModule"
+  ]
+}

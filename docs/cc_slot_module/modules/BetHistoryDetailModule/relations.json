@@ -1,0 +1,37 @@
+{
+  "moduleId": "BetHistoryDetailModule",
+  "category": "cc_slot_module",
+  "name": "BetHistoryDetailModule",
+  "description": "Granular spin round replay controller supporting step-by-step game mode playback and node-pooled tabs.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "BetHistoryModule",
+      "relation": "renders_detailed_replay"
+    }
+  ],
+  "dependsOn": [
+    "SlotBaseModule",
+    "GameEventManager",
+    "SlotSoundPlayerModule"
+  ],
+  "emitsEvents": [
+    "INIT_BET_DETAIL",
+    "BET_DETAIL_NEXT_PAGE",
+    "BET_DETAIL_PREVIOUS_PAGE",
+    "REQUEST_BET_DETAIL_DATA_PAGE",
+    "CLOSE_BET_HISTORY_DETAIL_PANEL"
+  ],
+  "listensToEvents": [
+    "ON_SCROLL_CLICK"
+  ],
+  "gotchas": [
+    "01_node_pool_leak_on_repeated_reopen",
+    "02_scrollview_offset_negative_bounce"
+  ],
+  "related": [
+    "BetHistoryModule",
+    "SlotBaseModule"
+  ]
+}

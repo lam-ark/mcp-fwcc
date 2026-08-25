@@ -1,0 +1,24 @@
+{
+  "moduleId": "BetHistoryDetailPortrait",
+  "category": "cc_slot_module",
+  "name": "BetHistoryDetailPortrait",
+  "description": "Mobile portrait spin round replay controller supporting sequential respin waterfalls.",
+  "inheritsFrom": "BetHistoryDetailModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "BetHistoryDetailModule"
+  ],
+  "emitsEvents": [
+    "BET_DETAIL_RESPIN_NEXT_PAGE",
+    "BET_DETAIL_RESPIN_PREVIOUS_PAGE"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_respin_button_visibility_override_gotcha"
+  ],
+  "related": [
+    "BetHistoryDetailModule",
+    "BetHistoryModule"
+  ]
+}

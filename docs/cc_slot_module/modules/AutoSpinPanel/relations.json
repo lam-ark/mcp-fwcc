@@ -1,0 +1,25 @@
+{
+  "moduleId": "AutoSpinPanel",
+  "category": "cc_slot_module",
+  "name": "AutoSpinPanel",
+  "description": "Mobile bottom-sheet auto-spin round selector modal with dynamic option instantiation.",
+  "inheritsFrom": "BaseUIPopup",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "BaseUIPopup",
+    "AutoSpinPanelConfig"
+  ],
+  "emitsEvents": [
+    "START_AUTO_SPIN",
+    "CLOSE_AUTO_SPIN_PANEL"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_missing_config_component_crash"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "SlotButtonModule"
+  ]
+}

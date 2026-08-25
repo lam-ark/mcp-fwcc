@@ -1,0 +1,25 @@
+{
+  "moduleId": "TurboModeSuggestionPopup",
+  "category": "cc_slot_module",
+  "name": "TurboModeSuggestionPopup",
+  "description": "Intelligent player retention modal prompting Turbo mode activation.",
+  "inheritsFrom": "BaseUIPopup",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "BaseUIPopup",
+    "TurboButton"
+  ],
+  "emitsEvents": [
+    "CHECK_TURBO_MODE_SUGGESTION_POPUP",
+    "ON_ACTIVE_FROM_TURBO_INTRO"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_repetitive_prompt_nagging_gotcha"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "TurboButton"
+  ]
+}

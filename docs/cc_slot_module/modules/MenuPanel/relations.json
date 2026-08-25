@@ -1,0 +1,35 @@
+{
+  "moduleId": "MenuPanel",
+  "category": "cc_slot_module",
+  "name": "MenuPanel",
+  "description": "Mobile slide-out hamburger navigation drawer modal for sound controls and sub-panel routing.",
+  "inheritsFrom": "BaseUIPopup",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "MenuButton",
+      "relation": "launches_drawer"
+    }
+  ],
+  "dependsOn": [
+    "BaseUIPopup"
+  ],
+  "emitsEvents": [
+    "TOGGLE_BGM",
+    "TOGGLE_SFX",
+    "OPEN_PAY_TABLE_PANEL",
+    "OPEN_INFO_PANEL",
+    "OPEN_BET_HISTORY_PANEL",
+    "CLOSE_MENU_PANEL"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_menu_overlap_without_autohide"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "PayTablePanel",
+    "InfoPanel",
+    "BetHistoryModule"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "moduleId": "BetSelectionPanel",
+  "category": "cc_slot_module",
+  "name": "BetSelectionPanel",
+  "description": "Dual synchronized scroll-wheel mobile bet selector with snap-to-item physics.",
+  "inheritsFrom": "BaseUIPopup",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "BaseUIPopup"
+  ],
+  "emitsEvents": [
+    "UPDATE_BET_ID",
+    "CLOSE_BET_SELECTION_PANEL"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_layout_unresolved_offset_jump_gotcha"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "PortraitBetModule"
+  ]
+}

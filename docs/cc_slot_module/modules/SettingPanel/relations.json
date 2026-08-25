@@ -1,0 +1,37 @@
+{
+  "moduleId": "SettingPanel",
+  "category": "cc_slot_module",
+  "name": "SettingPanel",
+  "description": "Master settings popup controller managing audio preferences and history launcher routes.",
+  "inheritsFrom": "BaseUIPopup",
+  "implements": [],
+  "usedBy": [
+    {
+      "target": "SettingButton",
+      "relation": "launches_modal"
+    }
+  ],
+  "dependsOn": [
+    "BaseUIPopup",
+    "SlotSoundPlayerModule",
+    "BetHistoryModule",
+    "JackpotHistoryModule"
+  ],
+  "emitsEvents": [
+    "TOGGLE_BGM",
+    "TOGGLE_SFX",
+    "CLOSE_SETTINGS_PANEL",
+    "OPEN_BET_HISTORY_PANEL",
+    "OPEN_JACKPOT_HISTORY_PANEL"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_toggle_initial_sound_gotcha"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "BetHistoryModule",
+    "JackpotHistoryModule",
+    "SlotSoundPlayerModule"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "moduleId": "PayTablePanel",
+  "category": "cc_slot_module",
+  "name": "PayTablePanel",
+  "description": "Mobile portrait vertical scrollable paytable viewer modal.",
+  "inheritsFrom": "BaseUIPopup",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "BaseUIPopup"
+  ],
+  "emitsEvents": [
+    "CLOSE_PAY_TABLE_PANEL"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_scrollview_top_reset_gotcha"
+  ],
+  "related": [
+    "BaseUIPopup",
+    "MenuPanel"
+  ]
+}

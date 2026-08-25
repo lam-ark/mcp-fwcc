@@ -1,0 +1,25 @@
+{
+  "moduleId": "DialogMessageModule",
+  "category": "cc_slot_module",
+  "name": "DialogMessageModule",
+  "description": "Master system alert and network disconnect modal controller with confirmation actions.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotBaseModule",
+    "SlotSoundPlayerModule"
+  ],
+  "emitsEvents": [
+    "ON_ACTION_OK",
+    "ON_ACTION_CANCEL"
+  ],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_invisible_active_dialog_gotcha"
+  ],
+  "related": [
+    "SlotBaseModule",
+    "GameDirector"
+  ]
+}
