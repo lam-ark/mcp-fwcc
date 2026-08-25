@@ -9,11 +9,11 @@ tags: ["cc_slot_module", "overview", "data_flow", "game_data_store", "base_data_
 
 ---
 
-## 1. Hành trình Toàn vẹn của Gói tin Dữ liệu Server (Data Ingestion Pipeline)
+## 1. End-to-End Server Data Ingestion Pipeline
 
-Toàn bộ luồng dữ liệu trong `cc-slot-module` tuân thủ nguyên lý **Single Source of Truth (SSOT)** kết hợp **Phản ứng Dữ liệu Một Chiều (Unidirectional Reactive Data Flow)**.
+The entire data management pipeline in `cc-slot-module` adheres to the **Single Source of Truth (SSOT)** principle combined with **Unidirectional Reactive Data Flow**.
 
-Dưới đây là hành trình từng bước từ khi gói tin nhị phân/JSON cập bến Client cho đến khi biểu hiện lên màn hình:
+Below is the complete sequence from the arrival of compressed network packets to presentation updates on screen:
 
 ```mermaid
 sequenceDiagram
@@ -38,14 +38,14 @@ sequenceDiagram
 
 ---
 
-## 2. Nguyên lý Cách ly Bất biến bằng Deep Clone (State Immutability Isolation)
+## 2. State Immutability via Deep-Clone Memory Isolation
 
-Trong các game Slot chạy thời gian thực, nhiều module cùng quan tâm đến một mảng dữ liệu (ví dụ: cả `SlotTableData`, `SlotTablePaylineData`, và `CascadeModuleData` đều đọc `matrix`).
+In real-time slot games, multiple distinct modules frequently observe identical data structures simultaneously (e.g., `SlotTableData`, `SlotTablePaylineData`, and `CascadeModuleData` all ingest the active `matrix`).
 
-Nếu truyền tham chiếu (Object Reference) trực tiếp:
-- Khi `SlotTableModule` xóa 1 phần tử hoặc thay đổi symbol trong mảng `matrix` để làm hoạt họa, nó sẽ vô tình làm hỏng dữ liệu gốc của `SlotTablePaylineModule`.
+If mutable object references were distributed directly:
+- An in-place array modification by `SlotTableModule` during cascade animations would inadvertently corrupt the reference held by `SlotTablePaylineModule`.
 
-`GameDataStore.updateDataModules()` triệt tiêu hoàn toàn rủi ro này bằng cơ chế **Deep Clone Immutability**:
+`GameDataStore.updateDataModules()` completely eliminates reference contamination through **Deep-Clone Memory Isolation**:
 ```typescript
 updateDataModules(): void {
     this.convertData(this.playSession);
@@ -55,7 +55,7 @@ updateDataModules(): void {
             if (this._dataMap.has(key)) {
                 let value = this._dataMap.get(key);
                 if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
-                    value = JSON.parse(JSON.stringify(value)); // <-- CÔ LẬP BỘ NHỚ
+                    value = JSON.parse(JSON.stringify(value)); // <-- MEMORY ISOLATION
                 }
                 module.onDataUpdate(key, value);
             } else {
@@ -68,11 +68,11 @@ updateDataModules(): void {
 
 ---
 
-## 3. Khử Nén Khóa Dữ liệu Di động (`mapNewKeys`)
+## 3. Mobile Network Key De-obfuscation (`mapNewKeys`)
 
-Để tiết kiệm băng thông 3G/4G trên thiết bị di động, backend Slot thường nén tên biến thành 2-4 ký tự (ví dụ: `cna`, `pMul`, `mulF`, `fgr`).
+To minimize payload bandwidth across mobile network connections, slot backends typically compress property identifiers into abbreviated 2–4 character strings (e.g., `cna`, `pMul`, `mulF`, `fgr`).
 
-Tại tầng `GameDataStore`, lập trình viên override `mapDataPS()` để chuyển đổi các ký tự viết tắt này thành thuộc tính chuẩn của SDK:
+Within `GameDataStore`, developers override `mapDataPS()` to translate these compressed keys into standard framework property names:
 
 ```typescript
 @ccclass
@@ -96,9 +96,9 @@ export class GameDataStore9666 extends GameDataStore {
 
 ---
 
-## 4. Kiến trúc Phục hồi Trạng thái khi Mất kết nối (Reconnection Architecture: `isResume`)
+## 4. Reconnection State Hydration Architecture (`isResume`)
 
-Khi người chơi bị rớt mạng hoặc refresh trình duyệt giữa chừng (ví dụ: đang ở vòng 3 trong 10 vòng Free Spins, hoặc đang chọn thẻ Free Option):
+When a player experiences a network disconnection or refreshes their browser mid-feature (e.g., at spin 3 of 10 Free Spins, or on the Free Option selection dialog):
 
 ```mermaid
 graph TD
@@ -118,8 +118,8 @@ graph TD
     ResumeFree --> RestoreWallet["_resumeWinAmount: restore winAmountPS counter"]
 ```
 
-### Các bước Phục hồi Chuẩn:
-1. **Khôi phục Bảng quay (`_resumeNormalTable` / `_resumeFreeTable`)**: Dựng lại chính xác các biểu tượng đang dừng trên màn hình trước khi rớt mạng bằng lệnh `SYNC_TABLE`.
-2. **Khôi phục Bộ đếm Số vòng quay (`syncSpinTimes`)**: Đọc `freeGameRemain` để hiển thị đúng số vòng còn lại trên Badge HUD (tránh hiện lại số 10 ban đầu).
-3. **Khôi phục Tiền thắng Tích lũy (`_resumeWinAmount`)**: Đọc `winAmountPS` để hiển thị số tiền đã thắng được qua các vòng trước lên ô Win Amount.
-4. **Tiếp tục Vòng lặp Auto-Spin**: Bật lại cơ chế tự động quay tiếp tục phiên chơi mà không cần người chơi thao tác lại từ đầu.
+### Standard State Hydration Workflow:
+1. **Matrix Restoration (`_resumeNormalTable` / `_resumeFreeTable`)**: Restores the exact symbol grid configuration from the server snapshot via `SYNC_TABLE`.
+2. **Remaining Spins Synchronization (`syncSpinTimes`)**: Reads `freeGameRemain` to update HUD badges with the accurate remaining spin count (avoiding an incorrect reset to default values).
+3. **Accumulated Win Hydration (`_resumeWinAmount`)**: Populates `winAmountPS` onto the win counter to accurately reflect winnings accumulated prior to disconnection.
+4. **Resumption of Auto-Spin Loop**: Automatically re-engages the feature loop, restoring gameplay continuity without requiring manual player re-initialization.

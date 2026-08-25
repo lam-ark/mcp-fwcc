@@ -9,9 +9,9 @@ tags: ["cc_slot_module", "overview", "table_engine", "reels", "symbols", "matrix
 
 ---
 
-## 1. Tổng quan Cỗ máy Bảng quay (Table Engine Overview)
+## 1. Table Engine Overview
 
-Hệ thống Bảng quay (**Table Engine**) là trái tim đồ họa của game Slot trong `cc-slot-module`. Nó chịu trách nhiệm render toàn bộ ma trận biểu tượng, thực thi hiệu ứng cuộn vô tận (infinite blur spin), dừng cột nảy vật lý (bounce back stop), sắp xếp thứ tự hiển thị (Z-Index Layering) và hỗ trợ các cơ chế phức tạp như biểu tượng khổng lồ (Mega Symbols) hoặc ma trận xếp tầng (Cascade).
+The **Table Engine** is the visual and mechanical centerpiece of slot games within `cc-slot-module`. It manages the entire symbol matrix rendering pipeline, orchestrates infinite motion blur reel spins, applies physical bounce-back deceleration easing, resolves Z-Index layer ordering, and supports advanced mechanics such as Mega Symbols (Gigablox) and cascading avalanches.
 
 ```mermaid
 graph TD
@@ -37,87 +37,87 @@ graph TD
 
 ---
 
-## 2. 7 Hợp phần Cốt lõi của Table Engine
+## 2. The 7 Core Components of the Table Engine
 
-| Hợp phần | Component / Script | Vai trò Trọng tâm |
+| Component | Class / Script | Architectural Responsibility |
 | :--- | :--- | :--- |
-| **1. Bộ điều khiển Bảng** | `SlotTableModule` | Quản lý toàn bộ danh sách các cột (`reelList`), tiếp nhận sự kiện `TABLE_START_SPIN`, `TABLE_STOP_SPIN`, `SYNC_TABLE` và đồng bộ dừng cột. |
-| **2. Cấu hình Hình học** | `TableModuleConfig` | Định nghĩa số cột/dòng (`TABLE_FORMAT`), tọa độ hiển thị từng ô (`SYMBOL_INDEXES`), cấu hình tốc độ (`MODES.NORMAL`, `MODES.TURBO`). |
-| **3. Bộ điều khiển Cột** | `SlotReelModule` | Thực hiện chuyển động cuộn xoay vô tận của 1 cột, di chuyển các symbol ảo (blur), áp dụng easing nảy khi dừng (`BOUNCE_EASING`). |
-| **4. Quản lý Vòng đời Symbol** | `SlotSymbolManager` | Cấp phát (`getSymbolByIndex`), thu hồi (`returnSymbol`), sắp xếp thứ tự đè lớp (`sortSymbols`), quản lý biểu tượng dính (Sticky Wilds). |
-| **5. Thực thể Biểu tượng** | `SlotSymbolModule` | Component đại diện cho 1 ô Symbol trên bảng: chứa Sprite tĩnh, Spine hoạt họa, Spine Blur và các hàm `changeToSymbol()`, `playAnimation()`. |
-| **6. Bộ tái sử dụng Node** | `SlotCustomNodePool` | Quản lý Node Pool cho từng loại Symbol, ngăn chặn rác bộ nhớ (Garbage Collection spikes) khi quay liên tục. |
-| **7. Quản lý Tài nguyên** | `SlotSymbolResourceManager`| Tải trước và lưu trữ khung xương Spine SkeletonData, SpriteAtlas của toàn bộ bộ ký hiệu trong game. |
+| **1. Table Controller** | `SlotTableModule` | Manages the collection of reels (`reelList`), handles `TABLE_START_SPIN`, `TABLE_STOP_SPIN`, and `SYNC_TABLE` events, and synchronizes column stop sequences. |
+| **2. Geometric Config** | `TableModuleConfig` | Defines row/column dimensions (`TABLE_FORMAT`), cell index mappings (`SYMBOL_INDEXES`), and reel spin speed profiles (`MODES.NORMAL`, `MODES.TURBO`). |
+| **3. Reel Controller** | `SlotReelModule` | Executes continuous vertical infinite scrolling, spawns motion-blur symbols during spin phases, and applies bounce-back stopping easing (`BOUNCE_EASING`). |
+| **4. Symbol Lifecycle Manager** | `SlotSymbolManager` | Allocates (`getSymbolByIndex`), recycles (`returnSymbol`), sorts visual hierarchy (`sortSymbols`), and manages overlay elements (Sticky Wilds). |
+| **5. Symbol Entity** | `SlotSymbolModule` | Represents an individual symbol cell: encapsulates static Sprites, Spine animations, blur representations, and state transitions (`changeToSymbol()`, `playAnimation()`). |
+| **6. Node Pool Allocator** | `SlotCustomNodePool` | Manages node pools per symbol type, preventing Garbage Collection spikes during high-frequency auto-spins on mobile devices. |
+| **7. Resource Cache** | `SlotSymbolResourceManager`| Preloads and caches Spine SkeletonData assets and SpriteAtlases across all theme symbol sets. |
 
 ---
 
-## 3. Hệ tọa độ Ma trận & Vùng đệm Ẩn (Matrix Geometry & Buffer Rows)
+## 3. Matrix Geometry & Hidden Buffer Rows
 
-### 3.1. Hệ tọa độ Ma trận Chuẩn: `[col][row]`
-Trong `cc-slot-module`, ma trận game luôn được biểu diễn dưới dạng mảng 2 chiều theo cột trước, dòng sau:
+### 3.1. Standard Matrix Coordinate System: `[col][row]`
+In `cc-slot-module`, matrices are consistently structured as 2D arrays using column-major order:
 ```typescript
 matrix[col][row]
 ```
-- `col`: Chỉ số cột từ trái sang phải (`0` đến `COLS - 1`).
-- `row`: Chỉ số dòng từ dưới lên trên hoặc từ trên xuống dưới tùy game (thường `0` là dòng đáy, `ROWS - 1` là dòng đỉnh).
+- `col`: Column index from left to right (`0` to `COLS - 1`).
+- `row`: Row index within the column (typically `0` is the bottom row, `ROWS - 1` is the top visible row).
 
 ```text
        Col 0      Col 1      Col 2      Col 3      Col 4
-Row 2: [0][2]     [1][2]     [2][2]     [3][2]     [4][2]   <-- Dòng hiển thị trên cùng
-Row 1: [0][1]     [1][1]     [2][1]     [3][1]     [4][1]   <-- Dòng hiển thị giữa
-Row 0: [0][0]     [1][0]     [2][0]     [3][0]     [4][0]   <-- Dòng hiển thị đáy
+Row 2: [0][2]     [1][2]     [2][2]     [3][2]     [4][2]   <-- Top visible row
+Row 1: [0][1]     [1][1]     [2][1]     [3][1]     [4][1]   <-- Middle visible row
+Row 0: [0][0]     [1][0]     [2][0]     [3][0]     [4][0]   <-- Bottom visible row
 ```
 
-### 3.2. Vùng đệm Ẩn (Buffer Rows: `topBuffer` & `bottomBuffer`)
-Để tạo cảm giác Symbol trượt mượt mà vào và ra khỏi khung nhìn (Reel Viewport) mà không bị "chớp tắt" (pop-in / pop-out) đột ngột:
-- `topBuffer`: Các dòng Symbol ẩn nằm phía trên đỉnh cột. Khi cột cuộn xuống, Symbol trong topBuffer sẽ trượt dần vào màn hình.
-- `bottomBuffer`: Các dòng Symbol ẩn nằm phía dưới đáy cột. Symbol trượt qua đáy sẽ đi vào vùng này trước khi được thu hồi về Pool.
+### 3.2. Hidden Buffer Rows (`topBuffer` & `bottomBuffer`)
+To ensure symbols transition seamlessly in and out of the Reel Viewport without sudden visual pop-in or clipping artifacts:
+- `topBuffer`: Hidden symbol rows positioned above the top edge of each column. During a spin, top-buffer symbols smoothly scroll into the visible viewport.
+- `bottomBuffer`: Hidden symbol rows located below the bottom edge. Symbols that scroll past the bottom enter this buffer before being recycled into the node pool.
 
 ```text
 +---------------------------------------------------+
-|               TOP BUFFER (Ẩn ngoài khung nhìn)     |
+|               TOP BUFFER (Hidden off-screen)       |
 +===================================================+
-|           REEL VIEWPORT (Vùng người chơi nhìn thấy)|
+|           REEL VIEWPORT (Visible Player Area)     |
 |                                                   |
 |   [Col 0]     [Col 1]     [Col 2]     [Col 3]     |
 |                                                   |
 +===================================================+
-|             BOTTOM BUFFER (Ẩn ngoài khung nhìn)   |
+|             BOTTOM BUFFER (Hidden off-screen)     |
 +---------------------------------------------------+
 ```
 
 ---
 
-## 4. Cơ chế Sắp xếp Thứ tự Đè Lớp (Z-Index Layer Priority Sorting)
+## 4. Z-Index Layer Priority Sorting
 
-Khi các biểu tượng trên bảng phát hoạt họa trúng thưởng hoặc bung hiệu ứng thắng lớn (Spine expands), nếu không có cơ chế phân lớp, các biểu tượng ở cột sau có thể bị biểu tượng cột trước che mất hoặc ngược lại.
+When symbols trigger win animations or expansive spine visual effects, proper layer sorting is essential to prevent adjacent reel cells from improperly overlapping or clipping active celebration animations.
 
-`SlotSymbolManager.sortSymbols()` giải quyết vấn đề này dựa trên **Layer Config Priority**:
+`SlotSymbolManager.sortSymbols()` dynamically resolves rendering depth based on a structured **Layer Priority Hierarchy**:
 
 ```mermaid
 graph TD
-    SymList[Danh sách các Symbol đang hiển thị] --> SortFunc[SlotSymbolManager.sortSymbols]
+    SymList[Active Visible Symbols] --> SortFunc[SlotSymbolManager.sortSymbols]
     
     subgraph Priority Rules
-        SortFunc --> CheckSticky{Có phải Sticky Wild?}
-        CheckSticky -->|Yes: Priority Cao nhất| TopLayer[Z-Index = 1000 + Priority]
+        SortFunc --> CheckSticky{Is Sticky Wild?}
+        CheckSticky -->|Yes: Highest Priority| TopLayer[Z-Index = 1000 + Priority]
         
-        CheckSticky -->|No| CheckWin{Đang phát hoạt họa Win?}
-        CheckWin -->|Yes: Priority Trung bình| MidLayer[Z-Index = 500 + Priority]
+        CheckSticky -->|No| CheckWin{Playing Win Animation?}
+        CheckWin -->|Yes: Medium Priority| MidLayer[Z-Index = 500 + Priority]
         
-        CheckWin -->|No: Trạng thái Tĩnh| BaseLayer[Z-Index = col * 10 + row]
+        CheckWin -->|No: Static Grid State| BaseLayer[Z-Index = col * 10 + row]
     end
 
-    TopLayer --> ApplySibling[setSiblingIndex: Cập nhật thứ tự Node trong Canvas]
+    TopLayer --> ApplySibling[setSiblingIndex: Update Scene Graph Rendering Order]
     MidLayer --> ApplySibling
     BaseLayer --> ApplySibling
 ```
 
 ---
 
-## 5. Xử lý Biểu tượng Khổng lồ (Mega Symbols / Big Symbols)
+## 5. Mega Symbols & Irregular Grids (Gigablox / Large Symbols)
 
-Với các game có Symbol chiếm nhiều ô (ví dụ: Wild 2x2, 3x3, hoặc biểu tượng dài 1x3):
-1. **Parent Reel Locking**: Symbol khổng lồ được gắn vào cột gốc (Anchor Column, thường là cột góc trái dưới cùng).
-2. **Buffer Spacing**: `TableModuleConfig` tính toán khoảng cách đệm mở rộng trên `topBuffer` để tránh mép đỉnh của Mega Symbol bị cắt (clipping) khi cuộn vào khung hình.
-3. **Multi-Index Mapping**: Khi tính thưởng, `SlotTablePaylineModule` tự động chiếu tọa độ của Mega Symbol vào toàn bộ các ô `[col][row]` mà nó bao phủ.
+For games featuring multi-cell symbols (e.g., 2x2, 3x3 Wilds or 1x3 vertical banners):
+1. **Anchor Reel Attachment**: Mega symbols are attached to an anchor column (typically the bottom-left origin cell).
+2. **Buffer Expansion**: `TableModuleConfig` dynamically expands `topBuffer` dimensions to prevent visual clipping along the top viewport boundary during reel entrance.
+3. **Multi-Index Coordinate Projection**: When evaluating paylines, `SlotTablePaylineModule` automatically projects the mega symbol's single code across all underlying `[col][row]` cells covered by its dimensions.

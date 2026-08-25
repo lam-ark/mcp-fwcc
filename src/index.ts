@@ -96,11 +96,45 @@ async function bootstrap() {
       }
     });
 
-    // HTTP JSON-RPC 2.0 Endpoint
-    app.post("/", async (req, res) => {
-      const { jsonrpc, id, method, params } = req.body;
+    // Helper for handling JSON-RPC 2.0 requests over HTTP
+    const handleJsonRpc = async (req: express.Request, res: express.Response) => {
+      const { jsonrpc, id, method, params } = req.body || {};
       if (jsonrpc !== "2.0") {
-        return res.status(400).json({ jsonrpc: "2.0", id: id || null, error: { code: -32600, message: "Invalid Request" } });
+        return res.status(400).json({ jsonrpc: "2.0", id: id ?? null, error: { code: -32600, message: "Invalid Request" } });
+      }
+
+      if (method?.startsWith("notifications/")) {
+        if (id === undefined || id === null) {
+          return res.status(204).end();
+        }
+        return res.json({ jsonrpc: "2.0", id, result: {} });
+      }
+
+      if (method === "initialize") {
+        return res.json({
+          jsonrpc: "2.0",
+          id,
+          result: {
+            protocolVersion: params?.protocolVersion || "2024-11-05",
+            capabilities: {
+              tools: {
+                listChanged: false,
+              },
+            },
+            serverInfo: {
+              name: CONFIG.SERVER_NAME,
+              version: CONFIG.SERVER_VERSION,
+            },
+          },
+        });
+      }
+
+      if (method === "ping") {
+        return res.json({
+          jsonrpc: "2.0",
+          id,
+          result: {},
+        });
       }
 
       if (method === "tools/list") {
@@ -113,16 +147,47 @@ async function bootstrap() {
 
       if (method === "tools/call") {
         const { name, arguments: args } = params || {};
-        const result = await globalToolRegistry.executeTool(name, args);
+        try {
+          const result = await globalToolRegistry.executeTool(name, args);
+          return res.json({
+            jsonrpc: "2.0",
+            id,
+            result,
+          });
+        } catch (err: any) {
+          return res.json({
+            jsonrpc: "2.0",
+            id,
+            error: {
+              code: -32000,
+              message: err?.message || "Tool execution failed",
+            },
+          });
+        }
+      }
+
+      if (method === "resources/list") {
         return res.json({
           jsonrpc: "2.0",
           id,
-          result,
+          result: { resources: [] },
         });
       }
 
-      return res.status(404).json({ jsonrpc: "2.0", id, error: { code: -32601, message: "Method not found" } });
-    });
+      if (method === "prompts/list") {
+        return res.json({
+          jsonrpc: "2.0",
+          id,
+          result: { prompts: [] },
+        });
+      }
+
+      return res.status(404).json({ jsonrpc: "2.0", id, error: { code: -32601, message: `Method '${method}' not found` } });
+    };
+
+    // HTTP JSON-RPC Endpoints (/ and /mcp)
+    app.post("/", handleJsonRpc);
+    app.post("/mcp", handleJsonRpc);
 
     // View raw or rendered markdown document directly over HTTP
     app.use("/doc", (req, res) => {

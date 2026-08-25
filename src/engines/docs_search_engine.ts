@@ -217,7 +217,11 @@ export class DocsSearchEngine implements IEngine {
 
     this.searchEngine.addAll(chunks);
     this.isInitialized = true;
-    console.log(`[DocsSearchEngine] Indexed ${chunks.length} chunks across ${this.topicsList.length} topics.`);
+    console.error(`[DocsSearchEngine] Indexed ${chunks.length} chunks across ${this.topicsList.length} topics.`);
+  }
+
+  public reindex(): void {
+    this.init();
   }
 
   public search(query: string, limit: number = 10, category?: string, tag?: string): SearchResultItem[] {

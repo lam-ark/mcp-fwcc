@@ -206,7 +206,7 @@ export class GraphEngine implements IEngine {
     // 3. Compute Bi-directional Backlinks & Indices
     this.computeBacklinksAndIndices();
 
-    console.log(`[GraphEngine] Initialized ${this.nodes.size} conceptual graph nodes with bi-directional backlinks.`);
+    console.error(`[GraphEngine] Initialized ${this.nodes.size} conceptual graph nodes with bi-directional backlinks.`);
   }
 
   private registerNode(node: GraphNode): void {

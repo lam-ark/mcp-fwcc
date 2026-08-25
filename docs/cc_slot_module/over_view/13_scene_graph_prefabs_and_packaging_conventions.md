@@ -9,9 +9,9 @@ tags: ["cc_slot_module", "overview", "scene_graph", "prefabs", "packaging_conven
 
 ---
 
-## 1. Cây Scene Chuẩn của Game Slot (Production Cocos Creator 2.4 Scene Graph)
+## 1. Production Slot Game Scene Graph (Cocos Creator 2.4)
 
-Mọi dự án game slot kế thừa từ `cc-slot-module` đều tuân thủ cấu trúc cây Scene chuẩn đã được trích xuất trực tiếp từ Cocos Creator Editor (`g9000L.fire` / `g9666L.fire`):
+All slot game titles inheriting from `cc-slot-module` adhere to the canonical scene graph structure extracted from production Cocos Creator scene files (`g9000L.fire` / `g9666L.fire`):
 
 ```text
 Canvas [cc.Canvas, CanvasModuleController, cc.Widget]
@@ -100,48 +100,48 @@ Canvas [cc.Canvas, CanvasModuleController, cc.Widget]
 
 ---
 
-## 2. Phân Tầng Trách Nhiệm Chi Tiết (Architectural Layers Breakdown)
+## 2. Architectural Layer Breakdown
 
-### A. Tầng Điều Phối Cốt Lõi (Core Director & Bootstrap Layer)
+### A. Core Director & Bootstrap Layer
 * **`Canvas` Node**:
-  - Gắn component `CanvasModuleController`, `cc.Canvas`, `cc.Widget`. Đảm bảo độ phân giải thiết kế cố định $1280 \times 720$ (hoặc $1920 \times 1080$) với cơ chế Fit Height / Fit Width linh hoạt.
+  - Hosts `CanvasModuleController`, `cc.Canvas`, and `cc.Widget`. Enforces fixed design resolution (1280×720 or 1920×1080) with dynamic Fit Height / Fit Width responsive scaling.
 * **`Director` Node**:
-  - Gắn bộ tứ khởi tạo: `GameInit`, `GameConfig`, `GameDataStore`, `GameDirector`.
-  - Khởi động IoC Service Locator, kết nối socket `GameLogic`, và lưu trữ dữ liệu tập trung (Single Source of Truth).
+  - Hosts the bootstrap quartet: `GameInit`, `GameConfig`, `GameDataStore`, `GameDirector`.
+  - Initializes IoC Service Locator containers, establishes `GameLogic` socket handlers, and maintains centralized state (Single Source of Truth).
 
-### B. Tầng Chế Độ Chơi (GameMode Container Layer)
+### B. GameMode Container Layer
 * **`GameMode` Node**:
-  - Gắn `OnAddGameMode`. Chịu trách nhiệm nạp/bật/tắt các Game Mode con (`MainGamePrefab`, `FreeGamePrefab`, `BonusGamePrefab`, `FreeOptionPrefab`).
-  - Mỗi Prefab con đều triển khai **Scripting Triad**:
-    - `DirectorModule` (`NormalGameDirectorModule`, `FreeGameDirectorModule`...): State machine điều phối lượt quay.
-    - `WriterModule` (`NormalGameWriterModule`, `FreeGameWriterModule`...): Khởi tạo mảng lệnh hành động `makeSpinScript()`.
-    - `OnAddSlotModule` / `SlotModuleEditorTag`: Tự động đăng ký các module con (`SlotTableModule`, `SlotTablePaylineModule`) vào luồng `setupModule(moduleEvent, gameMode)`.
+  - Hosts `OnAddGameMode`. Controls mounting, activation, and deactivation of mode prefabs (`MainGamePrefab`, `FreeGamePrefab`, `BonusGamePrefab`, `FreeOptionPrefab`).
+  - Each mode prefab embeds the **Scripting Triad**:
+    - `DirectorModule` (`NormalGameDirectorModule`, `FreeGameDirectorModule`, etc.): State machine orchestrator for spin rounds.
+    - `WriterModule` (`NormalGameWriterModule`, `FreeGameWriterModule`, etc.): Synthesizes action command queues (`makeSpinScript()`).
+    - `OnAddSlotModule` / `SlotModuleEditorTag`: Automatically registers child modules (`SlotTableModule`, `SlotTablePaylineModule`) into the `setupModule(moduleEvent, gameMode)` lifecycle.
 
-### C. Tầng Bảng Quay & Trả Thưởng (Board & Payline Layer)
+### C. Board & Payline Layer
 * **`SlotTableModule`**:
-  - Quản lý `Table` (`cc.Mask`), `SymbolPool` (`SlotSymbolManager`), và hiệu ứng `VFX_NearWin` (`sp.Skeleton`).
+  - Manages `Table` (`cc.Mask`), `SymbolPool` (`SlotSymbolManager`), and `VFX_NearWin` (`sp.Skeleton`) overlays.
 * **`SlotTablePaylineModule`**:
-  - Điều phối 4 lớp biểu diễn thắng: `PaylineSymbolModule` (Spine/Sprite biểu tượng trúng thưởng), `PaylineWinFrameModule` (Khung sáng), `PaylineLineModule` (Đường nối line), `PaylineNumberModule` (Số thứ tự line).
+  - Coordinates 4 presentation layers: `PaylineSymbolModule` (Spine/Sprite win animations), `PaylineWinFrameModule` (Win boxes), `PaylineLineModule` (Line vectors), and `PaylineNumberModule` (Line ID badges).
 
-### D. Tầng Giao Diện & Cutscene (UI, Cutscenes & Popups Layer)
+### D. GUI, Cutscenes & Popups Layer
 * **`UIManager`**:
-  - Chứa toàn bộ nút bấm tương tác (`NormalSpinButton`, `TurboButton`, `BetModule`), hiển thị số dư ví (`WalletModule`), tiền thắng (`WinAmountModule`), và thông tin line (`PaylineInfoModule`).
+  - Consolidates interactive controls (`NormalSpinButton`, `TurboButton`, `BetModule`), player balance (`WalletModule`), win rollup labels (`WinAmountModule`), and active payline summary (`PaylineInfoModule`).
 * **`CutsceneControl`**:
-  - Quản lý các màn hình cắt cảnh toàn màn hình: `IntroFreeGameModule`, `JackpotWinModule`, `TotalWinModule`, `WinEffectModule` (Big/Mega/Super Win).
+  - Coordinates fullscreen celebration modals: `IntroFreeGameModule`, `JackpotWinModule`, `TotalWinModule`, and `WinEffectModule` (Big/Mega/Super Win).
 * **`PopupControl`**:
-  - Quản lý các popup tương tác phụ: `SettingPanel`, `BetHistoryModule`, `JackpotHistoryModule`, `InfoPanel` (Paytable hướng dẫn), `TutorialPopupModule`.
+  - Coordinates secondary modal dialogs: `SettingPanel`, `BetHistoryModule`, `JackpotHistoryModule`, `InfoPanel` (Paytable rules), and `TutorialPopupModule`.
 
 ---
 
-## 3. Quy Ước Đóng Gói Thư Mục Dự Án (Production Packaging Directory Layout)
+## 3. Production Packaging Directory Layout
 
-Khi xây dựng một Game Slot mới kế thừa từ Framework, cấu trúc thư mục dự án tuân thủ phân cấp:
+When building a new slot title inheriting from the framework, projects adhere to this clean separation:
 
 ```text
 assets/
-├── cc-common/                          # SDK Core Framework dùng chung
-│   ├── cc-share-v1/                    # Thư viện mạng, Socket, Utility
-│   └── cc-slot-module/                 # Bộ Module Slot chuẩn (75 modules)
+├── cc-common/                          # Shared SDK Core Framework
+│   ├── cc-share-v1/                    # Networking, Sockets, General Utilities
+│   └── cc-slot-module/                 # Canonical Slot Module Suite
 │       ├── Core/                       # GameInit, GameConfig, GameDataStore, SlotBaseModule
 │       ├── GameMode/                   # BaseGameDirector, ScriptExecutor, WriterModule
 │       ├── BaseModule/
@@ -152,23 +152,23 @@ assets/
 │       │   └── FreeOption/             # FreeOptionDirectorModule
 │       └── ...
 │
-└── cc-release-slot/                    # Thư mục chứa các Game Slot cụ thể
-    └── [game-id-or-name]/              # Ví dụ: g9000L (Classic 5x3), g9666L (Red Cliff)
-        ├── scenes/                     # Scene .fire chính của game (g9000L.fire)
+└── cc-release-slot/                    # Game-Specific Production Directories
+    └── [game-id-or-name]/              # e.g., g9000L (Classic 5x3), g9666L (Red Cliff)
+        ├── scenes/                     # Primary .fire scene file (g9000L.fire)
         ├── prefabs/                    # Mode Prefabs (MainGamePrefab, FreeGamePrefab, Popups)
-        ├── textures/                   # Atlas biểu tượng, background, khung bảng quay
-        ├── spines/                     # Skeletons Spine biểu tượng & cutscenes
-        ├── sounds/                     # BGM, click, spin, win audio clips
-        └── scripts/                    # Các module override đặc thù của game
-            ├── [GameName]Config.ts     # Cấu hình trả thưởng và tham số riêng
-            ├── [GameName]Director.ts   # Director kế thừa NormalGameDirectorModule
-            └── [GameName]Writer.ts     # Writer custom kịch bản riêng
+        ├── textures/                   # Symbol atlases, background art, table frames
+        ├── spines/                     # Spine SkeletonData for symbols & cutscenes
+        ├── sounds/                     # BGM, button clicks, spin loops, win audio clips
+        └── scripts/                    # Theme-specific overridden modules
+            ├── [GameName]Config.ts     # Payout matrices and custom parameters
+            ├── [GameName]Director.ts   # Director subclassing NormalGameDirectorModule
+            └── [GameName]Writer.ts     # Writer customizing script command sequences
 ```
 
 ---
 
-## 4. Nguyên Tắc Kế Thừa Prefab Override (Prefab Override Principles)
+## 4. Prefab Override Principles
 
 > [!IMPORTANT]
-> 1. **Zero-Code Modification on `cc-common`**: Tuyệt đối không chỉnh sửa trực tiếp mã nguồn trong `cc-common/cc-slot-module`. Mọi tùy biến phải được viết trong thư mục game con `cc-release-slot/[game-id]/` thông qua kế thừa (Subclassing) hoặc cấu hình (`Config`).
-> 2. **Prefab Nesting Stability**: Khi override `MainGamePrefab` trong game con, giữ nguyên cấu trúc phân cấp node và component tag (`SlotModuleEditorTag`, `OnAddSlotModule`) để đảm bảo pipeline điều phối tự động hoạt động chính xác 100%.
+> 1. **Zero-Code Modification on `cc-common`**: Never modify source files inside `cc-common/cc-slot-module` directly. All game-specific logic must reside in `cc-release-slot/[game-id]/` through inheritance (subclassing) or configuration (`Config`).
+> 2. **Prefab Nesting Stability**: When overriding `MainGamePrefab` for a new game, preserve the exact node hierarchy and component tags (`SlotModuleEditorTag`, `OnAddSlotModule`) to guarantee seamless automated registration and lifecycle orchestration.

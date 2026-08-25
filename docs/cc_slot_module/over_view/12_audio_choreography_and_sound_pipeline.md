@@ -9,9 +9,9 @@ tags: ["cc_slot_module", "overview", "audio_pipeline", "sound_player", "sound_ch
 
 ---
 
-## 1. Vũ Đạo Âm Thanh Đa Tầng (Multi-Tier Audio Choreography)
+## 1. Multi-Tier Audio Choreography
 
-Trong thiết kế game slot chuẩn casino, âm thanh chiếm 50% trải nghiệm tạo cảm xúc hồi hộp (anticipation) và thỏa mãn (reward). `cc-slot-module` quản lý âm thanh qua 3 kênh chính:
+In casino-grade slot design, audio accounts for up to 50% of the player anticipation and reward experience. `cc-slot-module` manages audio through 3 primary synchronized channels:
 
 ```mermaid
 graph TD
@@ -42,21 +42,21 @@ graph TD
 
 ---
 
-## 2. Dòng Chảy Âm Thanh Theo Chu Kỳ Ván Quay (Audio Lifecycle Flow)
+## 2. Spin Lifecycle Audio Workflow
 
-| Pha Quay | Tín hiệu Kích hoạt | Hành vi Âm thanh |
+| Spin Phase | Trigger Signal | Sound Behavior |
 | :--- | :--- | :--- |
-| **1. Bấm Spin** | `_startSpinningTable` | Phát SFX nút bấm (`SPIN_CLICK`), hạ nhẹ volume BGM và phát `SPIN_LOOP` vô tận. |
-| **2. Cột Dừng Thường** | `onReelStop` | Dừng `SPIN_LOOP` của cột đó, phát tiếng va đập (`REEL_STOP`). |
-| **3. Cột Dừng Scatter (Anticipation)** | `onReelPreStop` | Phát tiếng chuông `SCATTER_LAND` cao độ. Nếu đã có 2 Scatter, bật nhạc nền dồn dập (`NEAR_WIN_LOOP`) cho các cột còn lại. |
-| **4. Đếm Tiền Thắng** | `_showWinPayline` | Phát tiếng tiền xu tuôn trào (`COIN_ROLL_LOOP`). Tần số âm thanh tăng dần khi số tiền nhảy lên mốc Big Win. |
-| **5. Kết Thúc Thắng** | `_resetOnSpin` | Phát tiếng chuông chốt tiền (`END_WIN_CHIME`), nâng âm lượng BGM trở lại bình thường. |
+| **1. Spin Press** | `_startSpinningTable` | Plays button click SFX (`SPIN_CLICK`), applies subtle BGM ducking, and starts the continuous `SPIN_LOOP`. |
+| **2. Standard Reel Stop** | `onReelStop` | Stops the reel's spinning loop and plays physical stop impact (`REEL_STOP`). |
+| **3. Scatter Land (Anticipation)** | `onReelPreStop` | Plays a high-pitched `SCATTER_LAND` stinger. If 2+ Scatters land, cross-fades into high-tempo `NEAR_WIN_LOOP` tension audio on remaining reels. |
+| **4. Win Rollup Counter** | `_showWinPayline` | Plays continuous coin rollup loop (`COIN_ROLL_LOOP`). Audio pitch escalates dynamically as the counter reaches Big Win thresholds. |
+| **5. Win Completion** | `_resetOnSpin` | Plays settlement chime (`END_WIN_CHIME`) and restores background music volume back to nominal levels. |
 
 ---
 
-## 3. Quản lý Mute & Focus trên Web Mobile
+## 3. Web & Mobile Audio Management
 
-Hệ thống âm thanh trong Slot Framework tự động xử lý:
-1. **Audio Context Unlock**: Tự động mở khóa Web Audio API ngay trong lần chạm đầu tiên của người chơi trên trình duyệt di động (iOS Safari / Android Chrome).
-2. **Page Visibility Interception**: Tự động tạm dừng âm thanh khi người chơi chuyển tab (`document.hidden`) và tiếp tục khi quay lại mà không bị giật tiếng.
-3. **Master Volume & Mute Cache**: Lưu trạng thái tắt/mở âm thanh vào Local Storage (`cc.sys.localStorage`) đồng bộ qua các phiên chơi.
+The audio engine automatically handles mobile browser nuances:
+1. **Audio Context Unlock**: Automatically unlocks the Web Audio API on the player's initial touch interaction (iOS Safari / Android Chrome).
+2. **Page Visibility Interception**: Automatically pauses audio tracks when the browser tab loses focus (`document.hidden`) and resumes playback cleanly upon return.
+3. **Master Volume & Mute State Caching**: Persists sound and music toggle states into Local Storage (`cc.sys.localStorage`) across gaming sessions.
