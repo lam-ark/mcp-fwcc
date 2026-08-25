@@ -1,5 +1,6 @@
 {
-  "moduleId": "JackpotWinModule",
+  "id": "JackpotWinModule",
+  "title": "JackpotWinModule Progressive Victory Modal Cutscene",
   "category": "cc_slot_module",
   "name": "JackpotWinModule",
   "description": "Progressive jackpot victory modal cutscene managing high-tier celebratory particle eruptions, rolling number count-ups, tap-to-accelerate skip logic, and audio ducking.",
@@ -17,7 +18,9 @@
   ],
   "dependsOn": [
     "BaseCutscene",
-    "CoinsEffect"
+    "CoinsEffect",
+    "MoneyTween",
+    "MoneyFormatter"
   ],
   "emitsEvents": [],
   "listensToEvents": [],
@@ -25,6 +28,7 @@
     "01_missing_fast_skip_tween_cleanup"
   ],
   "related": [
+    "JackpotModule",
     "BaseCutscene",
     "CutsceneController",
     "CoinsEffect",

@@ -1,0 +1,55 @@
+{
+  "id": "SlotBaseModule",
+  "title": "SlotBaseModule Universal Component Base",
+  "category": "cc_slot_module",
+  "name": "SlotBaseModule",
+  "description": "Abstract foundation base class for all slot components providing Dependency Injection (gameLogic, eventManager, observer, soundPlayer) and game-mode scoped event isolation (moduleEvent).",
+  "inheritsFrom": "cc.Component",
+  "manages": [],
+  "usedBy": [
+    {
+      "target": "SlotTableModule",
+      "relation": "inherits_base_module"
+    },
+    {
+      "target": "UIManagerModule",
+      "relation": "inherits_base_module"
+    },
+    {
+      "target": "BaseGameDirector",
+      "relation": "inherits_base_module"
+    },
+    {
+      "target": "BaseCutscene",
+      "relation": "inherits_base_module"
+    },
+    {
+      "target": "BaseUIPopup",
+      "relation": "inherits_base_module"
+    }
+  ],
+  "dependsOn": [
+    "GameEventManager",
+    "GameModuleEvent",
+    "SlotSoundPlayerModule",
+    "GameLogic"
+  ],
+  "emitsEvents": [
+    "RESET_ALL_EFFECT_AND_TASKS"
+  ],
+  "listensToEvents": [
+    "RESET_ALL_EFFECT_AND_TASKS"
+  ],
+  "gotchas": [
+    "01_duplicate_game_mode_registration_crash",
+    "02_unreleased_event_and_observer_leak",
+    "03_premature_service_access_in_constructor"
+  ],
+  "related": [
+    "GameEventManager",
+    "GameModuleEvent",
+    "SlotSoundPlayerModule",
+    "UIManagerModule",
+    "SlotTableModule"
+  ]
+}
