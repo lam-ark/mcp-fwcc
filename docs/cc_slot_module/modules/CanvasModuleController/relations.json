@@ -1,0 +1,22 @@
+{
+  "moduleId": "CanvasModuleController",
+  "category": "cc_slot_module",
+  "name": "CanvasModuleController",
+  "description": "Dynamic resolution adaptation, safe area calculation, and orientation locks.",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "resize",
+    "canvas-resize"
+  ],
+  "gotchas": [
+    "01_widget_alignment_desync"
+  ],
+  "related": [
+    "AutoScaleBackgroundModule",
+    "UIManagerModule"
+  ]
+}

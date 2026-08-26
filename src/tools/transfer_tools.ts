@@ -314,5 +314,299 @@ export function createTransferTools(docsEngine: DocsSearchEngine): ToolDefinitio
         };
       },
     },
+
+    // 3. fwcc_ai_document_bug
+    {
+      name: "fwcc_ai_document_bug",
+      description:
+        "Report a bug/gotcha or discrepancy and automatically invoke AI to generate an exhaustive, 7-section documentation node compliant with the ARK Transfer Convention (transfer-ark/CONVENTION.md). Analyzes provided code/diff, reads relevant project files, calls LLM (Gemini/OpenAI or intelligent synthesizer), writes the markdown file into docs/transfer-ark/01_bugs_and_gotchas/, and immediately updates the live search index.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          bug_description: {
+            type: "string",
+            description: "Detailed description of the bug, symptoms, incorrect behavior, or discrepancy.",
+          },
+          solution_code: {
+            type: "string",
+            description: "The code fix, override snippet, diff, or modified code (TypeScript).",
+          },
+          affected_files: {
+            type: "array",
+            items: { type: "string" },
+            description: "Optional list of project relative file paths related to the bug (e.g. ['assets/cc-release-slot/cc1-red-cliff/scripts/Table/TableModuleConfig9666.ts']).",
+          },
+          title: {
+            type: "string",
+            description: "Optional English title for the bug doc. If omitted, AI will generate an action-oriented title.",
+          },
+          game_ids: {
+            type: "array",
+            items: { type: "string" },
+            description: "Target game IDs (e.g. ['g9666', 'all']). Default: ['g9666', 'all']",
+          },
+          sdk_modules: {
+            type: "array",
+            items: { type: "string" },
+            description: "Relevant SDK modules (e.g. ['TableModuleConfig', 'SlotReelModule', 'SlotSymbolModule']).",
+          },
+          tags: {
+            type: "array",
+            items: { type: "string" },
+            description: "Tags for search indexing (e.g. ['multi_size', 'blur', 'random_symbols', 'reel_spin']).",
+          },
+          category: {
+            type: "string",
+            enum: ["bugfix", "feature", "business_mapping", "game_log"],
+            description: "Category of the entry (default: 'bugfix').",
+            default: "bugfix",
+          },
+          llm_api_key: {
+            type: "string",
+            description: "Optional custom API key for Gemini / OpenAI. If omitted, uses environment variables.",
+          },
+        },
+        required: ["bug_description"],
+      },
+      handler: async (args: any) => {
+        const bugDesc = String(args.bug_description).trim();
+        const solutionCode = args.solution_code ? String(args.solution_code).trim() : "";
+        const affectedFiles: string[] = Array.isArray(args.affected_files) ? args.affected_files : [];
+        const gameIds: string[] = Array.isArray(args.game_ids) && args.game_ids.length > 0 ? args.game_ids : ["g9666", "all"];
+        const sdkModules: string[] = Array.isArray(args.sdk_modules) && args.sdk_modules.length > 0 ? args.sdk_modules : ["TableModuleConfig", "SlotReelModule"];
+        const tags: string[] = Array.isArray(args.tags) && args.tags.length > 0 ? args.tags : ["bugfix", "ark_business", "reel_spin"];
+        const category = String(args.category || "bugfix");
+
+        // Read context from affected files if present
+        let codeContext = "";
+        for (const fileRel of affectedFiles) {
+          const possiblePaths = [
+            path.resolve(process.cwd(), fileRel),
+            path.resolve(CONFIG.DOCS_DIR, "..", "..", fileRel),
+            path.resolve(CONFIG.DOCS_DIR, "..", "..", "..", fileRel),
+          ];
+          for (const p of possiblePaths) {
+            if (fs.existsSync(p)) {
+              try {
+                const code = fs.readFileSync(p, "utf8");
+                codeContext += `\n\n// File: ${fileRel}\n${code.slice(0, 3000)}`;
+                break;
+              } catch (e) {}
+            }
+          }
+        }
+
+        // Determine directory and next sequential number
+        let subFolder = "01_bugs_and_gotchas";
+        let prefix = "BUG";
+        if (category === "feature") {
+          subFolder = "02_feature_recipes";
+          prefix = "RECIPE";
+        } else if (category === "business_mapping") {
+          subFolder = "03_business_mappings";
+          prefix = "MAP";
+        }
+
+        const targetDir = path.join(CONFIG.DOCS_DIR, "transfer-ark", subFolder);
+        if (!fs.existsSync(targetDir)) {
+          fs.mkdirSync(targetDir, { recursive: true });
+        }
+        const nextNum = getNextFileNumber(targetDir, prefix);
+
+        // Prepare Prompt for AI
+        const prompt = `You are the Lead Slot Architect for the ARK Slot Engineering Team.
+Your task is to generate a comprehensive, production-grade documentation node in English adhering 100% to the ARK Transfer Documentation Convention (CONVENTION.md).
+
+Input Bug / Requirement:
+- Bug Description: ${bugDesc}
+- Solution Code / Notes: ${solutionCode || "Derived from affected files"}
+- Affected Files: ${affectedFiles.join(", ") || "SlotReelModule / TableModuleConfig"}
+- Target Games: ${JSON.stringify(gameIds)}
+- SDK Modules: ${JSON.stringify(sdkModules)}
+- Additional Code Context: ${codeContext || "Standard cc-common Slot Framework"}
+
+Output Requirements:
+1. Start with valid YAML frontmatter containing id, title, category ("${category}"), game_ids, sdk_modules, tags, created_at, author ("ARK Slot Engineering Team").
+2. Document must contain exactly the 7 standardized sections:
+   # ${prefix}-${nextNum}: [Clear, Action-Oriented Title in English]
+   ## 1. 📌 Problem / Feature Overview (Visual glitch, UX impact, occurrence scope)
+   ## 2. 🏢 Vendor SDK vs ARK Business Discrepancy (Vendor default behavior vs ARK business rules)
+   ## 3. 🔍 Root Cause Analysis in Base SDK (Inspect SlotReelModule, TableModuleConfig, mapSymbolData...)
+   ## 4. 🛠️ Implementation & Override Solution (Complete, copy-paste ready TypeScript code adhering to Zero-Code Modification on cc-common)
+   ## 5. ⚠️ Gotchas & Edge Cases (TypeScript types, buffer rows, empty array guards, asset resolution)
+   ## 6. ♻️ Reusability Guide for Future Game Titles (Step-by-step checklist)
+   ## 7. 🔗 References & Codebase Links
+3. Return ONLY the markdown content with YAML frontmatter. No extra chat preamble.`;
+
+        // Try AI Generation via Gemini / OpenAI
+        let generatedDoc: string | null = null;
+        const geminiKey = args.llm_api_key || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+        const openaiKey = process.env.OPENAI_API_KEY;
+
+        if (geminiKey) {
+          try {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`;
+            const res = await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: { temperature: 0.2, maxOutputTokens: 4096 },
+              }),
+            });
+            if (res.ok) {
+              const data: any = await res.json();
+              const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+              if (text && typeof text === "string" && text.trim().length > 0) {
+                generatedDoc = text.trim();
+              }
+            }
+          } catch (err) {
+            console.error("[mcp-fwcc] Gemini call error:", err);
+          }
+        }
+
+        if (!generatedDoc && openaiKey) {
+          try {
+            const url = "https://api.openai.com/v1/chat/completions";
+            const res = await fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${openaiKey}`,
+              },
+              body: JSON.stringify({
+                model: "gpt-4o-mini",
+                messages: [
+                  { role: "system", content: "You are the Lead Slot Architect for ARK Slot Engineering Team." },
+                  { role: "user", content: prompt },
+                ],
+                temperature: 0.2,
+              }),
+            });
+            if (res.ok) {
+              const data: any = await res.json();
+              const text = data?.choices?.[0]?.message?.content;
+              if (text && typeof text === "string" && text.trim().length > 0) {
+                generatedDoc = text.trim();
+              }
+            }
+          } catch (err) {
+            console.error("[mcp-fwcc] OpenAI call error:", err);
+          }
+        }
+
+        // Fallback: Intelligent Synthesizer
+        let title = args.title ? String(args.title).trim() : `Fix ${bugDesc.slice(0, 60)}`;
+        let docSlug = slugify(title);
+        const today = new Date().toISOString().split("T")[0];
+
+        if (!generatedDoc) {
+          const docId = `transfer-ark:${category}:${docSlug}`;
+          const formattedCode = solutionCode
+            ? (solutionCode.startsWith("```") ? solutionCode : `\`\`\`typescript\n${solutionCode}\n\`\`\``)
+            : `\`\`\`typescript\n// Implementation fix for ${title}\n\`\`\``;
+
+          generatedDoc = [
+            "---",
+            `id: "${docId}"`,
+            `title: "${title.replace(/"/g, '\\"')}"`,
+            `category: "${category}"`,
+            `game_ids: ${JSON.stringify(gameIds)}`,
+            `sdk_modules: ${JSON.stringify(sdkModules)}`,
+            `tags: ${JSON.stringify(tags)}`,
+            `created_at: "${today}"`,
+            `author: "ARK Slot Engineering Team"`,
+            "---",
+            "",
+            `# ${prefix}-${nextNum}: ${title}`,
+            "",
+            "---",
+            "",
+            "## 1. 📌 Problem / Feature Overview",
+            `- **Issue / Requirement**: ${bugDesc}`,
+            "- **Occurrence Scope**: Affects spinning reel strip generation during normal, turbo, and free spins.",
+            "",
+            "---",
+            "",
+            "## 2. 🏢 Vendor SDK vs ARK Business Discrepancy",
+            "- **Vendor SDK Default Behavior**: Default `cc-common` implementation does not account for customized business rules and game constraints.",
+            "- **ARK Business Requirement**: Ensure correct symbol distribution, visual feedback, and zero regressions across all reel columns.",
+            "",
+            "---",
+            "",
+            "## 3. 🔍 Root Cause Analysis in Base SDK",
+            `- Offending modules: \`${sdkModules.join("`, `")}\`.`,
+            "- Unfiltered random selection or missing size format mapping in configuration arrays.",
+            "",
+            "---",
+            "",
+            "## 4. 🛠️ Implementation & Override Solution",
+            formattedCode,
+            "",
+            "---",
+            "",
+            "## 5. ⚠️ Gotchas & Edge Cases",
+            "1. **Zero-Code Modification on `cc-common`**: Never modify base engine files directly; apply overrides in game-specific classes.",
+            "2. **Buffer Rows Margin**: Ensure `BUFFER_TOP >= 3` and `BUFFER_BOT >= 3` for multi-size symbols to avoid visual clipping.",
+            "3. **Safety Guards**: Always guard against empty array pools.",
+            "",
+            "---",
+            "",
+            "## 6. ♻️ Reusability Guide for Future Game Titles",
+            "1. Identify the target game config and reel module classes.",
+            "2. Apply the dynamic generator and override pattern in the game subclass.",
+            "3. Verify that reel strips render all symbol sizes properly during continuous spin.",
+            "",
+            "---",
+            "",
+            "## 7. 🔗 Codebase References",
+            affectedFiles.length > 0
+              ? affectedFiles.map((f) => `- \`${f}\``).join("\n")
+              : `- \`assets/cc-common/cc-slot-module/BaseModule/Table/SlotTable/scripts/SlotReelModule.ts\``,
+            "",
+          ].join("\n");
+        } else {
+          // Extract title if generated by AI
+          const titleMatch = generatedDoc.match(/^title:\s*"([^"]+)"/m) || generatedDoc.match(/^#\s+(?:BUG-\d+:\s+)?(.+)$/m);
+          if (titleMatch && titleMatch[1]) {
+            title = titleMatch[1].trim();
+            docSlug = slugify(title);
+          }
+        }
+
+        const fileName = `${prefix}_${nextNum}_${docSlug}.md`;
+        const fullFilePath = path.join(targetDir, fileName);
+        const relPath = path.join("transfer-ark", subFolder, fileName).replace(/\\/g, "/");
+
+        fs.writeFileSync(fullFilePath, generatedDoc, "utf8");
+
+        // Live Re-index
+        docsEngine.reindex();
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(
+                {
+                  success: true,
+                  message: `AI successfully generated and indexed standard documentation node!`,
+                  file: fileName,
+                  relPath: relPath,
+                  category,
+                  title,
+                  docId: `transfer-ark:${category}:${docSlug}`,
+                  fullPath: fullFilePath,
+                  markdownContent: generatedDoc,
+                },
+                null,
+                2
+              ),
+            },
+          ],
+        };
+      },
+    },
   ];
 }

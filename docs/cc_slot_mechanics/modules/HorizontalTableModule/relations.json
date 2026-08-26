@@ -1,0 +1,18 @@
+{
+  "moduleId": "HorizontalTableModule",
+  "category": "cc_slot_mechanics",
+  "name": "HorizontalTableModule",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/HorizontalReel/scripts/HorizontalTableModule.ts",
+  "inheritsFrom": "SlotTableModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotTableModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

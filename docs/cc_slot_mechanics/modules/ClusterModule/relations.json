@@ -1,0 +1,18 @@
+{
+  "moduleId": "ClusterModule",
+  "category": "cc_slot_mechanics",
+  "name": "ClusterModule",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/Cluster/scripts/ClusterModule.ts",
+  "inheritsFrom": "VerticalCascadeModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "VerticalCascadeModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

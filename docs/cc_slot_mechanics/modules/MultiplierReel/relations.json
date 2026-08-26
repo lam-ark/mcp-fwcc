@@ -1,0 +1,18 @@
+{
+  "moduleId": "MultiplierReel",
+  "category": "cc_slot_mechanics",
+  "name": "MultiplierReel",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/MultiplierReel/scripts/MultiplierReel.ts",
+  "inheritsFrom": "Component",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "Component"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

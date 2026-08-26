@@ -1,0 +1,24 @@
+{
+  "moduleId": "JackpotHistoryData",
+  "category": "cc_core_lib",
+  "name": "JackpotHistoryData",
+  "package": "slot-base-logic",
+  "inheritsFrom": "Object",
+  "implements": [],
+  "usedBy": [
+    "cc-slot-module",
+    "cc-slot-mechanics"
+  ],
+  "dependsOn": [
+    "Object"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_common_engine_gotchas"
+  ],
+  "recipes": [
+    "01_practical_usage_example"
+  ],
+  "related": []
+}

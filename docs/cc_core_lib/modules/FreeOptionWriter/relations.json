@@ -1,0 +1,24 @@
+{
+  "moduleId": "FreeOptionWriter",
+  "category": "cc_core_lib",
+  "name": "FreeOptionWriter",
+  "package": "slot-base-logic",
+  "inheritsFrom": "BaseWriter",
+  "implements": [],
+  "usedBy": [
+    "cc-slot-module",
+    "cc-slot-mechanics"
+  ],
+  "dependsOn": [
+    "BaseWriter"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_common_engine_gotchas"
+  ],
+  "recipes": [
+    "01_practical_usage_example"
+  ],
+  "related": []
+}

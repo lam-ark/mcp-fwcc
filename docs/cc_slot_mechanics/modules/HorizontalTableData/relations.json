@@ -1,0 +1,18 @@
+{
+  "moduleId": "HorizontalTableData",
+  "category": "cc_slot_mechanics",
+  "name": "HorizontalTableData",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/HorizontalReel/scripts/HorizontalTableData.ts",
+  "inheritsFrom": "SlotTableData",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotTableData"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

@@ -1,0 +1,18 @@
+{
+  "moduleId": "StickySymbolModule",
+  "category": "cc_slot_mechanics",
+  "name": "StickySymbolModule",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/StickySymbol/scripts/StickySymbolModule.ts",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotBaseModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

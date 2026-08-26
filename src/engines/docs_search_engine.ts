@@ -13,8 +13,10 @@ export interface DocChunk {
   category: string;
   tags: string;
   methods: string;
+  codeSymbols: string;
   section: string;
   content: string;
+  chunkIndex?: number;
 }
 
 export interface TopicInfo {
@@ -121,10 +123,36 @@ function extractSmartSnippet(content: string, query: string, maxLength: number =
   return snippet;
 }
 
+/**
+ * Code-Aware Multi-Identifier Tokenizer
+ * Splits camelCase, PascalCase, snake_case, and CONSTANT_CASE while preserving exact identifiers.
+ */
+function codeTokenizer(text: string): string[] {
+  if (!text) return [];
+  const tokens = new Set<string>();
+  
+  // 1. Standard whitespace and symbol delimiter splitting
+  const rawWords = text.split(/[\s,.;:!?()[\]{}<>"'`\\/|~@#$%^&*+=_-]+/);
+  for (const word of rawWords) {
+    if (!word) continue;
+    tokens.add(word.toLowerCase());
+
+    // 2. Split camelCase / PascalCase
+    const subParts = word.replace(/([a-z0-9])([A-Z])/g, "$1 $2").split(" ");
+    if (subParts.length > 1) {
+      for (const sp of subParts) {
+        if (sp) tokens.add(sp.toLowerCase());
+      }
+    }
+  }
+  return Array.from(tokens);
+}
+
 export class DocsSearchEngine implements IEngine {
   private searchEngine: MiniSearch<DocChunk> | null = null;
   private topicsList: TopicInfo[] = [];
   private chunksMap: Map<string, DocChunk> = new Map();
+  private fileChunksList: Map<string, DocChunk[]> = new Map();
   private isInitialized = false;
 
   constructor(private docsDir: string = CONFIG.DOCS_DIR) {}
@@ -135,14 +163,16 @@ export class DocsSearchEngine implements IEngine {
     }
 
     this.searchEngine = new MiniSearch<DocChunk>({
-      fields: ["topic", "tags", "methods", "section", "content"],
-      storeFields: ["id", "file", "relPath", "topic", "section", "content", "category", "tags"],
+      fields: ["codeSymbols", "topic", "section", "tags", "methods", "content"],
+      storeFields: ["id", "file", "relPath", "topic", "section", "content", "category", "tags", "methods", "codeSymbols"],
+      tokenize: codeTokenizer,
       searchOptions: {
         boost: {
-          topic: 4.0,
-          tags: 3.0,
-          methods: 2.5,
-          section: 2.0,
+          codeSymbols: 5.0,
+          section: 4.0,
+          topic: 3.5,
+          tags: 2.5,
+          methods: 2.0,
           content: 1.0,
         },
         fuzzy: 0.2,
@@ -188,11 +218,16 @@ export class DocsSearchEngine implements IEngine {
         // Split into chunks by H2 sections
         const sections = content.split(/\n(?=##\s+)/);
         let sectionIdx = 0;
+        const fileChunks: DocChunk[] = [];
 
         for (const sec of sections) {
           const secMatch = sec.match(/^##\s+(.+)$/m);
           const sectionTitle = secMatch ? secMatch[1].trim() : "Overview";
-          const chunkId = `${topicId}#sec-${sectionIdx++}`;
+          const chunkId = `${topicId}#sec-${sectionIdx}`;
+
+          // Extract code symbols (backticks and method signatures)
+          const codeSymbolMatches = Array.from(sec.matchAll(/`([a-zA-Z0-9_$]+(?:\.[a-zA-Z0-9_$]+)*)`/g)).map(m => m[1]);
+          const combinedCodeSymbols = Array.from(new Set([...allMethods, ...classMatches, ...codeSymbolMatches])).join(" ");
 
           const docChunk: DocChunk = {
             id: chunkId,
@@ -202,14 +237,21 @@ export class DocsSearchEngine implements IEngine {
             category,
             tags: tags.join(" "),
             methods: allMethods.join(" "),
+            codeSymbols: combinedCodeSymbols,
             section: sectionTitle,
             content: sec.trim(),
+            chunkIndex: sectionIdx,
           };
 
           chunks.push(docChunk);
+          fileChunks.push(docChunk);
           this.chunksMap.set(chunkId.toLowerCase(), docChunk);
-          this.chunksMap.set(`${item.relPath.toLowerCase()}#sec-${sectionIdx - 1}`, docChunk);
+          this.chunksMap.set(`${item.relPath.toLowerCase()}#sec-${sectionIdx}`, docChunk);
+          sectionIdx++;
         }
+
+        this.fileChunksList.set(item.relPath.toLowerCase(), fileChunks);
+        this.fileChunksList.set(topicId.toLowerCase(), fileChunks);
       } catch (err) {
         console.error(`[DocsSearchEngine] Error parsing ${item.relPath}:`, err);
       }
@@ -244,11 +286,9 @@ export class DocsSearchEngine implements IEngine {
       const normalizedRelPath = String(r.relPath || "").replace(/\\/g, "/");
       return {
         score: r.score,
-        chunkId: r.id,
         topic: r.topic,
         section: r.section,
         relPath: normalizedRelPath,
-        docUrl: `/doc/${normalizedRelPath}`,
         category: r.category,
         tags: rawTags,
         snippet: extractSmartSnippet(r.content, query, 320),
@@ -262,7 +302,7 @@ export class DocsSearchEngine implements IEngine {
       return { found: true, chunk: this.chunksMap.get(q) };
     }
 
-    // Fuzzy matching by chunk ID prefix or topic
+    // Matching by chunk ID prefix or topic
     for (const [key, chunk] of this.chunksMap.entries()) {
       if (key.includes(q) || chunk.id.toLowerCase().includes(q)) {
         return { found: true, chunk };
@@ -270,6 +310,73 @@ export class DocsSearchEngine implements IEngine {
     }
 
     return { found: false };
+  }
+
+  /**
+   * Contextual Sliding-Window Chunker
+   * Returns center chunk plus surrounding context chunks (windowSize = 1 gives previous, center, next)
+   */
+  public readChunk(relPathOrId: string, chunkIndex?: number, windowSize: number = 1): {
+    found: boolean;
+    relPath?: string;
+    chunkIndex?: number;
+    totalChunks?: number;
+    centerChunk?: DocChunk;
+    contextChunks?: DocChunk[];
+    combinedMarkdown?: string;
+  } {
+    // 1. If chunkId provided directly (e.g. "SlotReel#sec-2")
+    if (relPathOrId.includes("#sec-")) {
+      const [pathPart, secPart] = relPathOrId.split("#sec-");
+      const parsedIdx = parseInt(secPart, 10);
+      return this.readChunk(pathPart, isNaN(parsedIdx) ? 0 : parsedIdx, windowSize);
+    }
+
+    const key = relPathOrId.toLowerCase().replace(/\\/g, "/");
+    let fileChunks = this.fileChunksList.get(key);
+    
+    if (!fileChunks) {
+      for (const [k, list] of this.fileChunksList.entries()) {
+        if (k.endsWith(key) || k.includes(key)) {
+          fileChunks = list;
+          break;
+        }
+      }
+    }
+
+    if (!fileChunks || fileChunks.length === 0) {
+      return { found: false };
+    }
+
+    const targetIdx = chunkIndex !== undefined ? Math.max(0, Math.min(fileChunks.length - 1, chunkIndex)) : 0;
+    const startIdx = Math.max(0, targetIdx - windowSize);
+    const endIdx = Math.min(fileChunks.length - 1, targetIdx + windowSize);
+
+    const contextChunks = fileChunks.slice(startIdx, endIdx + 1);
+    const centerChunk = fileChunks[targetIdx];
+
+    const combinedMarkdown = contextChunks.map((c) => `<!-- Chunk ${c.chunkIndex}/${fileChunks.length - 1}: ${c.section} -->\n${c.content}`).join("\n\n---\n\n");
+
+    return {
+      found: true,
+      relPath: centerChunk.relPath,
+      chunkIndex: targetIdx,
+      totalChunks: fileChunks.length,
+      centerChunk,
+      contextChunks,
+      combinedMarkdown,
+    };
+  }
+
+  public searchTopic(tierOrCategory: string, limit: number = 20): TopicInfo[] {
+    const q = tierOrCategory.toLowerCase().trim();
+    return this.topicsList
+      .filter(t => 
+        t.relPath.toLowerCase().includes(q) || 
+        t.category.toLowerCase().includes(q) || 
+        t.tags.some(tg => tg.toLowerCase().includes(q))
+      )
+      .slice(0, limit);
   }
 
   public readBatch(pathsOrTopics: string[]): Array<{ pathOrTopic: string; found: boolean; content?: string; relPath?: string }> {
@@ -378,36 +485,84 @@ export class DocsSearchEngine implements IEngine {
   }
 
   public getDoc(topicOrRelPath: string): { found: boolean; relPath?: string; content?: string } {
-    const topic = this.topicsList.find(
-      t => t.id.toLowerCase() === topicOrRelPath.toLowerCase() || 
-           t.relPath.toLowerCase() === topicOrRelPath.toLowerCase() || 
-           t.file.toLowerCase() === topicOrRelPath.toLowerCase() ||
-           t.title.toLowerCase() === topicOrRelPath.toLowerCase()
-    );
+    if (!topicOrRelPath) return { found: false };
 
-    if (!topic) {
-      // Direct relative path fallback
-      const directPath = path.join(this.docsDir, topicOrRelPath);
-      if (fs.existsSync(directPath) && fs.statSync(directPath).isFile()) {
+    const normalizedInput = topicOrRelPath.trim().replace(/\\/g, "/");
+    const cleanLower = normalizedInput.toLowerCase();
+    const cleanNoExt = cleanLower.replace(/\.md$/, "");
+
+    // 1. Match by exact or normalized relPath, topic id, file name, or title
+    const topic = this.topicsList.find(t => {
+      const tRel = t.relPath.toLowerCase().replace(/\\/g, "/");
+      const tRelNoExt = tRel.replace(/\.md$/, "");
+      const tFile = t.file.toLowerCase();
+      const tFileNoExt = tFile.replace(/\.md$/, "");
+      const tId = t.id.toLowerCase();
+      const tTitle = t.title.toLowerCase();
+
+      return (
+        tRel === cleanLower ||
+        tRelNoExt === cleanNoExt ||
+        tRel.endsWith(cleanLower) ||
+        tRel.endsWith("/" + cleanLower) ||
+        tId === cleanLower ||
+        tId === cleanNoExt ||
+        tFile === cleanLower ||
+        tFileNoExt === cleanNoExt ||
+        tTitle === cleanLower
+      );
+    });
+
+    if (topic) {
+      const fullPath = path.isAbsolute(topic.relPath)
+        ? topic.relPath
+        : path.join(this.docsDir, topic.relPath);
+      if (fs.existsSync(fullPath)) {
         return {
           found: true,
-          relPath: topicOrRelPath,
-          content: fs.readFileSync(directPath, "utf8"),
+          relPath: topic.relPath.replace(/\\/g, "/"),
+          content: fs.readFileSync(fullPath, "utf8"),
         };
       }
-      return { found: false };
     }
 
-    const fullPath = path.join(this.docsDir, topic.relPath);
-    if (!fs.existsSync(fullPath)) {
-      return { found: false };
+    // 2. Fallback: Direct file system check in docsDir
+    const candidatePaths = [
+      path.join(this.docsDir, normalizedInput),
+      path.join(this.docsDir, `${normalizedInput}.md`),
+      path.resolve(this.docsDir, normalizedInput),
+      path.resolve(this.docsDir, `${normalizedInput}.md`),
+    ];
+
+    for (const p of candidatePaths) {
+      if (fs.existsSync(p) && fs.statSync(p).isFile()) {
+        const rel = path.relative(this.docsDir, p).replace(/\\/g, "/");
+        return {
+          found: true,
+          relPath: rel,
+          content: fs.readFileSync(p, "utf8"),
+        };
+      }
     }
 
-    return {
-      found: true,
-      relPath: topic.relPath,
-      content: fs.readFileSync(fullPath, "utf8"),
-    };
+    // 3. Fallback: Search by partial file name across topicsList
+    const fallbackTopic = this.topicsList.find(t =>
+      t.file.toLowerCase().includes(cleanNoExt) ||
+      t.relPath.toLowerCase().replace(/\\/g, "/").includes(cleanNoExt)
+    );
+
+    if (fallbackTopic) {
+      const fullPath = path.join(this.docsDir, fallbackTopic.relPath);
+      if (fs.existsSync(fullPath)) {
+        return {
+          found: true,
+          relPath: fallbackTopic.relPath.replace(/\\/g, "/"),
+          content: fs.readFileSync(fullPath, "utf8"),
+        };
+      }
+    }
+
+    return { found: false };
   }
 
   public getClassApi(className: string): { found: boolean; topic?: TopicInfo; content?: string } {

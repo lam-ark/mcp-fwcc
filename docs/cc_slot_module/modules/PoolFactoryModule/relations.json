@@ -1,0 +1,20 @@
+{
+  "moduleId": "PoolFactoryModule",
+  "category": "cc_slot_module",
+  "name": "PoolFactoryModule",
+  "description": "Generic object pooling factory managing pre-instantiation, checked-out tracking, and bulk recycle.",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_modifying_used_objects_during_iteration"
+  ],
+  "related": [
+    "SlotObjectPool",
+    "SlotCustomNodePool",
+    "SlotSymbolManager"
+  ]
+}

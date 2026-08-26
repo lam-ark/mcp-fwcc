@@ -1,0 +1,18 @@
+{
+  "moduleId": "MegaReelSceneTest",
+  "category": "cc_slot_mechanics",
+  "name": "MegaReelSceneTest",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/MegaReel/scripts/MegaReelSceneTest.ts",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "cc.Component"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

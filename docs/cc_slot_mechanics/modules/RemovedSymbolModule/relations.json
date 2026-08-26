@@ -1,0 +1,18 @@
+{
+  "moduleId": "RemovedSymbolModule",
+  "category": "cc_slot_mechanics",
+  "name": "RemovedSymbolModule",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/RemovedSymbol/RemovedSymbolModule.ts",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotBaseModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

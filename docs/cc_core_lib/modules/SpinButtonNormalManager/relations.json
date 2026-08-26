@@ -1,0 +1,24 @@
+{
+  "moduleId": "SpinButtonNormalManager",
+  "category": "cc_core_lib",
+  "name": "SpinButtonNormalManager",
+  "package": "slot-base-logic",
+  "inheritsFrom": "SpinButtonManager",
+  "implements": [],
+  "usedBy": [
+    "cc-slot-module",
+    "cc-slot-mechanics"
+  ],
+  "dependsOn": [
+    "SpinButtonManager"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_common_engine_gotchas"
+  ],
+  "recipes": [
+    "01_practical_usage_example"
+  ],
+  "related": []
+}

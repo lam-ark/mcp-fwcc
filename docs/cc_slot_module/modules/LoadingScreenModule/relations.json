@@ -1,0 +1,21 @@
+{
+  "moduleId": "LoadingScreenModule",
+  "category": "cc_slot_module",
+  "name": "LoadingScreenModule",
+  "description": "Asset preloading orchestrator, progress bar updates, multi-scene routing, and Howler audio context warmup.",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "onHideSplashScreen"
+  ],
+  "gotchas": [
+    "01_stuck_at_99_percent"
+  ],
+  "related": [
+    "GameInit",
+    "GameDirector"
+  ]
+}

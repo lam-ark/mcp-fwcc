@@ -1,0 +1,25 @@
+{
+  "moduleId": "SoundPlayerModuleImpl",
+  "category": "cc_slot_module",
+  "name": "SoundPlayerModuleImpl",
+  "description": "Concrete audio implementation mapping sound convert lists to audio clips with Howler / Cocos backends.",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [],
+  "emitsEvents": [
+    "UPDATE_SFX_SETTING"
+  ],
+  "listensToEvents": [
+    "SET_UP_AUDIO_DATABASE",
+    "game_hide",
+    "game_show"
+  ],
+  "gotchas": [
+    "01_ios_web_audio_autoplay_block"
+  ],
+  "related": [
+    "SlotSoundPlayerModule",
+    "SettingPanel"
+  ]
+}

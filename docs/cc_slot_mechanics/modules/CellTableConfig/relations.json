@@ -1,0 +1,18 @@
+{
+  "moduleId": "CellTableConfig",
+  "category": "cc_slot_mechanics",
+  "name": "CellTableConfig",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/SlotCellTable/scripts/CellTableConfig.ts",
+  "inheritsFrom": "TableModuleConfig",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "TableModuleConfig"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

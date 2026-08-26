@@ -92,21 +92,26 @@ export function createSearchTools(docsEngine: DocsSearchEngine, graphEngine: Gra
     // 3b. fwcc_read_chunk
     {
       name: "fwcc_read_chunk",
-      description: "Read a specific section chunk by chunkId (from search results) or by topic/section keyword to save tokens and focus context.",
+      description: "Read a specific section chunk by chunkId or relPath with optional contextual sliding-window (windowSize=1 returns previous, center, and next chunks) to preserve code context while saving tokens.",
       inputSchema: {
         type: "object",
         properties: {
-          chunkId: { type: "string", description: "Exact chunk ID from search results (e.g. 'NormalGameDirectorModule#sec-1') or query snippet" },
+          chunkIdOrPath: { type: "string", description: "Exact chunk ID (e.g. 'NormalGameDirectorModule#sec-1') or relative file path (e.g. '08_deep_dive/code_analysis/SlotReelModule.md')" },
+          chunkIndex: { type: "number", description: "0-based chunk section index when using file path (default: 0)" },
+          windowSize: { type: "number", description: "Number of context chunks to include before and after (default: 1)", default: 1 },
         },
-        required: ["chunkId"],
+        required: ["chunkIdOrPath"],
       },
       handler: async (args: any) => {
-        const chunkId = String(args.chunkId || "");
-        const res = docsEngine.getChunk(chunkId);
+        const chunkIdOrPath = String(args.chunkIdOrPath || "");
+        const chunkIndex = args.chunkIndex !== undefined ? Number(args.chunkIndex) : undefined;
+        const windowSize = args.windowSize !== undefined ? Number(args.windowSize) : 1;
 
-        if (!res.found || !res.chunk) {
+        const res = docsEngine.readChunk(chunkIdOrPath, chunkIndex, windowSize);
+
+        if (!res.found) {
           return {
-            content: [{ type: "text", text: `Chunk '${chunkId}' not found in index.` }],
+            content: [{ type: "text", text: `Chunk or document '${chunkIdOrPath}' not found in index.` }],
           };
         }
 
@@ -114,7 +119,35 @@ export function createSearchTools(docsEngine: DocsSearchEngine, graphEngine: Gra
           content: [
             {
               type: "text",
-              text: JSON.stringify(res.chunk, null, 2),
+              text: res.combinedMarkdown || JSON.stringify(res.centerChunk, null, 2),
+            },
+          ],
+        };
+      },
+    },
+
+    // 3c. fwcc_search_topic
+    {
+      name: "fwcc_search_topic",
+      description: "Quickly filter documentation by Taxonomy Tier (00_catalog -> 16_prompts), category or specific feature domain.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          tierOrCategory: { type: "string", description: "Tier path or category keyword (e.g. '08_deep_dive', '05_recipes', '04_events', 'cc_slot_module', 'cc_slot_mechanics')" },
+          limit: { type: "number", description: "Maximum topics to return (default: 20)", default: 20 },
+        },
+        required: ["tierOrCategory"],
+      },
+      handler: async (args: any) => {
+        const tierOrCategory = String(args.tierOrCategory || "");
+        const limit = Number(args.limit) || 20;
+        const topics = docsEngine.searchTopic(tierOrCategory, limit);
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify({ tierOrCategory, totalMatches: topics.length, topics }, null, 2),
             },
           ],
         };

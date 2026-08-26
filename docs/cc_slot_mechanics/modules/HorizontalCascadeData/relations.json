@@ -1,0 +1,18 @@
+{
+  "moduleId": "HorizontalCascadeData",
+  "category": "cc_slot_mechanics",
+  "name": "HorizontalCascadeData",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/HorizontalCascade/scripts/HorizontalCascadeData.ts",
+  "inheritsFrom": "BaseDataModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "BaseDataModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

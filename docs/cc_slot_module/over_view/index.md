@@ -11,12 +11,12 @@ Welcome to the comprehensive master guide for the **Core Architecture & Subsyste
 
 ---
 
-## 🏛️ 1. Foundations & Architectural Patterns
+## 🏛️ 1. Foundations & Architectural Patterns (Global Overviews)
 * **[`01_module_architecture_and_philosophy.md`](./01_module_architecture_and_philosophy.md)**: Modular philosophy, separation of Data - Presentation - Director, and modern slot game design standards.
 * **[`02_dependency_injection_ioc.md`](./02_dependency_injection_ioc.md)**: Inversion of Control (IoC) mechanics and `@inject` dependency resolution via Service Locator.
 * **[`03_dual_event_bus_system.md`](./03_dual_event_bus_system.md)**: Dual Event Bus architecture separating Scoped `moduleEvent` and Global `EventManager`.
 * **[`04_module_lifecycle_and_registration.md`](./04_module_lifecycle_and_registration.md)**: Deterministic lifecycle pipeline (`onLoad` ➔ `start` ➔ `onDestroy`) and module registration.
-* **[`05_module_ecosystem_and_classification.md`](./05_module_ecosystem_and_classification.md)**: Ecosystem taxonomy mapping the 6 primary module clusters.
+* **[`05_module_ecosystem_and_classification.md`](./05_module_ecosystem_and_classification.md)**: Ecosystem taxonomy mapping the 10 primary module clusters.
 * **[`06_module_best_practices_and_gotchas.md`](./06_module_best_practices_and_gotchas.md)**: Production-tested best practices and critical engine gotchas.
 * **[`07_game_mode_architecture_and_composition.md`](./07_game_mode_architecture_and_composition.md)**: Game Mode FSM, component composition, and multi-tier inter-module communication.
 * **[`08_table_reel_symbol_engine_architecture.md`](./08_table_reel_symbol_engine_architecture.md)**: Table, Reels, and Symbol Engine architecture, rendering loop, and pooling.
@@ -25,39 +25,48 @@ Welcome to the comprehensive master guide for the **Core Architecture & Subsyste
 * **[`11_win_evaluation_payline_and_celebration_hierarchy.md`](./11_win_evaluation_payline_and_celebration_hierarchy.md)**: Win evaluation tiers, celebration hierarchy (Win Ratios, line cycling, and cutscenes).
 * **[`12_audio_choreography_and_sound_pipeline.md`](./12_audio_choreography_and_sound_pipeline.md)**: Slot audio choreography (BGM ducking, spin sound loops, near-win tension, and coin rollups).
 * **[`13_scene_graph_prefabs_and_packaging_conventions.md`](./13_scene_graph_prefabs_and_packaging_conventions.md)**: Standard Scene Graph hierarchy, prefab breakdown, and project directory structure.
-* **[`14_guide_how_to_create_and_setup_new_module.md`](./14_guide_how_to_create_and_setup_new_module.md)**: **End-to-End Guide: How to Create and Setup a New Module from Scratch** (Script templates, scene node integration, Tag Editor, Writer integration, and golden rules).
+* **[`14_guide_how_to_create_and_setup_new_module.md`](./14_guide_how_to_create_and_setup_new_module.md)**: End-to-End Guide: How to Create and Setup a New Module from Scratch.
+* **[`15_portrait_mobile_ui_architecture.md`](./15_portrait_mobile_ui_architecture.md)**: Portrait Mobile UI Architecture, Thumb Zones, and Bottom-Sheet Drawers.
+* **[`16_pooling_and_memory_optimization_architecture.md`](./16_pooling_and_memory_optimization_architecture.md)**: Zero-Allocation Pooling Architecture and Garbage Collection prevention.
+* **[`17_cross_platform_compatibility_and_viewport_adaptation.md`](./17_cross_platform_compatibility_and_viewport_adaptation.md)**: Cross-Platform Compatibility, Viewport Adaptation, and Safe Area Insets.
+* **[`18_audio_engine_dual_driver_architecture.md`](./18_audio_engine_dual_driver_architecture.md)**: Dual Audio Driver Engine (Howler.js WebAudio vs Cocos Native Audio).
 
 ---
 
-## 🔬 2. Subsystem Deep-Dives
+## 🔬 2. Master Subsystem Deep-Dives
 
 ### 🎮 A. [Game Mode Subsystem](../systems/01_game_mode_system/00_index.md)
-* [`01_game_mode_concepts_and_types.md`](../systems/01_game_mode_system/01_game_mode_concepts_and_types.md): FSM concepts, 5 standard modes (Normal, Free, Option, Bonus, Cascade).
-* [`02_game_mode_anatomy_and_composition.md`](../systems/01_game_mode_system/02_game_mode_anatomy_and_composition.md): Deep-dive into Director + Writer + Data + `moduleList`.
-* [`03_inter_module_communication_4_channels.md`](../systems/01_game_mode_system/03_inter_module_communication_4_channels.md): **4 Multi-tier communication channels** across modules.
-* [`04_mode_transitions_and_stack_lifecycle.md`](../systems/01_game_mode_system/04_mode_transitions_and_stack_lifecycle.md): Mode transition lifecycle, stack management, and clean teardown.
-
----
+FSM concepts, 5 standard mode types, component anatomy, 4 communication channels, mode transition lifecycle, Bonus pick-and-click, and Fortune Wheel physics.
 
 ### 🎰 B. [Table & Symbol Engine](../systems/02_table_reel_symbol_engine/00_index.md)
-* [`01_table_engine_7_core_components.md`](../systems/02_table_reel_symbol_engine/01_table_engine_7_core_components.md): 7 Coordinated components (Table, Config, Reel, Symbol, Pool, Resource, Sound).
-* [`02_matrix_geometry_and_buffer_rows.md`](../systems/02_table_reel_symbol_engine/02_matrix_geometry_and_buffer_rows.md): `[col][row]` coordinate space and hidden buffer rows (`topBuffer`/`bottomBuffer`).
-* [`03_z_index_priority_layer_sorting.md`](../systems/02_table_reel_symbol_engine/03_z_index_priority_layer_sorting.md): Visual layer sorting algorithm via `sortSymbols()`.
-* [`04_mega_symbols_and_irregular_grids.md`](../systems/02_table_reel_symbol_engine/04_mega_symbols_and_irregular_grids.md): Giant symbols (Gigablox) and irregular ways-to-win grid matrices.
-* [`05_symbol_pooling_and_gc_optimization.md`](../systems/02_table_reel_symbol_engine/05_symbol_pooling_and_gc_optimization.md): Node pooling and mobile Garbage Collection optimization.
-
----
+7-part Table engine, 2D matrix coordinate math, buffer rows, Z-index sorting, mega symbols, zero-allocation pooling.
 
 ### 🔄 C. [Reactive Data System](../systems/03_reactive_data_system/00_index.md)
-* [`01_server_packet_ingestion_pipeline.md`](../systems/03_reactive_data_system/01_server_packet_ingestion_pipeline.md): Packet journey from WebSocket ➔ `GameDataStore` ➔ `BaseDataModule`.
-* [`02_key_deobfuscation_map_new_keys.md`](../systems/03_reactive_data_system/02_key_deobfuscation_map_new_keys.md): Mobile bandwidth key decompression with `mapNewKeys()`.
-* [`03_state_immutability_and_deep_clone.md`](../systems/03_reactive_data_system/03_state_immutability_and_deep_clone.md): State immutability principles and memory-isolated deep clones.
-* [`04_reconnection_is_resume_state_hydration.md`](../systems/03_reactive_data_system/04_reconnection_is_resume_state_hydration.md): Restoring matrix, remaining spin counts, and accumulated wins on resume.
-
----
+Server packet ingestion pipeline, key normalization (`mapNewKeys`), state immutability & deep-cloning, `isResume` session hydration.
 
 ### 📜 D. [Script Execution Pipeline](../systems/04_script_execution_pipeline/00_index.md)
-* [`01_scripting_triad_director_writer_executor.md`](../systems/04_script_execution_pipeline/01_scripting_triad_director_writer_executor.md): The Scripting Triad (Director ➔ Writer ➔ ScriptExecutor).
-* [`02_command_synthesis_and_payload_dispatch.md`](../systems/04_script_execution_pipeline/02_command_synthesis_and_payload_dispatch.md): Command synthesis techniques (`string[]`) and payload objects.
-* [`03_async_promise_chaining_mechanism.md`](../systems/04_script_execution_pipeline/03_async_promise_chaining_mechanism.md): Non-blocking sequential Promise chaining mechanism.
-* [`04_turbo_mode_and_skip_all_effects.md`](../systems/04_script_execution_pipeline/04_turbo_mode_and_skip_all_effects.md): Turbo mode execution and fast stop with `skipAllEffects()`.
+3-tier Scripting Triad (Director-Writer-Executor), command synthesis, async Promise chaining, Turbo / FTR fast stopping.
+
+### ⚡ E. [Payline & Win Presentation System](../systems/05_payline_and_win_presentation_system/00_index.md)
+4 payline modes (Lines/AllWays/Cluster/ScatterPay), 2-stage presentation lifecycle, Component Quad & 4 rendering layers.
+
+### 🌊 F. [Cascade & Avalanche Engine](../systems/06_cascade_and_avalanche_system/00_index.md)
+Deterministic elimination mapping, downward gravity drops with bounce easing, mega symbol offset math, 2-stage respin lifecycle.
+
+### 🎆 G. [Cutscenes & Celebrations](../systems/07_cutscenes_and_celebration_system/00_index.md)
+Centralized Map registry, Promise wrapping, dynamic multiplier escalation (Big->Mega->Super), touch-to-skip fast forwarding.
+
+### 🎛️ H. [GUI Dashboard & Controls System](../systems/08_gui_dashboard_and_controls_system/00_index.md)
+Master HUD orchestration, spin button state machines, bet calculation matrices, currency wallet isolation, trial play promotions.
+
+### 📜 I. [Popups, History, Settings & Dialogs System](../systems/09_popups_history_settings_system/00_index.md)
+Modal queue management, Bet & Jackpot History round replay reconstruction, SettingsPanel, and InfoPanel dynamic rulebooks.
+
+### 📱 J. [Base Portrait Mobile UI Experience System](../systems/10_portrait_mobile_ui_experience_system/00_index.md)
+Mobile portrait layout ergonomics, thumb zones, bottom-sheet sliding drawers, vertical paytable, and floating win tooltips.
+
+### ⚙️ K. [Pooling, Compatibility & Utility Services System](../systems/11_pooling_compatibility_and_utility_services/00_index.md)
+Zero-allocation object pooling triad, responsive canvas viewport adaptation, cover background aspect ratio fitting, and preloading routers.
+
+### 🔊 L. [Dual Audio Engine & Sound Pipeline System](../systems/12_dual_audio_engine_and_sound_pipeline/00_index.md)
+Dual audio driver backend (Howler WebAudio vs Cocos native), iOS mobile touch gesture unlock, and dynamic sound bank loading.

@@ -1,0 +1,18 @@
+{
+  "moduleId": "HorizontalCascadeModuleConfig",
+  "category": "cc_slot_mechanics",
+  "name": "HorizontalCascadeModuleConfig",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/HorizontalCascade/scripts/HorizontalCascadeModuleConfig.ts",
+  "inheritsFrom": "CascadeModuleConfig",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "CascadeModuleConfig"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

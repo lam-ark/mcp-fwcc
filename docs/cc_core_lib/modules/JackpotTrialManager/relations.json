@@ -1,0 +1,24 @@
+{
+  "moduleId": "JackpotTrialManager",
+  "category": "cc_core_lib",
+  "name": "JackpotTrialManager",
+  "package": "slot-base-logic",
+  "inheritsFrom": "JackpotManager",
+  "implements": [],
+  "usedBy": [
+    "cc-slot-module",
+    "cc-slot-mechanics"
+  ],
+  "dependsOn": [
+    "JackpotManager"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_common_engine_gotchas"
+  ],
+  "recipes": [
+    "01_practical_usage_example"
+  ],
+  "related": []
+}

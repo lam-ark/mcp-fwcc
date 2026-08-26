@@ -1,0 +1,18 @@
+{
+  "moduleId": "NudgeTableData",
+  "category": "cc_slot_mechanics",
+  "name": "NudgeTableData",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/NudgeReel/scripts/NudgeTableData.ts",
+  "inheritsFrom": "SlotTableData",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotTableData"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

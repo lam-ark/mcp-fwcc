@@ -1,0 +1,18 @@
+{
+  "moduleId": "CellTableData",
+  "category": "cc_slot_mechanics",
+  "name": "CellTableData",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/SlotCellTable/scripts/CellTableData.ts",
+  "inheritsFrom": "SlotTableData",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotTableData"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

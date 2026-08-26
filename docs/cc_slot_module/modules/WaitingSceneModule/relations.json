@@ -1,0 +1,21 @@
+{
+  "moduleId": "WaitingSceneModule",
+  "category": "cc_slot_module",
+  "name": "WaitingSceneModule",
+  "description": "Spinner overlay displayed during network latency or reconnection.",
+  "inheritsFrom": "SlotBaseModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotBaseModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_observer_leak_on_scene_unload"
+  ],
+  "related": [
+    "DialogMessageModule",
+    "GameDirector"
+  ]
+}

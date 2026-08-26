@@ -1,0 +1,20 @@
+{
+  "moduleId": "SlotObjectPool",
+  "category": "cc_slot_module",
+  "name": "SlotObjectPool",
+  "description": "Component-scoped object pool for fast VFX/Node checkout and automated recycling with parent attachment.",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_invalid_prefab_null_reference"
+  ],
+  "related": [
+    "PoolFactoryModule",
+    "PaylineWinFrameModule",
+    "SlotSymbolManager"
+  ]
+}

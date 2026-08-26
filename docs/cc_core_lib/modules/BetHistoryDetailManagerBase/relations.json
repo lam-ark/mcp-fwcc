@@ -1,0 +1,24 @@
+{
+  "moduleId": "BetHistoryDetailManagerBase",
+  "category": "cc_core_lib",
+  "name": "BetHistoryDetailManagerBase",
+  "package": "slot-base-logic",
+  "inheritsFrom": "BaseManager",
+  "implements": [],
+  "usedBy": [
+    "cc-slot-module",
+    "cc-slot-mechanics"
+  ],
+  "dependsOn": [
+    "BaseManager"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_common_engine_gotchas"
+  ],
+  "recipes": [
+    "01_practical_usage_example"
+  ],
+  "related": []
+}

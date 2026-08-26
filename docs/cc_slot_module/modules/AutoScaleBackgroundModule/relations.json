@@ -1,0 +1,21 @@
+{
+  "moduleId": "AutoScaleBackgroundModule",
+  "category": "cc_slot_module",
+  "name": "AutoScaleBackgroundModule",
+  "description": "Auto-fits background sprites/spines to screen aspect ratios without stretching.",
+  "inheritsFrom": "cc.Component",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [],
+  "emitsEvents": [],
+  "listensToEvents": [
+    "resize",
+    "canvas-resize"
+  ],
+  "gotchas": [
+    "01_window_listener_leak"
+  ],
+  "related": [
+    "CanvasModuleController"
+  ]
+}

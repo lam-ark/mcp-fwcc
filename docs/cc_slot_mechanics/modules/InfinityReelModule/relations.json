@@ -1,0 +1,18 @@
+{
+  "moduleId": "InfinityReelModule",
+  "category": "cc_slot_mechanics",
+  "name": "InfinityReelModule",
+  "description": "Advanced slot mechanics component from assets/cc-common/cc-slot-mechanics/InfinityReel/scripts/InfinityReelModule.ts",
+  "inheritsFrom": "SlotReelModule",
+  "implements": [],
+  "usedBy": [],
+  "dependsOn": [
+    "SlotReelModule"
+  ],
+  "emitsEvents": [],
+  "listensToEvents": [],
+  "gotchas": [
+    "01_tween_interruption_during_fast_stop"
+  ],
+  "related": []
+}

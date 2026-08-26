@@ -13,14 +13,61 @@ import { DocsSearchEngine } from "./engines/docs_search_engine.js";
 import { GraphEngine } from "./engines/graph_engine.js";
 import { initAllTools } from "./tools/index.js";
 
-// Initialize Engines and Register Tools
+// ANSI Color Helpers
+const C = {
+  reset: "\x1b[0m",
+  bold: "\x1b[1m",
+  dim: "\x1b[2m",
+  cyan: "\x1b[36m",
+  brightCyan: "\x1b[96m",
+  green: "\x1b[32m",
+  brightGreen: "\x1b[92m",
+  yellow: "\x1b[33m",
+  brightYellow: "\x1b[93m",
+  blue: "\x1b[34m",
+  gray: "\x1b[90m",
+  white: "\x1b[37m",
+};
+
+function printBanner() {
+  console.log(`${C.brightCyan}+------------------------------------------------------------------+${C.reset}`);
+  console.log(`${C.brightCyan}|                                                                  |${C.reset}`);
+  console.log(`${C.brightCyan}|   ______ _    _  _____ _____     _   _  ______ _____ _____       |${C.reset}`);
+  console.log(`${C.brightCyan}|   |  ___| |  | |/  __ \\  __ \\   | | / / |  _  \\  _  /  ___|      |${C.reset}`);
+  console.log(`${C.brightCyan}|   | |_  | |  | || /  \\/ /  \\/   | |/ /  | | | | | | \\ \`--.       |${C.reset}`);
+  console.log(`${C.brightCyan}|   |  _| | |/\\| || |   | |       |    \\  | | | | | | |\`--. \\      |${C.reset}`);
+  console.log(`${C.brightCyan}|   | |   \\  /\\  /| \\__/\\ \\__/\\   | |\\  \\ | |/ /\\ \\_/ /\\__/ /      |${C.reset}`);
+  console.log(`${C.brightCyan}|   \\_|    \\/  \\/  \\____/\\____/   \\_| \\_/ |___/  \\___/\\____/       |${C.reset}`);
+  console.log(`${C.brightCyan}|                                                                  |${C.reset}`);
+  console.log(`${C.brightCyan}|             Cocos Common Slot Framework Knowledge Hub            |${C.reset}`);
+  console.log(`${C.brightCyan}|                                                                  |${C.reset}`);
+  console.log(`${C.brightCyan}+------------------------------------------------------------------+${C.reset}`);
+  console.log("");
+}
+
+// Print Initial Banner
+printBanner();
+
+console.log(`${C.green}[INFO]${C.reset} Initializing FWCC Slot Framework Knowledge Engine...`);
+
+// Step 1: Initialize Docs Search Engine
+console.log(`${C.yellow}[1/3]${C.reset} Indexing markdown documentation chunks...`);
 const docsEngine = new DocsSearchEngine(CONFIG.DOCS_DIR);
 docsEngine.init();
+const topicsCount = docsEngine.listTopics().length;
+console.log(`      ${C.gray}-> Indexed topics and chunk vectors (${topicsCount} topics ready)${C.reset}`);
 
+// Step 2: Initialize Conceptual Graph Engine
+console.log(`${C.yellow}[2/3]${C.reset} Building conceptual relationship graph & backlinks...`);
 const graphEngine = new GraphEngine();
 graphEngine.init();
+console.log(`      ${C.gray}-> Graph initialized with bi-directional relations${C.reset}`);
 
+// Step 3: Register MCP Tools
+console.log(`${C.yellow}[3/3]${C.reset} Registering MCP Tool definitions...`);
 initAllTools(globalToolRegistry, { docsEngine, graphEngine });
+const totalTools = globalToolRegistry.getAllTools().length;
+console.log(`      ${C.gray}-> ${totalTools} tools registered to global registry${C.reset}\n`);
 
 function createServerInstance() {
   const server = new Server(
@@ -66,7 +113,7 @@ async function bootstrap() {
 
     // SSE endpoint
     app.get("/sse", async (req, res) => {
-      console.log(`[SSE] Client connected from ${req.ip}`);
+      console.log(`${C.green}[SSE]${C.reset} Client connected from ${C.cyan}${req.ip}${C.reset}`);
       const server = createServerInstance();
       const transport = new SSEServerTransport("/messages", res);
 
@@ -74,7 +121,7 @@ async function bootstrap() {
       transports.set(sessionId, transport);
 
       req.on("close", () => {
-        console.log(`[SSE] Session ${sessionId} closed.`);
+        console.log(`${C.gray}[SSE] Session ${sessionId} closed.${C.reset}`);
         transports.delete(sessionId);
       });
 
@@ -129,26 +176,27 @@ async function bootstrap() {
         });
       }
 
-      if (method === "ping") {
-        return res.json({
-          jsonrpc: "2.0",
-          id,
-          result: {},
-        });
-      }
-
       if (method === "tools/list") {
         return res.json({
           jsonrpc: "2.0",
           id,
-          result: { tools: globalToolRegistry.getMCPToolList() },
+          result: {
+            tools: globalToolRegistry.getMCPToolList(),
+          },
         });
       }
 
       if (method === "tools/call") {
-        const { name, arguments: args } = params || {};
+        const { name, arguments: toolArgs } = params || {};
+        if (!name) {
+          return res.status(400).json({
+            jsonrpc: "2.0",
+            id,
+            error: { code: -32602, message: "Missing tool name in params" },
+          });
+        }
         try {
-          const result = await globalToolRegistry.executeTool(name, args);
+          const result = await globalToolRegistry.executeTool(name, toolArgs || {});
           return res.json({
             jsonrpc: "2.0",
             id,
@@ -158,9 +206,9 @@ async function bootstrap() {
           return res.json({
             jsonrpc: "2.0",
             id,
-            error: {
-              code: -32000,
-              message: err?.message || "Tool execution failed",
+            result: {
+              content: [{ type: "text", text: `Tool error: ${err?.message || String(err)}` }],
+              isError: true,
             },
           });
         }
@@ -225,21 +273,22 @@ async function bootstrap() {
     });
 
     app.listen(CONFIG.PORT, () => {
-      console.log(`=======================================================`);
-      console.log(`🚀 Cocos Common (cc-common) Knowledge MCP Server Started!`);
-      console.log(`📡 SSE Endpoint: http://localhost:${CONFIG.PORT}/sse`);
-      console.log(`📡 HTTP Endpoint: http://localhost:${CONFIG.PORT}/`);
-      console.log(`📖 Doc Viewer: http://localhost:${CONFIG.PORT}/doc/<relPath>`);
-      console.log(`📑 Report Generator: http://localhost:${CONFIG.PORT}/report?q=<query>`);
-      console.log(`🩺 Health Check: http://localhost:${CONFIG.PORT}/health`);
-      console.log(`🛠️  Total Tools: ${globalToolRegistry.getAllTools().length}`);
-      console.log(`📚 Indexed Docs: ${CONFIG.DOCS_DIR}`);
-      console.log(`=======================================================`);
+      console.log(`${C.brightCyan}+------------------------------------------------------------------+${C.reset}`);
+      console.log(`${C.brightCyan}|${C.reset}                     ${C.bold}${C.brightGreen}SERVER READY AND LISTENING${C.reset}                   ${C.brightCyan}|${C.reset}`);
+      console.log(`${C.brightCyan}+------------------------------------------------------------------+${C.reset}`);
+      console.log(`  ${C.yellow}*${C.reset} SSE Endpoint   : ${C.cyan}http://localhost:${CONFIG.PORT}/sse${C.reset}`);
+      console.log(`  ${C.yellow}*${C.reset} HTTP Endpoint  : ${C.cyan}http://localhost:${CONFIG.PORT}/mcp${C.reset}`);
+      console.log(`  ${C.yellow}*${C.reset} Doc Viewer     : ${C.cyan}http://localhost:${CONFIG.PORT}/doc/<relPath>${C.reset}`);
+      console.log(`  ${C.yellow}*${C.reset} Report Engine  : ${C.cyan}http://localhost:${CONFIG.PORT}/report?q=<query>${C.reset}`);
+      console.log(`  ${C.yellow}*${C.reset} Health Check   : ${C.cyan}http://localhost:${CONFIG.PORT}/health${C.reset}`);
+      console.log(`  ${C.yellow}*${C.reset} Active Tools   : ${C.brightGreen}${totalTools} tools loaded${C.reset}`);
+      console.log(`  ${C.yellow}*${C.reset} Docs Root      : ${C.gray}${CONFIG.DOCS_DIR}${C.reset}`);
+      console.log(`${C.brightCyan}+------------------------------------------------------------------+${C.reset}\n`);
     });
   }
 }
 
 bootstrap().catch((err) => {
-  console.error("[Fatal Error] Unable to start MCP Server:", err);
+  console.error(`${C.yellow}[Fatal Error]${C.reset} Unable to start MCP Server:`, err);
   process.exit(1);
 });
