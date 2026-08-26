@@ -13,7 +13,7 @@ tags: ["Scheduler", "scheduler", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`scheduleInterval()`** | `callback: Function, time: number` | `any` | Executes scheduleInterval operation in `Scheduler`. |
-| **`schedule()`** | `callback: Function, interval: number, repeat: number, delay: number` | `any` | Executes schedule operation in `Scheduler`. |
-| **`unschedule()`** | `callback_fn: Function` | `void` | Executes unschedule operation in `Scheduler`. |
-| **`destroy()`** | `void` | `void` | Executes destroy operation in `Scheduler`. |
+| **[`scheduleInterval()`](./scheduleInterval.md)** | `callback: Function, time: number` | `any` | Executes scheduleInterval operation in `Scheduler`. |
+| **[`schedule()`](./schedule.md)** | `callback: Function, interval: number, repeat: number, delay: number` | `any` | Executes schedule operation in `Scheduler`. |
+| **[`unschedule()`](./unschedule.md)** | `callback_fn: Function` | `void` | Executes unschedule operation in `Scheduler`. |
+| **[`destroy()`](./destroy.md)** | `void` | `void` | Executes destroy operation in `Scheduler`. |

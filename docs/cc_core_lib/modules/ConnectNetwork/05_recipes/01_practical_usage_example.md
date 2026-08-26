@@ -5,30 +5,24 @@ category: "cc_core_lib"
 tags: ["ConnectNetwork", "connect_network", "cc_core_lib", "recipes", "integration"]
 ---
 
-# 💡 Recipe: Practical `ConnectNetwork` Integration in Slot Games
+# 💡 Recipe: Practical `ConnectNetwork` Integration
 
 ---
 
-## 1. Standard Integration Example
+## 1. Standard Initialization & Usage
 
 ```typescript
-const { ConnectNetwork } = globalThis.eno;
+import { ConnectNetwork } from "cc-core-lib";
 
-export class SlotFeatureController extends cc.Component {
-    private _instance: any;
+// 1. Accessing via global eno namespace or modular import
+const instance = new ConnectNetwork();
 
-    onLoad() {
-        // Instantiate and initialize
-        if (ConnectNetwork) {
-            this._instance = new ConnectNetwork();
-        }
-    }
-
-    onDestroy() {
-        // Safe cleanup
-        if (this._instance && typeof this._instance.destroy === 'function') {
-            this._instance.destroy();
-        }
-    }
-}
+// 2. Executing primary operations
+// ...
 ```
+
+---
+
+## 2. Real-World Game Workflow Example (e.g. Red Cliff 9666)
+
+In production slot titles like **Red Cliff (g9666)**, `ConnectNetwork` integrates directly into the Director and Writer modules to maintain seamless state synchronization across Base Game, Free Spins, and Respin cascades.

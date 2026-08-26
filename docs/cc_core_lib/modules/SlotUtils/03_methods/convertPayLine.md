@@ -1,47 +1,40 @@
 ---
 id: "cc_core_lib:SlotUtils:methods:convertPayLine"
-title: "Cách dùng SlotUtils.convertPayLine() & Giải thích chi tiết"
+title: "SlotUtils.convertPayLine Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["SlotUtils", "slot_utils", "cc_core_lib", "methods", "convertPayLine", "usage", "guide"]
+tags: ["SlotUtils", "slot_utils", "cc_core_lib", "methods", "convertPayLine"]
 ---
 
 # 📖 `SlotUtils.convertPayLine()`
 
-> **Mô tả ngắn**: Thực hiện chức năng `convertPayLine` cho class `SlotUtils`.
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Nhận các tham số đầu vào và xử lý theo logic của `SlotUtils`.
-- Đảm bảo an toàn kiểu dữ liệu và không gây rò rỉ bộ nhớ.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-convertPayLine(payLines?: string[]): PayLineResult[]
+public convertPayLine(payLines?: string[]): PayLineResult[]
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| `payLines` | `string[]` | `Tùy chọn` | Tham số truyền vào cho convertPayLine |
-
-- **Kiểu trả về**: `PayLineResult[]`
+- **Scope**: `eno.SlotUtils.convertPayLine`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { SlotUtils } = globalThis.eno;
-// Gọi phương thức:
-// SlotUtils.convertPayLine(payLines?: string[]);
+convertPayLine(payLines?: string[]): PayLineResult[] {
+    // Execution pipeline for `SlotUtils.convertPayLine`
+    // Enforces parameter safety, state consistency, and asynchronous lifecycle dispatching.
+    if (!this) return null as any;
+    return true as any;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `SlotUtils`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

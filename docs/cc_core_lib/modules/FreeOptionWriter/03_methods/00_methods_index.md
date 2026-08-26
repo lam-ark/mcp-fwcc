@@ -13,5 +13,5 @@ tags: ["FreeOptionWriter", "free_option_writer", "cc_core_lib", "methods", "inde
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`makeScriptResultReceived()`** | `void` | `IScriptWriter[]` | Executes makeScriptResultReceived operation in `FreeOptionWriter`. |
-| **`makeScriptExitGameMode()`** | `void` | `IScriptWriter[]` | Executes makeScriptExitGameMode operation in `FreeOptionWriter`. |
+| **[`makeScriptResultReceived()`](./makeScriptResultReceived.md)** | `void` | `IScriptWriter[]` | Executes makeScriptResultReceived operation in `FreeOptionWriter`. |
+| **[`makeScriptExitGameMode()`](./makeScriptExitGameMode.md)** | `void` | `IScriptWriter[]` | Executes makeScriptExitGameMode operation in `FreeOptionWriter`. |

@@ -13,9 +13,9 @@ tags: ["BonusGameWriter", "bonus_game_writer", "cc_core_lib", "methods", "index"
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`makeScriptTriggerBonusGame()`** | `cellId: number` | `IScriptWriter[]` | Executes makeScriptTriggerBonusGame operation in `BonusGameWriter`. |
-| **`makeScriptResultReceived()`** | `void` | `IScriptWriter[]` | Executes makeScriptResultReceived operation in `BonusGameWriter`. |
-| **`makeScriptShowResult()`** | `void` | `IScriptWriter[]` | Executes makeScriptShowResult operation in `BonusGameWriter`. |
-| **`makeScriptShowResult2()`** | `void` | `IScriptWriter[]` | Executes makeScriptShowResult2 operation in `BonusGameWriter`. |
-| **`makeScriptPlayGameMode()`** | `void` | `IScriptWriter[]` | Executes makeScriptPlayGameMode operation in `BonusGameWriter`. |
-| **`makeScriptExitGameMode()`** | `void` | `IScriptWriter[]` | Executes makeScriptExitGameMode operation in `BonusGameWriter`. |
+| **[`makeScriptTriggerBonusGame()`](./makeScriptTriggerBonusGame.md)** | `cellId: number` | `IScriptWriter[]` | Executes makeScriptTriggerBonusGame operation in `BonusGameWriter`. |
+| **[`makeScriptResultReceived()`](./makeScriptResultReceived.md)** | `void` | `IScriptWriter[]` | Executes makeScriptResultReceived operation in `BonusGameWriter`. |
+| **[`makeScriptShowResult()`](./makeScriptShowResult.md)** | `void` | `IScriptWriter[]` | Executes makeScriptShowResult operation in `BonusGameWriter`. |
+| **[`makeScriptShowResult2()`](./makeScriptShowResult2.md)** | `void` | `IScriptWriter[]` | Executes makeScriptShowResult2 operation in `BonusGameWriter`. |
+| **[`makeScriptPlayGameMode()`](./makeScriptPlayGameMode.md)** | `void` | `IScriptWriter[]` | Executes makeScriptPlayGameMode operation in `BonusGameWriter`. |
+| **[`makeScriptExitGameMode()`](./makeScriptExitGameMode.md)** | `void` | `IScriptWriter[]` | Executes makeScriptExitGameMode operation in `BonusGameWriter`. |

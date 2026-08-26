@@ -13,4 +13,4 @@ tags: ["SpinButtonFreeManager", "spin_button_free_manager", "cc_core_lib", "meth
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`spinSpaceTriggered()`** | `void` | `void` | Executes spinSpaceTriggered operation in `SpinButtonFreeManager`. |
+| **[`spinSpaceTriggered()`](./spinSpaceTriggered.md)** | `void` | `void` | Executes spinSpaceTriggered operation in `SpinButtonFreeManager`. |

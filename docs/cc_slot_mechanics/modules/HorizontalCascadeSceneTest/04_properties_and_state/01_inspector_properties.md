@@ -1,17 +1,24 @@
 ---
-id: "cc_slot_mechanics:HorizontalCascadeSceneTest:properties:inspector_properties"
-title: "HorizontalCascadeSceneTest Inspector Properties"
+id: "cc_slot_mechanics:HorizontalCascadeSceneTest:api:properties"
+title: "HorizontalCascadeSceneTest Inspector Properties & State Schema"
 category: "cc_slot_mechanics"
-tags: ["HorizontalCascadeSceneTest", "horizontal_cascade_scene_test", "cc_slot_mechanics", "properties", "inspector"]
+tags: ["HorizontalCascadeSceneTest", "horizontal_cascade_scene_test", "cc_slot_mechanics", "properties", "schema"]
 ---
 
-# 📋 HorizontalCascadeSceneTest Inspector Properties
+# 📋 `HorizontalCascadeSceneTest` Properties & State Schema
 
 ---
 
-## 1. Serialized Fields
+## 1. Inspector Properties
 
-| Property | Type | Default | Description |
-| :--- | :--- | :---: | :--- |
-| **`table`** | `HorizontalTableModule` | `null` | Serialized property for HorizontalCascadeSceneTest |
-| **`cascadeModule`** | `HorizontalCascadeModule` | `null` | Serialized property for HorizontalCascadeSceneTest |
+| Property Name | Type | Description |
+| :--- | :--- | :--- |
+| **`table`** | `HorizontalTableModule` | Inspector property in `HorizontalCascadeSceneTest` managing runtime table. |
+| **`cascadeModule`** | `HorizontalCascadeModule` | Inspector property in `HorizontalCascadeSceneTest` managing runtime cascadeModule. |
+
+---
+
+## 2. State Invariants
+
+- Properties are wired via Cocos Creator Inspector prefabs.
+- Must not be mutated directly while the table state is in active spin or cascade mode.

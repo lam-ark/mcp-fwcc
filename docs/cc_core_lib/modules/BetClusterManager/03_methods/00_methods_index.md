@@ -13,4 +13,4 @@ tags: ["BetClusterManager", "bet_cluster_manager", "cc_core_lib", "methods", "in
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setTotalCredit()`** | `amount: number` | `void` | Executes setTotalCredit operation in `BetClusterManager`. |
+| **[`setTotalCredit()`](./setTotalCredit.md)** | `amount: number` | `void` | Executes setTotalCredit operation in `BetClusterManager`. |

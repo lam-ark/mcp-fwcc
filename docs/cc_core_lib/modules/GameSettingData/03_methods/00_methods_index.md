@@ -13,4 +13,4 @@ tags: ["GameSettingData", "game_setting_data", "cc_core_lib", "methods", "index"
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setEnableSFX()`** | `isEnable: boolean` | `void` | Executes setEnableSFX operation in `GameSettingData`. |
+| **[`setEnableSFX()`](./setEnableSFX.md)** | `isEnable: boolean` | `void` | Executes setEnableSFX operation in `GameSettingData`. |

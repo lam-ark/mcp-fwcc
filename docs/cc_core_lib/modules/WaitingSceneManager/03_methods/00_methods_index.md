@@ -13,4 +13,4 @@ tags: ["WaitingSceneManager", "waiting_scene_manager", "cc_core_lib", "methods",
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`hideWaitingScene()`** | `void` | `void` | Executes hideWaitingScene operation in `WaitingSceneManager`. |
+| **[`hideWaitingScene()`](./hideWaitingScene.md)** | `void` | `void` | Executes hideWaitingScene operation in `WaitingSceneManager`. |

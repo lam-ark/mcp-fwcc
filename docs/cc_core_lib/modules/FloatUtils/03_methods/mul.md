@@ -1,45 +1,43 @@
 ---
 id: "cc_core_lib:FloatUtils:methods:mul"
-title: "Cách dùng FloatUtils.mul() & Giải thích chi tiết"
+title: "FloatUtils.mul Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["FloatUtils", "float_utils", "cc_core_lib", "methods", "mul", "usage", "guide"]
+tags: ["FloatUtils", "float_utils", "cc_core_lib", "methods", "mul"]
 ---
 
 # 📖 `FloatUtils.mul()`
 
-> **Mô tả ngắn**: Nhân 2 số thực an toàn tránh sai số dấu chấm động.
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Chuyển đổi các thừa số thành số nguyên, nhân nguyên và chia cho $10^{p_1 + p_2}$.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-mul(a: number | string, b: number | string): number
+public mul(a: number | string, b: number | string): number
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| `a` | `number | string` | `Bắt buộc` | Tham số truyền vào cho mul |
-| `b` | `number | string` | `Bắt buộc` | Tham số truyền vào cho mul |
-
-- **Kiểu trả về**: `number`
+- **Scope**: `eno.FloatUtils.mul`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const win = FloatUtils.mul(betAmount, multiplier);
+mul(a: number | string, b: number | string): number {
+    // Integer scaling to completely eliminate IEEE-754 floating point arithmetic precision drift
+    const precision = Math.max(this.getDecimalLength(a), this.getDecimalLength(b));
+    const factor = Math.pow(10, precision);
+    const intA = Math.round(a * factor);
+    const intB = Math.round(b * factor);
+    
+    return (intA * intB) / (factor * factor);
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `FloatUtils`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

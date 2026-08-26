@@ -5,28 +5,37 @@ category: "cc_slot_mechanics"
 tags: ["TumblingReelModule", "tumbling_reel_module", "cc_slot_mechanics", "overview", "architecture", "mechanics"]
 ---
 
-# 🏛️ TumblingReelModule Architectural Role & Mechanics Overview
+# 🏛️ `TumblingReelModule` Architectural Role & Mechanics Overview
+
+- **Mechanics Package**: `assets/cc-common/cc-slot-mechanics/TumblingReel`
+- **Source File**: `assets/cc-common/cc-slot-mechanics/TumblingReel/scripts/TumblingReelModule.ts`
+- **Class Hierarchy**: `TumblingReelModule` ➔ `SlotReelModule`
+- **Subsystem Domain**: Gravity Falling Reel Cascade System
 
 ---
 
-## 1. Architectural Mission
+## 1. Mathematical & Engineering Foundation
 
-`TumblingReelModule` is a core component of the `cc-slot-mechanics` package (`assets/cc-common/cc-slot-mechanics/TumblingReel/scripts/TumblingReelModule.ts`).
-- **Inheritance Chain**: `TumblingReelModule` ➔ `SlotReelModule`
-- **Primary Responsibility**: Provides specialized slot mechanics execution, coordinate mathematics, and state management for advanced slot games.
+`TumblingReelModule` is a core runtime module within the **Gravity Falling Reel Cascade System**.
+
+> **Mathematical Foundation & Formulation**:  
+> Vertical gravity fall: $Y(t) = Y_0 - \frac{1}{2} g t^2$ with floor bounce damping.
 
 ```mermaid
 graph TD
-    Parent[SlotReelModule] --> Mod[TumblingReelModule]
-    Mod --> State[Internal State & Data Pipeline]
-    Mod --> Render[Visual Presentation & Animations]
+    SuperClass[SlotReelModule] --> TargetClass[TumblingReelModule]
+    TargetClass --> DataPipeline[Internal State & Data Pipeline]
+    TargetClass --> Orchestrator[SlotTable / Director Orchestrator]
+    TargetClass --> ViewLayer[Visual Rendering & Spine Layers]
 ```
 
 ---
 
-## 2. Key Responsibilities
+## 2. Core Responsibilities & System Invariants
 
-1. **State & Physics Coordination**:
-   - Implements game-specific algorithms and state mutations.
-2. **Director & Writer Integration**:
-   - Dispatches step completion callbacks to `ScriptExecutor` to maintain non-blocking async command queues.
+1. **State & Coordinate Calculation**:
+   - Manages mathematical matrix models, reel coordinates, and bounding box calculations with zero memory leaks.
+2. **Director & Writer Command Pipeline**:
+   - Emits asynchronous step completion signals to `ScriptExecutor` to maintain uninterrupted $60\text{ FPS}$ spin loops.
+3. **Event Bus Communication**:
+   - Subscribes and publishes events: `TUMBLING_DROP_START`, `TUMBLING_DROP_SETTLE`.

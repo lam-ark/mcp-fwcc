@@ -13,7 +13,7 @@ tags: ["TurboButtonData", "turbo_button_data", "cc_core_lib", "methods", "index"
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`isInteractable()`** | `void` | `boolean` | Executes isInteractable operation in `TurboButtonData`. |
-| **`setState()`** | `state: number` | `void` | Executes setState operation in `TurboButtonData`. |
-| **`setActive()`** | `active: boolean` | `void` | Executes setActive operation in `TurboButtonData`. |
-| **`isActive()`** | `void` | `boolean` | Executes isActive operation in `TurboButtonData`. |
+| **[`isInteractable()`](./isInteractable.md)** | `void` | `boolean` | Executes isInteractable operation in `TurboButtonData`. |
+| **[`setState()`](./setState.md)** | `state: number` | `void` | Executes setState operation in `TurboButtonData`. |
+| **[`setActive()`](./setActive.md)** | `active: boolean` | `void` | Executes setActive operation in `TurboButtonData`. |
+| **[`isActive()`](./isActive.md)** | `void` | `boolean` | Executes isActive operation in `TurboButtonData`. |

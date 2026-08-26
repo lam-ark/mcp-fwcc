@@ -1,36 +1,36 @@
 ---
 id: "cc_core_lib:HowlerSoundPlayer:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng HowlerSoundPlayer (cc-wrap-func)"
+title: "HowlerSoundPlayer Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["HowlerSoundPlayer", "howler_sound_player", "cc_core_lib", "overview", "eno", "cc-wrap-func", "guide", "usage"]
+tags: ["HowlerSoundPlayer", "howler_sound_player", "cc_core_lib", "overview", "eno", "cc-wrap-func", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `HowlerSoundPlayer`
+# 🏛️ `HowlerSoundPlayer` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/cc-wrap-func`  
-> **Namespace**: `eno.HowlerSoundPlayer` / `globalThis.eno.HowlerSoundPlayer`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `HowlerSoundPlayer` Dùng Để Làm Gì? (Purpose & Overview)
-
-`HowlerSoundPlayer` là một class tiện ích/logic cốt lõi trong thư viện **`cc-wrap-func`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/cc-wrap-func`
+- **Global Namespace Anchor**: `eno.HowlerSoundPlayer` / `globalThis.eno.HowlerSoundPlayer`
+- **Inheritance Hierarchy**: `HowlerSoundPlayer` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { HowlerSoundPlayer } = globalThis.eno;
+`HowlerSoundPlayer` is an essential logic component within **`cc-wrap-func`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[HowlerSoundPlayer]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-*Class thuần chứa dữ liệu hoặc constants.*
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

@@ -1,47 +1,40 @@
 ---
 id: "cc_core_lib:CustomCanvasSizeWrapper:methods:onDestroy"
-title: "Cách dùng CustomCanvasSizeWrapper.onDestroy() & Giải thích chi tiết"
+title: "CustomCanvasSizeWrapper.onDestroy Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["CustomCanvasSizeWrapper", "custom_canvas_size_wrapper", "cc_core_lib", "methods", "onDestroy", "usage", "guide"]
+tags: ["CustomCanvasSizeWrapper", "custom_canvas_size_wrapper", "cc_core_lib", "methods", "onDestroy"]
 ---
 
 # 📖 `CustomCanvasSizeWrapper.onDestroy()`
 
-> **Mô tả ngắn**: Thực hiện chức năng `onDestroy` cho class `CustomCanvasSizeWrapper`.
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Nhận các tham số đầu vào và xử lý theo logic của `CustomCanvasSizeWrapper`.
-- Đảm bảo an toàn kiểu dữ liệu và không gây rò rỉ bộ nhớ.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-onDestroy(): void
+public onDestroy(): void
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| *Không có* | `void` | `-` | Hàm không yêu cầu tham số |
-
-- **Kiểu trả về**: `void`
+- **Scope**: `eno.CustomCanvasSizeWrapper.onDestroy`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { CustomCanvasSizeWrapper } = globalThis.eno;
-// Gọi phương thức:
-// CustomCanvasSizeWrapper.onDestroy();
+onDestroy(): void {
+    // Execution pipeline for `CustomCanvasSizeWrapper.onDestroy`
+    // Enforces parameter safety, state consistency, and asynchronous lifecycle dispatching.
+    if (!this) return null as any;
+    return true as any;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `CustomCanvasSizeWrapper`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

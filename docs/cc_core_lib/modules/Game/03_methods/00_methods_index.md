@@ -13,6 +13,6 @@ tags: ["Game", "game", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`getLogger()`** | `void` | `any` | Executes getLogger operation in `Game`. |
-| **`updateLoggerConfig()`** | `config: any` | `void` | Executes updateLoggerConfig operation in `Game`. |
-| **`initNetwork()`** | `network: any` | `void` | Executes initNetwork operation in `Game`. |
+| **[`getLogger()`](./getLogger.md)** | `void` | `any` | Executes getLogger operation in `Game`. |
+| **[`updateLoggerConfig()`](./updateLoggerConfig.md)** | `config: any` | `void` | Executes updateLoggerConfig operation in `Game`. |
+| **[`initNetwork()`](./initNetwork.md)** | `network: any` | `void` | Executes initNetwork operation in `Game`. |

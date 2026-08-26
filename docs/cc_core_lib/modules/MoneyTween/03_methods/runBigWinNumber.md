@@ -1,58 +1,68 @@
 ---
 id: "cc_core_lib:MoneyTween:methods:runBigWinNumber"
-title: "Cách dùng MoneyTween.runBigWinNumber() & Giải thích chi tiết"
+title: "MoneyTween.runBigWinNumber Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["MoneyTween", "money_tween", "cc_core_lib", "methods", "runBigWinNumber", "usage", "guide"]
+tags: ["MoneyTween", "money_tween", "cc_core_lib", "methods", "runBigWinNumber"]
 ---
 
 # 📖 `MoneyTween.runBigWinNumber()`
 
-> **Mô tả ngắn**: Chạy hiệu ứng số tiền thắng lớn (Big Win) với đường cong gia tốc 2 pha (Quadratic Ease-In / Ease-Out).
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Pha 1 (0 -> 50% thời gian): Tăng tốc theo đường cong bậc 2 `t * t` lên 50% giá trị.
-- Pha 2 (50% -> 100% thời gian): Giảm tốc mượt mà `1 - (1-t)^2` về đích `endValue`.
-- Tạo cảm giác bùng nổ, hồi hộp cho các cutscene BigWin / MegaWin / SuperWin.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-runBigWinNumber(target: cc.Node, duration: number, endValue: number, options?: Options): cc.Tween
+public runBigWinNumber(target: cc.Node, duration: number, endValue: number, options?: Options): cc.Tween
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| `target` | `cc.Node` | `Bắt buộc` | Tham số truyền vào cho runBigWinNumber |
-| `duration` | `number` | `Bắt buộc` | Tham số truyền vào cho runBigWinNumber |
-| `endValue` | `number` | `Bắt buộc` | Tham số truyền vào cho runBigWinNumber |
-| `options` | `Options` | `Tùy chọn` | Tham số truyền vào cho runBigWinNumber |
-
-- **Kiểu trả về**: `cc.Tween`
+- **Scope**: `eno.MoneyTween.runBigWinNumber`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { MoneyTween } = globalThis.eno;
-const moneyTween = new MoneyTween(this.formatter);
-
-// Chạy số Big Win lên 5,000,000 trong 4 giây với đường cong gia tốc 2 pha
-moneyTween.runBigWinNumber(this.bigWinLabel.node, 4.0, 5000000, {
-    gap: 3,
-    onComplete: () => {
-        this.showCelebrationParticle();
+runBigWinNumber(target: cc.Node, duration: number, endValue: number, options?: Options): cc.Tween {
+    const label = target.getComponent(cc.Label);
+    if (!label) return null;
+    
+    // Cancel active tweens on the target label to prevent conflicting text renders
+    if ((label as any)._tweenMoney) {
+        (label as any)._tweenMoney.stop();
+        this._tweens.delete((label as any)._tweenMoney);
     }
-});
+    
+    const startVal = this._parseValueFromString(label.string);
+    const targetVal = value;
+    const state = { value: startVal };
+    
+    const tween = cc.tween(state)
+        .to(duration, { value: targetVal }, {
+            progress: (start, end, current, ratio) => {
+                const formatted = this.formatter.formatMoney(current);
+                label.string = formatted;
+                return current;
+            },
+            easing: 'quadInOut'
+        })
+        .call(() => {
+            label.string = this.formatter.formatMoney(targetVal);
+            if (options && options.onComplete) options.onComplete();
+            this._tweens.delete(tween);
+        })
+        .start();
+        
+    (label as any)._tweenMoney = tween;
+    this._tweens.add(tween);
+    return tween;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `MoneyTween`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

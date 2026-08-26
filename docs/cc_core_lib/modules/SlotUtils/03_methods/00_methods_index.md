@@ -13,10 +13,10 @@ tags: ["SlotUtils", "slot_utils", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`convertSlotMatrix()`** | `arr?: string[], format?: number[]` | `string[][]` | Executes convertSlotMatrix operation in `SlotUtils`. |
-| **`convertMegaSymbols()`** | `symbols?: string[], format?: string[]` | `string[]` | Executes convertMegaSymbols operation in `SlotUtils`. |
-| **`convertPayLine()`** | `payLines?: string[]` | `PayLineResult[]` | Executes convertPayLine operation in `SlotUtils`. |
-| **`convertPayLineAllWays()`** | `payLines?: string[], multiplier?: number, betDenom?: number` | `PayLineAllWaysResult[]` | Executes convertPayLineAllWays operation in `SlotUtils`. |
-| **`convertPayLineCluster()`** | `payLines?: string[], multiplier?: number, betDenom?: number` | `PayLineClusterResult[]` | Executes convertPayLineCluster operation in `SlotUtils`. |
-| **`convertPayLineScatterPay()`** | `payLines?: string[], multiplier?: number, betDenom?: number` | `PayLineScatterPayResult[]` | Executes convertPayLineScatterPay operation in `SlotUtils`. |
-| **`generateSymbolIndexes()`** | `tableFormat?: number[]` | `number[][]` | Executes generateSymbolIndexes operation in `SlotUtils`. |
+| **[`convertSlotMatrix()`](./convertSlotMatrix.md)** | `arr?: string[], format?: number[]` | `string[][]` | Executes convertSlotMatrix operation in `SlotUtils`. |
+| **[`convertMegaSymbols()`](./convertMegaSymbols.md)** | `symbols?: string[], format?: string[]` | `string[]` | Executes convertMegaSymbols operation in `SlotUtils`. |
+| **[`convertPayLine()`](./convertPayLine.md)** | `payLines?: string[]` | `PayLineResult[]` | Executes convertPayLine operation in `SlotUtils`. |
+| **[`convertPayLineAllWays()`](./convertPayLineAllWays.md)** | `payLines?: string[], multiplier?: number, betDenom?: number` | `PayLineAllWaysResult[]` | Executes convertPayLineAllWays operation in `SlotUtils`. |
+| **[`convertPayLineCluster()`](./convertPayLineCluster.md)** | `payLines?: string[], multiplier?: number, betDenom?: number` | `PayLineClusterResult[]` | Executes convertPayLineCluster operation in `SlotUtils`. |
+| **[`convertPayLineScatterPay()`](./convertPayLineScatterPay.md)** | `payLines?: string[], multiplier?: number, betDenom?: number` | `PayLineScatterPayResult[]` | Executes convertPayLineScatterPay operation in `SlotUtils`. |
+| **[`generateSymbolIndexes()`](./generateSymbolIndexes.md)** | `tableFormat?: number[]` | `number[][]` | Executes generateSymbolIndexes operation in `SlotUtils`. |

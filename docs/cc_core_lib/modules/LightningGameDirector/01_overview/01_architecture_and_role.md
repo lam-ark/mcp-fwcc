@@ -1,38 +1,36 @@
 ---
 id: "cc_core_lib:LightningGameDirector:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng LightningGameDirector (slot-base-logic)"
+title: "LightningGameDirector Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["LightningGameDirector", "lightning_game_director", "cc_core_lib", "overview", "eno", "slot-base-logic", "guide", "usage"]
+tags: ["LightningGameDirector", "lightning_game_director", "cc_core_lib", "overview", "eno", "slot-base-logic", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `LightningGameDirector`
+# 🏛️ `LightningGameDirector` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/slot-base-logic`  
-> **Namespace**: `eno.LightningGameDirector` / `globalThis.eno.LightningGameDirector`  
-> **Kế thừa**: `SlotGameDirector`
-
----
-
-## 🎯 1. `LightningGameDirector` Dùng Để Làm Gì? (Purpose & Overview)
-
-`LightningGameDirector` là một class tiện ích/logic cốt lõi trong thư viện **`slot-base-logic`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/slot-base-logic`
+- **Global Namespace Anchor**: `eno.LightningGameDirector` / `globalThis.eno.LightningGameDirector`
+- **Inheritance Hierarchy**: `LightningGameDirector` ➔ `SlotGameDirector`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { LightningGameDirector } = globalThis.eno;
+`LightningGameDirector` is an essential logic component within **`slot-base-logic`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[SlotGameDirector] --> TargetClass[LightningGameDirector]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`_sendSpinToNetwork(data: any)`**: `Promise<boolean>`
-- **`_resumeLastMatrix(data: any)`**: `Promise<boolean>`
-- **`_gameFinish(data: any)`**: `Promise<boolean>`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

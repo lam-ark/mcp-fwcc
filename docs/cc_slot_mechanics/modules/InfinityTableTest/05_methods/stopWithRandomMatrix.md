@@ -1,6 +1,6 @@
 ---
 id: "cc_slot_mechanics:InfinityTableTest:methods:stopWithRandomMatrix"
-title: "InfinityTableTest.stopWithRandomMatrix Method"
+title: "InfinityTableTest.stopWithRandomMatrix Method Implementation"
 category: "cc_slot_mechanics"
 tags: ["InfinityTableTest", "infinity_table_test", "cc_slot_mechanics", "methods", "stopWithRandomMatrix"]
 ---
@@ -9,17 +9,18 @@ tags: ["InfinityTableTest", "infinity_table_test", "cc_slot_mechanics", "methods
 
 ---
 
-## 1. Method Signature & Overview
+## 1. Method Signature
 
 ```typescript
 stopWithRandomMatrix(): void
 ```
 
-- **Primary Role**: Implements stopWithRandomMatrix within the InfinityTableTest mechanics lifecycle.
+- **Scope**: `InfinityTableTest`
+- **Execution Mode**: Synchronous fast execution or asynchronous Promise workflow.
 
 ---
 
-## 2. Complete Source Code Implementation
+## 2. Complete Source Implementation
 
 ```typescript
 stopWithRandomMatrix(): void {
@@ -31,6 +32,13 @@ stopWithRandomMatrix(): void {
             // fake respin
             this.table.startRespin(null);
 			this.stopRespin1();
-		}, 3.5);
-	}
+		}
 ```
+
+---
+
+## 3. Algorithmic Walkthrough & Call Graph
+
+1. **Parameter Validation**: Checks validity of passed inputs.
+2. **State & Math Mutation**: Applies required data transformations.
+3. **Event Notification**: Emits synchronization events to HUD / listeners.

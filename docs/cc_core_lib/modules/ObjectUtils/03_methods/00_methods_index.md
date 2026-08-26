@@ -13,4 +13,4 @@ tags: ["ObjectUtils", "object_utils", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`cloneDeep()`** | `value: any, cache?: WeakMap<object, any>` | `any` | Executes cloneDeep operation in `ObjectUtils`. |
+| **[`cloneDeep()`](./cloneDeep.md)** | `value: any, cache?: WeakMap<object, any>` | `any` | Executes cloneDeep operation in `ObjectUtils`. |

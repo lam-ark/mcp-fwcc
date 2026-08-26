@@ -1,39 +1,36 @@
 ---
 id: "cc_core_lib:TurboButtonData:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng TurboButtonData (slot-base-logic)"
+title: "TurboButtonData Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["TurboButtonData", "turbo_button_data", "cc_core_lib", "overview", "eno", "slot-base-logic", "guide", "usage"]
+tags: ["TurboButtonData", "turbo_button_data", "cc_core_lib", "overview", "eno", "slot-base-logic", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `TurboButtonData`
+# 🏛️ `TurboButtonData` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/slot-base-logic`  
-> **Namespace**: `eno.TurboButtonData` / `globalThis.eno.TurboButtonData`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `TurboButtonData` Dùng Để Làm Gì? (Purpose & Overview)
-
-`TurboButtonData` là một class tiện ích/logic cốt lõi trong thư viện **`slot-base-logic`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/slot-base-logic`
+- **Global Namespace Anchor**: `eno.TurboButtonData` / `globalThis.eno.TurboButtonData`
+- **Inheritance Hierarchy**: `TurboButtonData` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { TurboButtonData } = globalThis.eno;
+`TurboButtonData` is an essential logic component within **`slot-base-logic`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[TurboButtonData]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`isInteractable()`**: `boolean`
-- **`setState(state: number)`**: `void`
-- **`setActive(active: boolean)`**: `void`
-- **`isActive()`**: `boolean`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

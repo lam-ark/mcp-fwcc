@@ -1,38 +1,36 @@
 ---
 id: "cc_core_lib:Game:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng Game (slot-base-logic)"
+title: "Game Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["Game", "game", "cc_core_lib", "overview", "eno", "slot-base-logic", "guide", "usage"]
+tags: ["Game", "game", "cc_core_lib", "overview", "eno", "slot-base-logic", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `Game`
+# 🏛️ `Game` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/slot-base-logic`  
-> **Namespace**: `eno.Game` / `globalThis.eno.Game`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `Game` Dùng Để Làm Gì? (Purpose & Overview)
-
-`Game` là một class tiện ích/logic cốt lõi trong thư viện **`slot-base-logic`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/slot-base-logic`
+- **Global Namespace Anchor**: `eno.Game` / `globalThis.eno.Game`
+- **Inheritance Hierarchy**: `Game` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { Game } = globalThis.eno;
+`Game` is an essential logic component within **`slot-base-logic`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[Game]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`getLogger()`**: `any`
-- **`updateLoggerConfig(config: any)`**: `void`
-- **`initNetwork(network: any)`**: `void`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

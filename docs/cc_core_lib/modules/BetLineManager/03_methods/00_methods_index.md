@@ -13,4 +13,4 @@ tags: ["BetLineManager", "bet_line_manager", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setMaxBetLine()`** | `data?: any` | `void` | Executes setMaxBetLine operation in `BetLineManager`. |
+| **[`setMaxBetLine()`](./setMaxBetLine.md)** | `data?: any` | `void` | Executes setMaxBetLine operation in `BetLineManager`. |

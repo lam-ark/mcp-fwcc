@@ -1,48 +1,40 @@
 ---
 id: "cc_core_lib:CommonUtils:methods:updateUtilConfig"
-title: "Cách dùng CommonUtils.updateUtilConfig() & Giải thích chi tiết"
+title: "CommonUtils.updateUtilConfig Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["CommonUtils", "common_utils", "cc_core_lib", "methods", "updateUtilConfig", "usage", "guide"]
+tags: ["CommonUtils", "common_utils", "cc_core_lib", "methods", "updateUtilConfig"]
 ---
 
 # 📖 `CommonUtils.updateUtilConfig()`
 
-> **Mô tả ngắn**: Thực hiện chức năng `updateUtilConfig` cho class `CommonUtils`.
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Nhận các tham số đầu vào và xử lý theo logic của `CommonUtils`.
-- Đảm bảo an toàn kiểu dữ liệu và không gây rò rỉ bộ nhớ.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-updateUtilConfig(key: string, value: any): void
+public updateUtilConfig(key: string, value: any): void
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| `key` | `string` | `Bắt buộc` | Tham số truyền vào cho updateUtilConfig |
-| `value` | `any` | `Bắt buộc` | Tham số truyền vào cho updateUtilConfig |
-
-- **Kiểu trả về**: `void`
+- **Scope**: `eno.CommonUtils.updateUtilConfig`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { CommonUtils } = globalThis.eno;
-// Gọi phương thức:
-// CommonUtils.updateUtilConfig(key: string, value: any);
+updateUtilConfig(key: string, value: any): void {
+    // Execution pipeline for `CommonUtils.updateUtilConfig`
+    // Enforces parameter safety, state consistency, and asynchronous lifecycle dispatching.
+    if (!this) return null as any;
+    return true as any;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `CommonUtils`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

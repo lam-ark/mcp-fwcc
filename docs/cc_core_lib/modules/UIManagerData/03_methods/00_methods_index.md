@@ -13,21 +13,21 @@ tags: ["UIManagerData", "uimanager_data", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setTrialMode()`** | `isTrial: boolean` | `void` | Executes setTrialMode operation in `UIManagerData`. |
-| **`setTurboActive()`** | `isTurbo: boolean` | `void` | Executes setTurboActive operation in `UIManagerData`. |
-| **`showInfo()`** | `isOpen: boolean` | `void` | Executes showInfo operation in `UIManagerData`. |
-| **`setAutoSpinPanelOpen()`** | `isOpen: boolean` | `void` | Executes setAutoSpinPanelOpen operation in `UIManagerData`. |
-| **`openGameSettings()`** | `isOpen: boolean` | `void` | Executes openGameSettings operation in `UIManagerData`. |
-| **`setBetSelectionPanelOpen()`** | `isOpen: boolean` | `void` | Executes setBetSelectionPanelOpen operation in `UIManagerData`. |
-| **`setMenuPanelOpen()`** | `isOpen: boolean` | `void` | Executes setMenuPanelOpen operation in `UIManagerData`. |
-| **`activeExitButton()`** | `isActive: boolean` | `void` | Executes activeExitButton operation in `UIManagerData`. |
-| **`showJackpot()`** | `isActive: boolean` | `void` | Executes showJackpot operation in `UIManagerData`. |
-| **`showJackpotTrial()`** | `isActive: boolean` | `void` | Executes showJackpotTrial operation in `UIManagerData`. |
-| **`showWallet()`** | `isActive: boolean` | `void` | Executes showWallet operation in `UIManagerData`. |
-| **`showWalletTrial()`** | `isActive: boolean` | `void` | Executes showWalletTrial operation in `UIManagerData`. |
-| **`setUserInteractionEnabled()`** | `enabled: boolean` | `void` | Executes setUserInteractionEnabled operation in `UIManagerData`. |
-| **`setPayTablePanelOpen()`** | `isOpen: boolean` | `void` | Executes setPayTablePanelOpen operation in `UIManagerData`. |
-| **`setBuyFeaturePanelOpen()`** | `isOpen: boolean` | `void` | Executes setBuyFeaturePanelOpen operation in `UIManagerData`. |
-| **`setDisplayPopup()`** | `isDisplay: boolean` | `void` | Executes setDisplayPopup operation in `UIManagerData`. |
-| **`setCanShowTurboIntro()`** | `canShow: boolean` | `void` | Executes setCanShowTurboIntro operation in `UIManagerData`. |
-| **`setSwitchingMode()`** | `isSwitching: boolean` | `void` | Executes setSwitchingMode operation in `UIManagerData`. |
+| **[`setTrialMode()`](./setTrialMode.md)** | `isTrial: boolean` | `void` | Executes setTrialMode operation in `UIManagerData`. |
+| **[`setTurboActive()`](./setTurboActive.md)** | `isTurbo: boolean` | `void` | Executes setTurboActive operation in `UIManagerData`. |
+| **[`showInfo()`](./showInfo.md)** | `isOpen: boolean` | `void` | Executes showInfo operation in `UIManagerData`. |
+| **[`setAutoSpinPanelOpen()`](./setAutoSpinPanelOpen.md)** | `isOpen: boolean` | `void` | Executes setAutoSpinPanelOpen operation in `UIManagerData`. |
+| **[`openGameSettings()`](./openGameSettings.md)** | `isOpen: boolean` | `void` | Executes openGameSettings operation in `UIManagerData`. |
+| **[`setBetSelectionPanelOpen()`](./setBetSelectionPanelOpen.md)** | `isOpen: boolean` | `void` | Executes setBetSelectionPanelOpen operation in `UIManagerData`. |
+| **[`setMenuPanelOpen()`](./setMenuPanelOpen.md)** | `isOpen: boolean` | `void` | Executes setMenuPanelOpen operation in `UIManagerData`. |
+| **[`activeExitButton()`](./activeExitButton.md)** | `isActive: boolean` | `void` | Executes activeExitButton operation in `UIManagerData`. |
+| **[`showJackpot()`](./showJackpot.md)** | `isActive: boolean` | `void` | Executes showJackpot operation in `UIManagerData`. |
+| **[`showJackpotTrial()`](./showJackpotTrial.md)** | `isActive: boolean` | `void` | Executes showJackpotTrial operation in `UIManagerData`. |
+| **[`showWallet()`](./showWallet.md)** | `isActive: boolean` | `void` | Executes showWallet operation in `UIManagerData`. |
+| **[`showWalletTrial()`](./showWalletTrial.md)** | `isActive: boolean` | `void` | Executes showWalletTrial operation in `UIManagerData`. |
+| **[`setUserInteractionEnabled()`](./setUserInteractionEnabled.md)** | `enabled: boolean` | `void` | Executes setUserInteractionEnabled operation in `UIManagerData`. |
+| **[`setPayTablePanelOpen()`](./setPayTablePanelOpen.md)** | `isOpen: boolean` | `void` | Executes setPayTablePanelOpen operation in `UIManagerData`. |
+| **[`setBuyFeaturePanelOpen()`](./setBuyFeaturePanelOpen.md)** | `isOpen: boolean` | `void` | Executes setBuyFeaturePanelOpen operation in `UIManagerData`. |
+| **[`setDisplayPopup()`](./setDisplayPopup.md)** | `isDisplay: boolean` | `void` | Executes setDisplayPopup operation in `UIManagerData`. |
+| **[`setCanShowTurboIntro()`](./setCanShowTurboIntro.md)** | `canShow: boolean` | `void` | Executes setCanShowTurboIntro operation in `UIManagerData`. |
+| **[`setSwitchingMode()`](./setSwitchingMode.md)** | `isSwitching: boolean` | `void` | Executes setSwitchingMode operation in `UIManagerData`. |

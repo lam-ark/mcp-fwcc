@@ -13,4 +13,4 @@ tags: ["BetScatterPayManager", "bet_scatter_pay_manager", "cc_core_lib", "method
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setTotalCredit()`** | `amount: number` | `void` | Executes setTotalCredit operation in `BetScatterPayManager`. |
+| **[`setTotalCredit()`](./setTotalCredit.md)** | `amount: number` | `void` | Executes setTotalCredit operation in `BetScatterPayManager`. |

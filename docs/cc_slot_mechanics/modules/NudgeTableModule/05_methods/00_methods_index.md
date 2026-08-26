@@ -1,18 +1,16 @@
 ---
-id: "cc_slot_mechanics:NudgeTableModule:methods:methods_index"
+id: "cc_slot_mechanics:NudgeTableModule:methods:index"
 title: "NudgeTableModule Methods Master Index"
 category: "cc_slot_mechanics"
 tags: ["NudgeTableModule", "nudge_table_module", "cc_slot_mechanics", "methods", "index"]
 ---
 
-# 📖 NudgeTableModule Methods Master Index
+# 📖 `NudgeTableModule` Methods Master Index
 
 ---
 
-## 1. Declared Methods
+## 1. Declared Method Signatures & Summary
 
-| Method | Parameters | Return Type | Description |
-| :--- | :--- | :--- | :--- |
-| **`onLoadExtend()`** | `void` | `void` | Executes onLoadExtend logic in NudgeTableModule |
-| **`processBeforeStopReels()`** | `data:{ mode, context }` | `void` | Executes processBeforeStopReels logic in NudgeTableModule |
-| **`prepareNudge()`** | `void` | `void` | Executes prepareNudge logic in NudgeTableModule |
+| Method | Parameters | Return Type | Source Range | Description |
+| :--- | :--- | :--- | :---: | :--- |
+| *Inherits base methods* | `-` | `-` | `-` | Inherits methods from `${inheritsFrom}`. |

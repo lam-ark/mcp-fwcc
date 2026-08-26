@@ -13,7 +13,7 @@ tags: ["FreeGameOption", "free_game_option", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`onEnter()`** | `void` | `void` | Executes onEnter operation in `FreeGameOption`. |
-| **`runAutoTrigger()`** | `void` | `void` | Executes runAutoTrigger operation in `FreeGameOption`. |
-| **`onRequestFreeOption()`** | `option: any` | `void` | Executes onRequestFreeOption operation in `FreeGameOption`. |
-| **`destroy()`** | `void` | `void` | Executes destroy operation in `FreeGameOption`. |
+| **[`onEnter()`](./onEnter.md)** | `void` | `void` | Executes onEnter operation in `FreeGameOption`. |
+| **[`runAutoTrigger()`](./runAutoTrigger.md)** | `void` | `void` | Executes runAutoTrigger operation in `FreeGameOption`. |
+| **[`onRequestFreeOption()`](./onRequestFreeOption.md)** | `option: any` | `void` | Executes onRequestFreeOption operation in `FreeGameOption`. |
+| **[`destroy()`](./destroy.md)** | `void` | `void` | Executes destroy operation in `FreeGameOption`. |

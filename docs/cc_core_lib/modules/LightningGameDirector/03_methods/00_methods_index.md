@@ -13,6 +13,6 @@ tags: ["LightningGameDirector", "lightning_game_director", "cc_core_lib", "metho
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`_sendSpinToNetwork()`** | `data: any` | `Promise<boolean>` | Executes _sendSpinToNetwork operation in `LightningGameDirector`. |
-| **`_resumeLastMatrix()`** | `data: any` | `Promise<boolean>` | Executes _resumeLastMatrix operation in `LightningGameDirector`. |
-| **`_gameFinish()`** | `data: any` | `Promise<boolean>` | Executes _gameFinish operation in `LightningGameDirector`. |
+| **[`_sendSpinToNetwork()`](./_sendSpinToNetwork.md)** | `data: any` | `Promise<boolean>` | Executes _sendSpinToNetwork operation in `LightningGameDirector`. |
+| **[`_resumeLastMatrix()`](./_resumeLastMatrix.md)** | `data: any` | `Promise<boolean>` | Executes _resumeLastMatrix operation in `LightningGameDirector`. |
+| **[`_gameFinish()`](./_gameFinish.md)** | `data: any` | `Promise<boolean>` | Executes _gameFinish operation in `LightningGameDirector`. |

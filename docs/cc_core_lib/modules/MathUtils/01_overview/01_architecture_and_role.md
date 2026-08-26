@@ -1,41 +1,36 @@
 ---
 id: "cc_core_lib:MathUtils:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng MathUtils (share-lib)"
+title: "MathUtils Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["MathUtils", "math_utils", "cc_core_lib", "overview", "eno", "share-lib", "guide", "usage"]
+tags: ["MathUtils", "math_utils", "cc_core_lib", "overview", "eno", "share-lib", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `MathUtils`
+# 🏛️ `MathUtils` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/share-lib`  
-> **Namespace**: `eno.MathUtils` / `globalThis.eno.MathUtils`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `MathUtils` Dùng Để Làm Gì? (Purpose & Overview)
-
-`MathUtils` là một class tiện ích/logic cốt lõi trong thư viện **`share-lib`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/share-lib`
+- **Global Namespace Anchor**: `eno.MathUtils` / `globalThis.eno.MathUtils`
+- **Inheritance Hierarchy**: `MathUtils` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { MathUtils } = globalThis.eno;
+`MathUtils` is an essential logic component within **`share-lib`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[MathUtils]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`factorial(n: number)`**: `number`
-- **`combination(n: number, k: number)`**: `number`
-- **`bezier(pos: number[], ratio: number)`**: `number`
-- **`getAngleTwoPoint(start: any, end: any)`**: `number`
-- **`getRandomInt(min: number, max: number)`**: `number`
-- **`getRandomRange(min: number, max: number)`**: `number`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

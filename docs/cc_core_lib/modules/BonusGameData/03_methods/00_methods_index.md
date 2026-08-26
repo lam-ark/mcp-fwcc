@@ -13,4 +13,4 @@ tags: ["BonusGameData", "bonus_game_data", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`getSelectedBoxId()`** | `void` | `number` | Executes getSelectedBoxId operation in `BonusGameData`. |
+| **[`getSelectedBoxId()`](./getSelectedBoxId.md)** | `void` | `number` | Executes getSelectedBoxId operation in `BonusGameData`. |

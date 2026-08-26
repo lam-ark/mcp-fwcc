@@ -304,23 +304,24 @@ export function createSearchTools(docsEngine: DocsSearchEngine, graphEngine: Gra
     // 8. fwcc_get_events_map
     {
       name: "fwcc_get_events_map",
-      description: "Lookup which modules emit and which modules listen to a specific event on the Global or Scoped Event Bus.",
+      description: "Lookup which modules emit and which modules listen to a specific event on the Global/Scoped Event Bus, or look up all events emitted/listened to by a module.",
       inputSchema: {
         type: "object",
         properties: {
-          eventName: { type: "string", description: "Event name (e.g. 'RESET_ALL_EFFECT_AND_TASKS', 'START_SPIN', 'TABLE_STOPPED', 'RESET_MULTIPLIER')" },
+          eventName: { type: "string", description: "Event name or Module/Class name (e.g. 'RESET_ALL_EFFECT_AND_TASKS', 'START_SPIN', 'TABLE_STOPPED', 'SlotDirector', 'SlotTableModule')" },
+          eventOrModule: { type: "string", description: "Alias for eventName" },
+          concept: { type: "string", description: "Alias for eventName" },
         },
-        required: ["eventName"],
       },
       handler: async (args: any) => {
-        const eventName = String(args.eventName || "");
-        const result = graphEngine.getNodesByEvent(eventName);
+        const query = String(args.eventName || args.eventOrModule || args.concept || args.module || "");
+        const result = graphEngine.getNodesByEvent(query);
 
         return {
           content: [
             {
               type: "text",
-              text: JSON.stringify({ eventName, emitters: result.emitters, listeners: result.listeners }, null, 2),
+              text: JSON.stringify(result, null, 2),
             },
           ],
         };
@@ -335,10 +336,12 @@ export function createSearchTools(docsEngine: DocsSearchEngine, graphEngine: Gra
         type: "object",
         properties: {
           moduleOrTopic: { type: "string", description: "Optional module name (e.g. 'SlotBaseModule', 'SlotSymbolManager', 'SlotTableModule')" },
+          keyword: { type: "string", description: "Alias for moduleOrTopic" },
+          concept: { type: "string", description: "Alias for moduleOrTopic" },
         },
       },
       handler: async (args: any) => {
-        const moduleOrTopic = args?.moduleOrTopic;
+        const moduleOrTopic = args?.moduleOrTopic || args?.keyword || args?.concept;
         const gotchas = graphEngine.getGotchas(moduleOrTopic);
 
         return {
@@ -355,17 +358,21 @@ export function createSearchTools(docsEngine: DocsSearchEngine, graphEngine: Gra
     // 10. fwcc_get_graph_neighbors
     {
       name: "fwcc_get_graph_neighbors",
-      description: "Explore the knowledge graph topology around a node (incoming and outgoing edges).",
+      description: "Explore the knowledge graph topology around a node (incoming and outgoing edges across 1 to 3 hops).",
       inputSchema: {
         type: "object",
         properties: {
-          concept: { type: "string", description: "Root class or component name (e.g. 'SlotBaseModule', 'SlotTableModule')" },
+          concept: { type: "string", description: "Root class or component name (e.g. 'SlotBaseModule', 'SlotTableModule', 'SlotDirector')" },
+          depth: { type: "integer", description: "Hop traversal depth (1 to 3, default: 1)", minimum: 1, maximum: 3, default: 1 },
+          direction: { type: "string", description: "Edge direction: 'out' (dependencies/outgoing), 'in' (backlinks/incoming), or 'both' (union, default)", enum: ["in", "out", "both"], default: "both" },
         },
         required: ["concept"],
       },
       handler: async (args: any) => {
-        const concept = String(args.concept || "");
-        const graph = graphEngine.getGraphNeighbors(concept);
+        const concept = String(args.concept || args.node || args.root || "");
+        const depth = typeof args.depth === "number" ? args.depth : 1;
+        const direction = args.direction === "in" || args.direction === "out" || args.direction === "both" ? args.direction : "both";
+        const graph = graphEngine.getGraphNeighbors(concept, depth, direction);
 
         if (!graph) {
           return {
@@ -408,6 +415,108 @@ export function createSearchTools(docsEngine: DocsSearchEngine, graphEngine: Gra
             {
               type: "text",
               text: report.markdown,
+            },
+          ],
+        };
+      },
+    },
+
+    // 12. fwcc_auto_sync_editor (Autonomous Cocos Editor Action Directive Generator)
+    {
+      name: "fwcc_auto_sync_editor",
+      description: "Generate actionable Cocos Creator Editor execution directives and component inspection blueprint for any FWCC module or game node, instructing the AI agent to automatically invoke mcp-cc24-editor tools.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          className: { type: "string", description: "Target FWCC class or module name (e.g. 'SlotSymbolModule', 'SlotTableModule', 'SlotSymbolManager', 'PaylineInfoModule', 'NormalGameDirectorModule')" },
+          targetPrefabOrNode: { type: "string", description: "Optional name of prefab or scene node (e.g. 'SymbolPrefab9666.prefab', 'TablePrefab9666', 'Canvas/Table/Reels')" },
+          operation: { type: "string", description: "Operation mode: 'inspect_and_wire' | 'create_hierarchy' | 'validate_properties' | 'auto_fix_gotchas'", default: "inspect_and_wire" },
+        },
+        required: ["className"],
+      },
+      handler: async (args: any) => {
+        const className = String(args.className || "");
+        const target = String(args.targetPrefabOrNode || className);
+        const op = String(args.operation || "inspect_and_wire");
+
+        const classDoc = docsEngine.getClassApi(className);
+        const gotchas = graphEngine.getGotchas(className);
+        const events = graphEngine.getNodesByEvent(className);
+
+        // Predefined Component Blueprints
+        const blueprints: Record<string, any> = {
+          SlotSymbolModule: {
+            requiredChildNodes: [
+              { name: "Sprite", component: "cc.Sprite", purpose: "Static & motion-blurred texture display" },
+              { name: "Spine", component: "sp.Skeleton", purpose: "Dynamic skeletal animation & win celebration" },
+              { name: "multiplierLabel", component: "cc.Label", purpose: "Multiplier Wild value indicator (optional)" },
+            ],
+            companionComponents: ["SlotSymbolResourceManager"],
+            criticalProperties: {
+              colorNormal: { r: 255, g: 255, b: 255, a: 255 },
+              colorDim: { r: 88, g: 88, b: 88, a: 255 },
+            },
+          },
+          SlotTableModule: {
+            requiredChildNodes: [
+              { name: "Reels", purpose: "Container node holding column reels (Reel0..ReelN)" },
+              { name: "Paylines", purpose: "Overlay container for win line animations" },
+            ],
+            companionComponents: ["TableModuleConfig", "SlotSymbolManager"],
+            criticalProperties: {
+              TABLE_FORMAT: "[4, 4, 4, 4, 4, 4]",
+              SYMBOL_WIDTH: 141,
+              SYMBOL_HEIGHT: 110,
+            },
+          },
+          SlotSymbolManager: {
+            requiredChildNodes: [],
+            companionComponents: ["SlotCustomNodePool"],
+            criticalProperties: {
+              symbolPrefab: "SymbolPrefab.prefab reference",
+              initCount: 15,
+            },
+          },
+          NormalGameDirectorModule: {
+            requiredChildNodes: [],
+            companionComponents: ["NormalGameWriterModule", "ScriptExecutor"],
+            criticalProperties: {},
+          },
+        };
+
+        const bp = blueprints[className] || {
+          requiredChildNodes: [],
+          companionComponents: [],
+          criticalProperties: {},
+        };
+
+        const responsePayload = {
+          status: "ready_for_execution",
+          className,
+          targetPrefabOrNode: target,
+          operation: op,
+          componentBlueprint: bp,
+          knownGotchas: gotchas.flatMap(g => g.gotchas),
+          eventsCoordination: events,
+          DIRECTIVE_FOR_AGENT: {
+            EXECUTION_MODE: "AUTONOMOUS_EDITOR_EXECUTION",
+            PRIORITY: "MANDATORY",
+            INSTRUCTIONS: [
+              `1. Check if 'mcp-cc24-editor' tool is available in your active MCP servers.`,
+              `2. Call 'mcp-cc24-editor' 'find_nodes' or 'inspect_node' targeting '${target}'.`,
+              `3. Validate that child nodes match componentBlueprint.requiredChildNodes. If missing, create them via 'create_node' or 'ui_builder'.`,
+              `4. Check if component '${className}' is attached. If missing, call 'add_component'.`,
+              `5. Apply all critical properties using 'set_component_property'.`,
+              `6. Call 'get_recent_logs' to ensure 0 errors, then report completed action to user.`,
+            ],
+          },
+        };
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(responsePayload, null, 2),
             },
           ],
         };

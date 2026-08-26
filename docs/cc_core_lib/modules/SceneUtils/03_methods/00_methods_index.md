@@ -13,5 +13,5 @@ tags: ["SceneUtils", "scene_utils", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`getSceneName()`** | `void` | `string` | Executes getSceneName operation in `SceneUtils`. |
-| **`getSceneLanguage()`** | `void` | `string` | Executes getSceneLanguage operation in `SceneUtils`. |
+| **[`getSceneName()`](./getSceneName.md)** | `void` | `string` | Executes getSceneName operation in `SceneUtils`. |
+| **[`getSceneLanguage()`](./getSceneLanguage.md)** | `void` | `string` | Executes getSceneLanguage operation in `SceneUtils`. |

@@ -13,19 +13,19 @@ tags: ["JackpotHistoryManager", "jackpot_history_manager", "cc_core_lib", "metho
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setDynamicBet()`** | `mBet?: string` | `void` | Executes setDynamicBet operation in `JackpotHistoryManager`. |
-| **`initJackpotHistory()`** | `data: any` | `void` | Executes initJackpotHistory operation in `JackpotHistoryManager`. |
-| **`openJackpotHistory()`** | `void` | `void` | Executes openJackpotHistory operation in `JackpotHistoryManager`. |
-| **`closeJackpotHistory()`** | `void` | `void` | Executes closeJackpotHistory operation in `JackpotHistoryManager`. |
-| **`onNextPage()`** | `void` | `void` | Executes onNextPage operation in `JackpotHistoryManager`. |
-| **`onPrevPage()`** | `void` | `void` | Executes onPrevPage operation in `JackpotHistoryManager`. |
-| **`onFirstPage()`** | `void` | `void` | Executes onFirstPage operation in `JackpotHistoryManager`. |
-| **`onLastPage()`** | `void` | `void` | Executes onLastPage operation in `JackpotHistoryManager`. |
-| **`onPageIndex()`** | `index: number` | `void` | Executes onPageIndex operation in `JackpotHistoryManager`. |
-| **`onRequestResponse()`** | `res: any` | `void` | Executes onRequestResponse operation in `JackpotHistoryManager`. |
-| **`requestErr()`** | `void` | `void` | Executes requestErr operation in `JackpotHistoryManager`. |
-| **`clearData()`** | `void` | `void` | Executes clearData operation in `JackpotHistoryManager`. |
-| **`displayMessage()`** | `isActive?: boolean, message?: string` | `void` | Executes displayMessage operation in `JackpotHistoryManager`. |
-| **`toggleLoading()`** | `isActive?: boolean` | `void` | Executes toggleLoading operation in `JackpotHistoryManager`. |
-| **`requestDataPage()`** | `page: number, quantity: number, callback: Function, callbackErr: Function` | `void` | Executes requestDataPage operation in `JackpotHistoryManager`. |
-| **`requestHistory()`** | `requestParams: any, callback: Function, callbackErr: Function` | `void` | Executes requestHistory operation in `JackpotHistoryManager`. |
+| **[`setDynamicBet()`](./setDynamicBet.md)** | `mBet?: string` | `void` | Executes setDynamicBet operation in `JackpotHistoryManager`. |
+| **[`initJackpotHistory()`](./initJackpotHistory.md)** | `data: any` | `void` | Executes initJackpotHistory operation in `JackpotHistoryManager`. |
+| **[`openJackpotHistory()`](./openJackpotHistory.md)** | `void` | `void` | Executes openJackpotHistory operation in `JackpotHistoryManager`. |
+| **[`closeJackpotHistory()`](./closeJackpotHistory.md)** | `void` | `void` | Executes closeJackpotHistory operation in `JackpotHistoryManager`. |
+| **[`onNextPage()`](./onNextPage.md)** | `void` | `void` | Executes onNextPage operation in `JackpotHistoryManager`. |
+| **[`onPrevPage()`](./onPrevPage.md)** | `void` | `void` | Executes onPrevPage operation in `JackpotHistoryManager`. |
+| **[`onFirstPage()`](./onFirstPage.md)** | `void` | `void` | Executes onFirstPage operation in `JackpotHistoryManager`. |
+| **[`onLastPage()`](./onLastPage.md)** | `void` | `void` | Executes onLastPage operation in `JackpotHistoryManager`. |
+| **[`onPageIndex()`](./onPageIndex.md)** | `index: number` | `void` | Executes onPageIndex operation in `JackpotHistoryManager`. |
+| **[`onRequestResponse()`](./onRequestResponse.md)** | `res: any` | `void` | Executes onRequestResponse operation in `JackpotHistoryManager`. |
+| **[`requestErr()`](./requestErr.md)** | `void` | `void` | Executes requestErr operation in `JackpotHistoryManager`. |
+| **[`clearData()`](./clearData.md)** | `void` | `void` | Executes clearData operation in `JackpotHistoryManager`. |
+| **[`displayMessage()`](./displayMessage.md)** | `isActive?: boolean, message?: string` | `void` | Executes displayMessage operation in `JackpotHistoryManager`. |
+| **[`toggleLoading()`](./toggleLoading.md)** | `isActive?: boolean` | `void` | Executes toggleLoading operation in `JackpotHistoryManager`. |
+| **[`requestDataPage()`](./requestDataPage.md)** | `page: number, quantity: number, callback: Function, callbackErr: Function` | `void` | Executes requestDataPage operation in `JackpotHistoryManager`. |
+| **[`requestHistory()`](./requestHistory.md)** | `requestParams: any, callback: Function, callbackErr: Function` | `void` | Executes requestHistory operation in `JackpotHistoryManager`. |

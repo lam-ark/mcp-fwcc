@@ -13,8 +13,8 @@ tags: ["DataModel", "data_model", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`data()`** | `data: any); set(key: string, value: any` | `void` | Executes data operation in `DataModel`. |
-| **`get()`** | `key: string` | `any` | Executes get operation in `DataModel`. |
-| **`remove()`** | `key: string` | `void` | Executes remove operation in `DataModel`. |
-| **`clear()`** | `void` | `void` | Executes clear operation in `DataModel`. |
-| **`destroy()`** | `void` | `void` | Executes destroy operation in `DataModel`. |
+| **[`data()`](./data.md)** | `data: any); set(key: string, value: any` | `void` | Executes data operation in `DataModel`. |
+| **[`get()`](./get.md)** | `key: string` | `any` | Executes get operation in `DataModel`. |
+| **[`remove()`](./remove.md)** | `key: string` | `void` | Executes remove operation in `DataModel`. |
+| **[`clear()`](./clear.md)** | `void` | `void` | Executes clear operation in `DataModel`. |
+| **[`destroy()`](./destroy.md)** | `void` | `void` | Executes destroy operation in `DataModel`. |

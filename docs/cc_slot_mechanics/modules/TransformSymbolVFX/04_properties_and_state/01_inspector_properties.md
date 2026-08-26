@@ -1,18 +1,23 @@
 ---
-id: "cc_slot_mechanics:TransformSymbolVFX:properties:inspector_properties"
-title: "TransformSymbolVFX Inspector Properties"
+id: "cc_slot_mechanics:TransformSymbolVFX:api:properties"
+title: "TransformSymbolVFX Inspector Properties & State Schema"
 category: "cc_slot_mechanics"
-tags: ["TransformSymbolVFX", "transform_symbol_vfx", "cc_slot_mechanics", "properties", "inspector"]
+tags: ["TransformSymbolVFX", "transform_symbol_vfx", "cc_slot_mechanics", "properties", "schema"]
 ---
 
-# 📋 TransformSymbolVFX Inspector Properties
+# 📋 `TransformSymbolVFX` Properties & State Schema
 
 ---
 
-## 1. Serialized Fields
+## 1. Inspector Properties
 
-| Property | Type | Default | Description |
-| :--- | :--- | :---: | :--- |
-| **`skeleton`** | `sp.Skeleton` | `null` | Serialized property for TransformSymbolVFX |
-| **`animation`** | `string` | `"animation"` | Serialized property for TransformSymbolVFX |
-| **`isLoop`** | `boolean` | `false` | Serialized property for TransformSymbolVFX |
+| Property Name | Type | Description |
+| :--- | :--- | :--- |
+| **`skeleton`** | `sp.Skeleton` | Inspector property in `TransformSymbolVFX` managing runtime skeleton. |
+
+---
+
+## 2. State Invariants
+
+- Properties are wired via Cocos Creator Inspector prefabs.
+- Must not be mutated directly while the table state is in active spin or cascade mode.

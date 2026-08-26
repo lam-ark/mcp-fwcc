@@ -1,40 +1,36 @@
 ---
 id: "cc_core_lib:MoneyTween:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng MoneyTween (cc-wrap-func)"
+title: "MoneyTween Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["MoneyTween", "money_tween", "cc_core_lib", "overview", "eno", "cc-wrap-func", "guide", "usage"]
+tags: ["MoneyTween", "money_tween", "cc_core_lib", "overview", "eno", "cc-wrap-func", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `MoneyTween`
+# 🏛️ `MoneyTween` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/cc-wrap-func`  
-> **Namespace**: `eno.MoneyTween` / `globalThis.eno.MoneyTween`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `MoneyTween` Dùng Để Làm Gì? (Purpose & Overview)
-
-`MoneyTween` là một class tiện ích/logic cốt lõi trong thư viện **`cc-wrap-func`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/cc-wrap-func`
+- **Global Namespace Anchor**: `eno.MoneyTween` / `globalThis.eno.MoneyTween`
+- **Inheritance Hierarchy**: `MoneyTween` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { MoneyTween } = globalThis.eno;
+`MoneyTween` is an essential logic component within **`cc-wrap-func`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[MoneyTween]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`runShortNumber(target: cc.Node, duration: number, endValue: number, options?: Options)`**: `cc.Tween`
-- **`runWallet(target: cc.Node, duration: number, endValue: number, options?: Options)`**: `cc.Tween`
-- **`getCurrentValue(target: cc.Node)`**: `number`
-- **`runBigWinNumber(target: cc.Node, duration: number, endValue: number, options?: Options)`**: `cc.Tween`
-- **`stopAllMoneyTweens()`**: `void`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

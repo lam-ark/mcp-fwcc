@@ -13,8 +13,8 @@ tags: ["CustomCanvasSizeWrapper", "custom_canvas_size_wrapper", "cc_core_lib", "
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`updateCustomCanvasSize()`** | `void` | `void` | Executes updateCustomCanvasSize operation in `CustomCanvasSizeWrapper`. |
-| **`updateWindowOrientation()`** | `void` | `void` | Executes updateWindowOrientation operation in `CustomCanvasSizeWrapper`. |
-| **`scaleCanvasByOrientation()`** | `delay: number` | `void` | Executes scaleCanvasByOrientation operation in `CustomCanvasSizeWrapper`. |
-| **`isMobile()`** | `void` | `boolean` | Executes isMobile operation in `CustomCanvasSizeWrapper`. |
-| **`onDestroy()`** | `void` | `void` | Executes onDestroy operation in `CustomCanvasSizeWrapper`. |
+| **[`updateCustomCanvasSize()`](./updateCustomCanvasSize.md)** | `void` | `void` | Executes updateCustomCanvasSize operation in `CustomCanvasSizeWrapper`. |
+| **[`updateWindowOrientation()`](./updateWindowOrientation.md)** | `void` | `void` | Executes updateWindowOrientation operation in `CustomCanvasSizeWrapper`. |
+| **[`scaleCanvasByOrientation()`](./scaleCanvasByOrientation.md)** | `delay: number` | `void` | Executes scaleCanvasByOrientation operation in `CustomCanvasSizeWrapper`. |
+| **[`isMobile()`](./isMobile.md)** | `void` | `boolean` | Executes isMobile operation in `CustomCanvasSizeWrapper`. |
+| **[`onDestroy()`](./onDestroy.md)** | `void` | `void` | Executes onDestroy operation in `CustomCanvasSizeWrapper`. |

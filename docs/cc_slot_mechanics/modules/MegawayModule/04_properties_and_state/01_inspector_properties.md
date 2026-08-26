@@ -1,17 +1,23 @@
 ---
-id: "cc_slot_mechanics:MegawayModule:properties:inspector_properties"
-title: "MegawayModule Inspector Properties"
+id: "cc_slot_mechanics:MegawayModule:api:properties"
+title: "MegawayModule Inspector Properties & State Schema"
 category: "cc_slot_mechanics"
-tags: ["MegawayModule", "megaway_module", "cc_slot_mechanics", "properties", "inspector"]
+tags: ["MegawayModule", "megaway_module", "cc_slot_mechanics", "properties", "schema"]
 ---
 
-# 📋 MegawayModule Inspector Properties
+# 📋 `MegawayModule` Properties & State Schema
 
 ---
 
-## 1. Serialized Fields
+## 1. Inspector Properties
 
-| Property | Type | Default | Description |
-| :--- | :--- | :---: | :--- |
-| **`lbMegaway`** | `cc.Label` | `null` | Serialized property for MegawayModule |
-| **`defaultString`** | `string` | `"..."` | Serialized property for MegawayModule |
+| Property Name | Type | Description |
+| :--- | :--- | :--- |
+| **`lbMegaway`** | `cc.Label` | Inspector property in `MegawayModule` managing runtime lbMegaway. |
+
+---
+
+## 2. State Invariants
+
+- Properties are wired via Cocos Creator Inspector prefabs.
+- Must not be mutated directly while the table state is in active spin or cascade mode.

@@ -13,4 +13,4 @@ tags: ["BaseManager", "base_manager", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`destroy()`** | `void` | `void` | Executes destroy operation in `BaseManager`. |
+| **[`destroy()`](./destroy.md)** | `void` | `void` | Executes destroy operation in `BaseManager`. |

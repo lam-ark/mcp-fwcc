@@ -13,5 +13,5 @@ tags: ["ExitButtonManager", "exit_button_manager", "cc_core_lib", "methods", "in
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`init()`** | `void` | `void` | Executes init operation in `ExitButtonManager`. |
-| **`backToLobby()`** | `void` | `void` | Executes backToLobby operation in `ExitButtonManager`. |
+| **[`init()`](./init.md)** | `void` | `void` | Executes init operation in `ExitButtonManager`. |
+| **[`backToLobby()`](./backToLobby.md)** | `void` | `void` | Executes backToLobby operation in `ExitButtonManager`. |

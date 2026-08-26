@@ -42,6 +42,6 @@ tags: ["TrialModeManager", "trial_mode_manager", "cc_core_lib", "properties", "s
 
 ---
 
-## 2. State Mutation Lifecycle
+## 2. State Mutation Guardrails
 
-All state fields in `TrialModeManager` are initialized during instantiation/registration and mutated during explicit lifecycle method calls. Direct property mutation outside defined methods is strictly discouraged.
+All state fields in `TrialModeManager` must be initialized during instance registration and modified strictly via designated lifecycle methods. Direct mutation from outside modules is strongly discouraged to maintain state predictability.

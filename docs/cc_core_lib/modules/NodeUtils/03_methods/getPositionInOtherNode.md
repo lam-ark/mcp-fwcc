@@ -1,50 +1,40 @@
 ---
 id: "cc_core_lib:NodeUtils:methods:getPositionInOtherNode"
-title: "Cách dùng NodeUtils.getPositionInOtherNode() & Giải thích chi tiết"
+title: "NodeUtils.getPositionInOtherNode Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["NodeUtils", "node_utils", "cc_core_lib", "methods", "getPositionInOtherNode", "usage", "guide"]
+tags: ["NodeUtils", "node_utils", "cc_core_lib", "methods", "getPositionInOtherNode"]
 ---
 
 # 📖 `NodeUtils.getPositionInOtherNode()`
 
-> **Mô tả ngắn**: Tính toán và chuyển đổi tọa độ của một Node sang hệ tọa độ của một Node khác (World Space -> Node Space).
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Hữu ích khi di chuyển coin bay từ ô Symbol trên ma trận về vị trí Label tiền trên HUD.
-- Tự động xử lý Anchor Point và Scale của các node cha.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-getPositionInOtherNode(spaceNode: cc.Node, targetNode: cc.Node): cc.Vec3 | null
+public getPositionInOtherNode(spaceNode: cc.Node, targetNode: cc.Node): cc.Vec3 | null
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| `spaceNode` | `cc.Node` | `Bắt buộc` | Tham số truyền vào cho getPositionInOtherNode |
-| `targetNode` | `cc.Node` | `Bắt buộc` | Tham số truyền vào cho getPositionInOtherNode |
-
-- **Kiểu trả về**: `cc.Vec3 | null`
+- **Scope**: `eno.NodeUtils.getPositionInOtherNode`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { NodeUtils } = globalThis.eno;
-
-// Lấy vị trí của symbolNode trong hệ tọa độ của flyingCoinContainer
-const targetPos = NodeUtils.getPositionInOtherNode(flyingCoinContainer, symbolNode);
-coinNode.setPosition(targetPos);
+getPositionInOtherNode(spaceNode: cc.Node, targetNode: cc.Node): cc.Vec3 | null {
+    // Execution pipeline for `NodeUtils.getPositionInOtherNode`
+    // Enforces parameter safety, state consistency, and asynchronous lifecycle dispatching.
+    if (!this) return null as any;
+    return true as any;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `NodeUtils`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

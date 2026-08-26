@@ -1,16 +1,16 @@
 ---
-id: "cc_slot_mechanics:HorizontalCascadeModuleConfig:methods:methods_index"
+id: "cc_slot_mechanics:HorizontalCascadeModuleConfig:methods:index"
 title: "HorizontalCascadeModuleConfig Methods Master Index"
 category: "cc_slot_mechanics"
 tags: ["HorizontalCascadeModuleConfig", "horizontal_cascade_module_config", "cc_slot_mechanics", "methods", "index"]
 ---
 
-# 📖 HorizontalCascadeModuleConfig Methods Master Index
+# 📖 `HorizontalCascadeModuleConfig` Methods Master Index
 
 ---
 
-## 1. Declared Methods
+## 1. Declared Method Signatures & Summary
 
-| Method | Parameters | Return Type | Description |
-| :--- | :--- | :--- | :--- |
-| *None declared directly* | `-` | `-` | Inherits methods from parent class |
+| Method | Parameters | Return Type | Source Range | Description |
+| :--- | :--- | :--- | :---: | :--- |
+| *Inherits base methods* | `-` | `-` | `-` | Inherits methods from `${inheritsFrom}`. |

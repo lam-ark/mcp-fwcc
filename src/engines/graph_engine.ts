@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { IEngine } from "../core/types.js";
 import { CONFIG } from "../config/constants.js";
+import { scanMarkdownFiles } from "../utils/file_scanner.js";
 
 export interface SemanticRelation {
   target: string;
@@ -23,6 +24,45 @@ export interface GraphNode {
   related: string[];
   backlinks: Array<{ source: string; relationType: string }>;
   raw?: any;
+}
+
+/**
+ * Lightweight and robust YAML Frontmatter parser
+ */
+function parseFrontmatter(rawText: string): { data: Record<string, any>; content: string } {
+  if (!rawText.startsWith("---")) {
+    return { data: {}, content: rawText };
+  }
+
+  const endIdx = rawText.indexOf("\n---", 3);
+  if (endIdx === -1) {
+    return { data: {}, content: rawText };
+  }
+
+  const frontmatterStr = rawText.slice(3, endIdx).trim();
+  const content = rawText.slice(endIdx + 4).trim();
+  const data: Record<string, any> = {};
+
+  const lines = frontmatterStr.split("\n");
+  for (const line of lines) {
+    const colonIdx = line.indexOf(":");
+    if (colonIdx === -1) continue;
+
+    const key = line.slice(0, colonIdx).trim();
+    let val = line.slice(colonIdx + 1).trim();
+
+    if (val.startsWith("[") && val.endsWith("]")) {
+      const inner = val.slice(1, -1).trim();
+      data[key] = inner
+        ? inner.split(",").map(item => item.trim().replace(/^["']|["']$/g, ""))
+        : [];
+    } else {
+      val = val.replace(/^["']|["']$/g, "");
+      data[key] = val;
+    }
+  }
+
+  return { data, content };
 }
 
 /**
@@ -203,7 +243,40 @@ export class GraphEngine implements IEngine {
       }
     }
 
-    // 3. Compute Bi-directional Backlinks & Indices
+    // 3. Discover and parse all markdown files to automatically extract frontmatter relationships
+    const mdFiles = scanMarkdownFiles(this.docsDir);
+    for (const item of mdFiles) {
+      try {
+        const rawContent = fs.readFileSync(item.fullPath, "utf8");
+        const { data } = parseFrontmatter(rawContent);
+        if (data && (data.inherits || data.inheritsFrom || data.dependsOn || data.emitsEvents || data.listensToEvents || data.manages || data.usedBy)) {
+          const docId = data.id || item.fileName.replace(/\.md$/, "");
+          const existing = this.getRelated(docId);
+          if (!existing) {
+            const autoNode: GraphNode = {
+              id: docId,
+              name: data.title || docId,
+              category: data.category || item.categoryHint || "cc_slot_module",
+              description: data.description || data.title || `${docId} Component`,
+              inheritsFrom: data.inheritsFrom || data.inherits,
+              manages: Array.isArray(data.manages) ? data.manages : [],
+              usedBy: Array.isArray(data.usedBy) ? data.usedBy : [],
+              dependsOn: Array.isArray(data.dependsOn) ? data.dependsOn : [],
+              emitsEvents: Array.isArray(data.emitsEvents) ? data.emitsEvents : (Array.isArray(data.emits) ? data.emits : []),
+              listensToEvents: Array.isArray(data.listensToEvents) ? data.listensToEvents : (Array.isArray(data.listens) ? data.listens : []),
+              gotchas: Array.isArray(data.gotchas) ? data.gotchas : [],
+              related: [],
+              backlinks: [],
+            };
+            this.registerNode(autoNode);
+          }
+        }
+      } catch (err) {
+        // Skip unparseable frontmatter
+      }
+    }
+
+    // 4. Compute Bi-directional Backlinks & Indices
     this.computeBacklinksAndIndices();
 
     console.error(`[GraphEngine] Initialized ${this.nodes.size} conceptual graph nodes with bi-directional backlinks.`);
@@ -231,7 +304,9 @@ export class GraphEngine implements IEngine {
         if (!this.eventIndex.has(evKey)) {
           this.eventIndex.set(evKey, { emitters: [], listeners: [] });
         }
-        this.eventIndex.get(evKey)!.emitters.push(node.id);
+        if (!this.eventIndex.get(evKey)!.emitters.includes(node.id)) {
+          this.eventIndex.get(evKey)!.emitters.push(node.id);
+        }
       }
 
       for (const ev of node.listensToEvents) {
@@ -239,7 +314,9 @@ export class GraphEngine implements IEngine {
         if (!this.eventIndex.has(evKey)) {
           this.eventIndex.set(evKey, { emitters: [], listeners: [] });
         }
-        this.eventIndex.get(evKey)!.listeners.push(node.id);
+        if (!this.eventIndex.get(evKey)!.listeners.includes(node.id)) {
+          this.eventIndex.get(evKey)!.listeners.push(node.id);
+        }
       }
 
       // 2. Index Gotchas
@@ -248,7 +325,9 @@ export class GraphEngine implements IEngine {
         if (!this.gotchaIndex.has(gKey)) {
           this.gotchaIndex.set(gKey, []);
         }
-        this.gotchaIndex.get(gKey)!.push(node.id);
+        if (!this.gotchaIndex.get(gKey)!.includes(node.id)) {
+          this.gotchaIndex.get(gKey)!.push(node.id);
+        }
       }
 
       // 3. Compute Inbound Backlinks
@@ -256,7 +335,9 @@ export class GraphEngine implements IEngine {
         const parentName = typeof node.inheritsFrom === "string" ? node.inheritsFrom : (node.inheritsFrom as any)?.target;
         const parent = this.getRelated(parentName);
         if (parent && parent !== node) {
-          parent.backlinks.push({ source: node.id, relationType: "subclassed_by" });
+          if (!parent.backlinks.some(b => b.source === node.id && b.relationType === "subclassed_by")) {
+            parent.backlinks.push({ source: node.id, relationType: "subclassed_by" });
+          }
         }
       }
 
@@ -264,7 +345,9 @@ export class GraphEngine implements IEngine {
         const targetName = typeof dep === "string" ? dep : (dep as any)?.target;
         const target = this.getRelated(targetName);
         if (target && target !== node) {
-          target.backlinks.push({ source: node.id, relationType: "required_by" });
+          if (!target.backlinks.some(b => b.source === node.id && b.relationType === "required_by")) {
+            target.backlinks.push({ source: node.id, relationType: "required_by" });
+          }
         }
       }
 
@@ -272,7 +355,9 @@ export class GraphEngine implements IEngine {
         const targetName = typeof used === "string" ? used : (used as any)?.target;
         const target = this.getRelated(targetName);
         if (target && target !== node) {
-          target.backlinks.push({ source: node.id, relationType: "used_by" });
+          if (!target.backlinks.some(b => b.source === node.id && b.relationType === "used_by")) {
+            target.backlinks.push({ source: node.id, relationType: "used_by" });
+          }
         }
       }
     }
@@ -292,9 +377,51 @@ export class GraphEngine implements IEngine {
     return node ? node.backlinks : [];
   }
 
-  public getNodesByEvent(eventName: string): { emitters: string[]; listeners: string[] } {
-    const evKey = eventName.toLowerCase().trim();
-    return this.eventIndex.get(evKey) || { emitters: [], listeners: [] };
+  public getNodesByEvent(eventNameOrModule: string): any {
+    const clean = (eventNameOrModule || "").toLowerCase().trim();
+    if (!clean) {
+      return { query: eventNameOrModule, matchedType: "empty", emitters: [], listeners: [] };
+    }
+
+    // 1. Check if exact event exists in eventIndex
+    if (this.eventIndex.has(clean)) {
+      const res = this.eventIndex.get(clean)!;
+      return {
+        query: eventNameOrModule,
+        matchedType: "event",
+        eventName: eventNameOrModule,
+        emitters: res.emitters,
+        listeners: res.listeners,
+      };
+    }
+
+    // 2. Check if concept/module exists in graph nodes
+    const node = this.getRelated(eventNameOrModule);
+    if (node) {
+      return {
+        query: eventNameOrModule,
+        matchedType: "module",
+        moduleId: node.id,
+        moduleName: node.name,
+        emitsEvents: node.emitsEvents,
+        listensToEvents: node.listensToEvents,
+      };
+    }
+
+    // 3. Partial match across eventIndex keys
+    for (const [evKey, val] of this.eventIndex.entries()) {
+      if (evKey.includes(clean) || clean.includes(evKey)) {
+        return {
+          query: eventNameOrModule,
+          matchedType: "event_partial",
+          eventName: evKey.toUpperCase(),
+          emitters: val.emitters,
+          listeners: val.listeners,
+        };
+      }
+    }
+
+    return { query: eventNameOrModule, matchedType: "not_found", emitters: [], listeners: [] };
   }
 
   public getGotchas(moduleOrTopic?: string): Array<{ moduleId: string; gotchas: string[] }> {
@@ -318,32 +445,94 @@ export class GraphEngine implements IEngine {
     return results;
   }
 
-  public getGraphNeighbors(concept: string, maxDepth: number = 1): any {
+  public getGraphNeighbors(concept: string, maxDepth: number = 1, direction: "in" | "out" | "both" = "both"): any {
     const root = this.getRelated(concept);
     if (!root) return null;
 
-    const visited = new Set<string>([root.id]);
-    const edges: Array<{ source: string; target: string; type: string }> = [];
+    const clampedDepth = Math.max(1, Math.min(3, maxDepth));
+    const visited = new Set<string>([root.id.toLowerCase()]);
+    const nodes: Array<{ id: string; name: string; category: string; description: string; hop: number }> = [
+      { id: root.id, name: root.name, category: root.category, description: root.description, hop: 0 }
+    ];
+    const edges: Array<{ source: string; target: string; type: string; hop: number }> = [];
 
-    // Layer 1
-    if (root.inheritsFrom) edges.push({ source: root.id, target: root.inheritsFrom, type: "inherits" });
-    for (const dep of root.dependsOn) edges.push({ source: root.id, target: dep, type: "depends_on" });
-    for (const m of root.manages) edges.push({ source: root.id, target: m, type: "manages" });
-    for (const u of root.usedBy) {
-      const t = typeof u === "string" ? u : u.target;
-      edges.push({ source: root.id, target: t, type: "used_by" });
-    }
-    for (const b of root.backlinks) {
-      edges.push({ source: b.source, target: root.id, type: b.relationType });
+    let currentHopNodes = [root];
+
+    for (let hop = 1; hop <= clampedDepth; hop++) {
+      const nextHopNodes: GraphNode[] = [];
+
+      for (const curr of currentHopNodes) {
+        // Outgoing edges
+        if (direction === "out" || direction === "both") {
+          if (curr.inheritsFrom) {
+            edges.push({ source: curr.id, target: curr.inheritsFrom, type: "inherits", hop });
+            const parent = this.getRelated(curr.inheritsFrom);
+            if (parent && !visited.has(parent.id.toLowerCase())) {
+              visited.add(parent.id.toLowerCase());
+              nodes.push({ id: parent.id, name: parent.name, category: parent.category, description: parent.description, hop });
+              nextHopNodes.push(parent);
+            }
+          }
+          for (const dep of curr.dependsOn) {
+            const depName = typeof dep === "string" ? dep : (dep as any)?.target;
+            edges.push({ source: curr.id, target: depName, type: "depends_on", hop });
+            const depNode = this.getRelated(depName);
+            if (depNode && !visited.has(depNode.id.toLowerCase())) {
+              visited.add(depNode.id.toLowerCase());
+              nodes.push({ id: depNode.id, name: depNode.name, category: depNode.category, description: depNode.description, hop });
+              nextHopNodes.push(depNode);
+            }
+          }
+          for (const m of curr.manages) {
+            edges.push({ source: curr.id, target: m, type: "manages", hop });
+            const mNode = this.getRelated(m);
+            if (mNode && !visited.has(mNode.id.toLowerCase())) {
+              visited.add(mNode.id.toLowerCase());
+              nodes.push({ id: mNode.id, name: mNode.name, category: mNode.category, description: mNode.description, hop });
+              nextHopNodes.push(mNode);
+            }
+          }
+          for (const u of curr.usedBy) {
+            const t = typeof u === "string" ? u : u.target;
+            edges.push({ source: curr.id, target: t, type: "used_by", hop });
+            const uNode = this.getRelated(t);
+            if (uNode && !visited.has(uNode.id.toLowerCase())) {
+              visited.add(uNode.id.toLowerCase());
+              nodes.push({ id: uNode.id, name: uNode.name, category: uNode.category, description: uNode.description, hop });
+              nextHopNodes.push(uNode);
+            }
+          }
+        }
+
+        // Incoming edges (backlinks)
+        if (direction === "in" || direction === "both") {
+          for (const b of curr.backlinks) {
+            edges.push({ source: b.source, target: curr.id, type: b.relationType, hop });
+            const bNode = this.getRelated(b.source);
+            if (bNode && !visited.has(bNode.id.toLowerCase())) {
+              visited.add(bNode.id.toLowerCase());
+              nodes.push({ id: bNode.id, name: bNode.name, category: bNode.category, description: bNode.description, hop });
+              nextHopNodes.push(bNode);
+            }
+          }
+        }
+      }
+
+      currentHopNodes = nextHopNodes;
+      if (currentHopNodes.length === 0) break;
     }
 
     return {
       root: root.id,
       category: root.category,
       description: root.description,
+      depth: clampedDepth,
+      direction,
+      totalNodes: nodes.length,
+      nodes,
+      edges,
       outgoingEdges: edges.filter(e => e.source === root.id),
       incomingEdges: edges.filter(e => e.target === root.id),
-      allEdges: edges,
     };
   }
 

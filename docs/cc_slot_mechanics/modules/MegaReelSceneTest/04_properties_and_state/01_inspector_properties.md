@@ -1,16 +1,23 @@
 ---
-id: "cc_slot_mechanics:MegaReelSceneTest:properties:inspector_properties"
-title: "MegaReelSceneTest Inspector Properties"
+id: "cc_slot_mechanics:MegaReelSceneTest:api:properties"
+title: "MegaReelSceneTest Inspector Properties & State Schema"
 category: "cc_slot_mechanics"
-tags: ["MegaReelSceneTest", "mega_reel_scene_test", "cc_slot_mechanics", "properties", "inspector"]
+tags: ["MegaReelSceneTest", "mega_reel_scene_test", "cc_slot_mechanics", "properties", "schema"]
 ---
 
-# 📋 MegaReelSceneTest Inspector Properties
+# 📋 `MegaReelSceneTest` Properties & State Schema
 
 ---
 
-## 1. Serialized Fields
+## 1. Inspector Properties
 
-| Property | Type | Default | Description |
-| :--- | :--- | :---: | :--- |
-| **`table`** | `SlotTableMegaModule` | `null` | Serialized property for MegaReelSceneTest |
+| Property Name | Type | Description |
+| :--- | :--- | :--- |
+| **`table`** | `SlotTableMegaModule` | Inspector property in `MegaReelSceneTest` managing runtime table. |
+
+---
+
+## 2. State Invariants
+
+- Properties are wired via Cocos Creator Inspector prefabs.
+- Must not be mutated directly while the table state is in active spin or cascade mode.

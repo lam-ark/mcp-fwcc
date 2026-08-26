@@ -1,48 +1,36 @@
 ---
 id: "cc_core_lib:CommonUtils:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng CommonUtils (share-lib)"
+title: "CommonUtils Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["CommonUtils", "common_utils", "cc_core_lib", "overview", "eno", "share-lib", "guide", "usage"]
+tags: ["CommonUtils", "common_utils", "cc_core_lib", "overview", "eno", "share-lib", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `CommonUtils`
+# 🏛️ `CommonUtils` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/share-lib`  
-> **Namespace**: `eno.CommonUtils` / `globalThis.eno.CommonUtils`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `CommonUtils` Dùng Để Làm Gì? (Purpose & Overview)
-
-`CommonUtils` là một class tiện ích/logic cốt lõi trong thư viện **`share-lib`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/share-lib`
+- **Global Namespace Anchor**: `eno.CommonUtils` / `globalThis.eno.CommonUtils`
+- **Inheritance Hierarchy**: `CommonUtils` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { CommonUtils } = globalThis.eno;
+`CommonUtils` is an essential logic component within **`share-lib`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[CommonUtils]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`updateUtilConfig(key: string, value: any)`**: `void`
-- **`getUtilConfig()`**: `any`
-- **`MD5(e: any)`**: `string`
-- **`findKeyByValue(object: any, value: any)`**: `string`
-- **`convertObjectToArrayKey(object: any)`**: `string[]`
-- **`convertObjectToArray(object: any)`**: `number[]`
-- **`convertElementArrayToString(arr: any[])`**: `string[]`
-- **`convertAssetArrayToObject(arr: any[], removeGameId?: boolean)`**: `any`
-- **`mapObjectKey(obj: any, keysMap: any)`**: `any`
-- **`pickOutRandomElements(array: any[], pickNumber?: number)`**: `any[]`
-- **`generateId()`**: `string`
-- **`uuid()`**: `string`
-- **`formatUserName(userName: string, maxChar?: number)`**: `string`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

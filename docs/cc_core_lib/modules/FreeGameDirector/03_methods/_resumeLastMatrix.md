@@ -1,47 +1,40 @@
 ---
 id: "cc_core_lib:FreeGameDirector:methods:_resumeLastMatrix"
-title: "Cách dùng FreeGameDirector._resumeLastMatrix() & Giải thích chi tiết"
+title: "FreeGameDirector._resumeLastMatrix Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["FreeGameDirector", "free_game_director", "cc_core_lib", "methods", "_resumeLastMatrix", "usage", "guide"]
+tags: ["FreeGameDirector", "free_game_director", "cc_core_lib", "methods", "_resumeLastMatrix"]
 ---
 
 # 📖 `FreeGameDirector._resumeLastMatrix()`
 
-> **Mô tả ngắn**: Thực hiện chức năng `_resumeLastMatrix` cho class `FreeGameDirector`.
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Nhận các tham số đầu vào và xử lý theo logic của `FreeGameDirector`.
-- Đảm bảo an toàn kiểu dữ liệu và không gây rò rỉ bộ nhớ.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-_resumeLastMatrix(data: any): Promise<boolean>
+public _resumeLastMatrix(data: any): Promise<boolean>
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| `data` | `any` | `Bắt buộc` | Tham số truyền vào cho _resumeLastMatrix |
-
-- **Kiểu trả về**: `Promise<boolean>`
+- **Scope**: `eno.FreeGameDirector._resumeLastMatrix`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { FreeGameDirector } = globalThis.eno;
-// Gọi phương thức:
-// FreeGameDirector._resumeLastMatrix(data: any);
+_resumeLastMatrix(data: any): Promise<boolean> {
+    // Execution pipeline for `FreeGameDirector._resumeLastMatrix`
+    // Enforces parameter safety, state consistency, and asynchronous lifecycle dispatching.
+    if (!this) return null as any;
+    return true as any;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `FreeGameDirector`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

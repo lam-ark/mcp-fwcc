@@ -1,20 +1,16 @@
 ---
-id: "cc_slot_mechanics:MegaReelData:methods:methods_index"
+id: "cc_slot_mechanics:MegaReelData:methods:index"
 title: "MegaReelData Methods Master Index"
 category: "cc_slot_mechanics"
 tags: ["MegaReelData", "mega_reel_data", "cc_slot_mechanics", "methods", "index"]
 ---
 
-# 📖 MegaReelData Methods Master Index
+# 📖 `MegaReelData` Methods Master Index
 
 ---
 
-## 1. Declared Methods
+## 1. Declared Method Signatures & Summary
 
-| Method | Parameters | Return Type | Description |
-| :--- | :--- | :--- | :--- |
-| **`onloadExtend()`** | `void` | `void` | Executes onloadExtend logic in MegaReelData |
-| **`getHalfBonusIndex()`** | `void` | `string[]` | Executes getHalfBonusIndex logic in MegaReelData |
-| **`getFullBonusIndex()`** | `void` | `string[]` | Executes getFullBonusIndex logic in MegaReelData |
-| **`formatMegaData()`** | `void` | `object[]` | Executes formatMegaData logic in MegaReelData |
-| **`isSubset()`** | `mainArray: any[], subArray: any[]` | `boolean` | Executes isSubset logic in MegaReelData |
+| Method | Parameters | Return Type | Source Range | Description |
+| :--- | :--- | :--- | :---: | :--- |
+| *Inherits base methods* | `-` | `-` | `-` | Inherits methods from `${inheritsFrom}`. |

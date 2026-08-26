@@ -13,9 +13,9 @@ tags: ["DialogManager", "dialog_manager", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`getDialogData()`** | `void` | `DialogData` | Executes getDialogData operation in `DialogManager`. |
-| **`handleActionOK()`** | `void` | `void` | Executes handleActionOK operation in `DialogManager`. |
-| **`handleActionCancel()`** | `void` | `void` | Executes handleActionCancel operation in `DialogManager`. |
-| **`showDialog()`** | `message: string, actionOK?: any, actionCancel?: any` | `void` | Executes showDialog operation in `DialogManager`. |
-| **`hideDialog()`** | `void` | `void` | Executes hideDialog operation in `DialogManager`. |
-| **`destroy()`** | `void` | `void` | Executes destroy operation in `DialogManager`. |
+| **[`getDialogData()`](./getDialogData.md)** | `void` | `DialogData` | Executes getDialogData operation in `DialogManager`. |
+| **[`handleActionOK()`](./handleActionOK.md)** | `void` | `void` | Executes handleActionOK operation in `DialogManager`. |
+| **[`handleActionCancel()`](./handleActionCancel.md)** | `void` | `void` | Executes handleActionCancel operation in `DialogManager`. |
+| **[`showDialog()`](./showDialog.md)** | `message: string, actionOK?: any, actionCancel?: any` | `void` | Executes showDialog operation in `DialogManager`. |
+| **[`hideDialog()`](./hideDialog.md)** | `void` | `void` | Executes hideDialog operation in `DialogManager`. |
+| **[`destroy()`](./destroy.md)** | `void` | `void` | Executes destroy operation in `DialogManager`. |

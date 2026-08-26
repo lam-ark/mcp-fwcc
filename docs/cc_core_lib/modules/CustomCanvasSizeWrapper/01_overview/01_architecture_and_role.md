@@ -1,40 +1,36 @@
 ---
 id: "cc_core_lib:CustomCanvasSizeWrapper:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng CustomCanvasSizeWrapper (cc-wrap-func)"
+title: "CustomCanvasSizeWrapper Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["CustomCanvasSizeWrapper", "custom_canvas_size_wrapper", "cc_core_lib", "overview", "eno", "cc-wrap-func", "guide", "usage"]
+tags: ["CustomCanvasSizeWrapper", "custom_canvas_size_wrapper", "cc_core_lib", "overview", "eno", "cc-wrap-func", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `CustomCanvasSizeWrapper`
+# 🏛️ `CustomCanvasSizeWrapper` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/cc-wrap-func`  
-> **Namespace**: `eno.CustomCanvasSizeWrapper` / `globalThis.eno.CustomCanvasSizeWrapper`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `CustomCanvasSizeWrapper` Dùng Để Làm Gì? (Purpose & Overview)
-
-`CustomCanvasSizeWrapper` là một class tiện ích/logic cốt lõi trong thư viện **`cc-wrap-func`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/cc-wrap-func`
+- **Global Namespace Anchor**: `eno.CustomCanvasSizeWrapper` / `globalThis.eno.CustomCanvasSizeWrapper`
+- **Inheritance Hierarchy**: `CustomCanvasSizeWrapper` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { CustomCanvasSizeWrapper } = globalThis.eno;
+`CustomCanvasSizeWrapper` is an essential logic component within **`cc-wrap-func`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[CustomCanvasSizeWrapper]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`updateCustomCanvasSize()`**: `void`
-- **`updateWindowOrientation()`**: `void`
-- **`scaleCanvasByOrientation(delay: number)`**: `void`
-- **`isMobile()`**: `boolean`
-- **`onDestroy()`**: `void`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

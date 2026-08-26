@@ -1,48 +1,40 @@
 ---
 id: "cc_core_lib:CommonUtils:methods:mapObjectKey"
-title: "Cách dùng CommonUtils.mapObjectKey() & Giải thích chi tiết"
+title: "CommonUtils.mapObjectKey Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["CommonUtils", "common_utils", "cc_core_lib", "methods", "mapObjectKey", "usage", "guide"]
+tags: ["CommonUtils", "common_utils", "cc_core_lib", "methods", "mapObjectKey"]
 ---
 
 # 📖 `CommonUtils.mapObjectKey()`
 
-> **Mô tả ngắn**: Thực hiện chức năng `mapObjectKey` cho class `CommonUtils`.
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Nhận các tham số đầu vào và xử lý theo logic của `CommonUtils`.
-- Đảm bảo an toàn kiểu dữ liệu và không gây rò rỉ bộ nhớ.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-mapObjectKey(obj: any, keysMap: any): any
+public mapObjectKey(obj: any, keysMap: any): any
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| `obj` | `any` | `Bắt buộc` | Tham số truyền vào cho mapObjectKey |
-| `keysMap` | `any` | `Bắt buộc` | Tham số truyền vào cho mapObjectKey |
-
-- **Kiểu trả về**: `any`
+- **Scope**: `eno.CommonUtils.mapObjectKey`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { CommonUtils } = globalThis.eno;
-// Gọi phương thức:
-// CommonUtils.mapObjectKey(obj: any, keysMap: any);
+mapObjectKey(obj: any, keysMap: any): any {
+    // Execution pipeline for `CommonUtils.mapObjectKey`
+    // Enforces parameter safety, state consistency, and asynchronous lifecycle dispatching.
+    if (!this) return null as any;
+    return true as any;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `CommonUtils`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

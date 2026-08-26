@@ -1,17 +1,24 @@
 ---
-id: "cc_slot_mechanics:StickySymbolModule:properties:inspector_properties"
-title: "StickySymbolModule Inspector Properties"
+id: "cc_slot_mechanics:StickySymbolModule:api:properties"
+title: "StickySymbolModule Inspector Properties & State Schema"
 category: "cc_slot_mechanics"
-tags: ["StickySymbolModule", "sticky_symbol_module", "cc_slot_mechanics", "properties", "inspector"]
+tags: ["StickySymbolModule", "sticky_symbol_module", "cc_slot_mechanics", "properties", "schema"]
 ---
 
-# 📋 StickySymbolModule Inspector Properties
+# 📋 `StickySymbolModule` Properties & State Schema
 
 ---
 
-## 1. Serialized Fields
+## 1. Inspector Properties
 
-| Property | Type | Default | Description |
-| :--- | :--- | :---: | :--- |
-| **`stickyLayer`** | `cc.Node` | `null` | Serialized property for StickySymbolModule |
-| **`stickyPool`** | `SlotSymbolManager` | `null` | Serialized property for StickySymbolModule |
+| Property Name | Type | Description |
+| :--- | :--- | :--- |
+| **`stickyLayer`** | `cc.Node` | Inspector property in `StickySymbolModule` managing runtime stickyLayer. |
+| **`stickyPool`** | `SlotSymbolManager` | Inspector property in `StickySymbolModule` managing runtime stickyPool. |
+
+---
+
+## 2. State Invariants
+
+- Properties are wired via Cocos Creator Inspector prefabs.
+- Must not be mutated directly while the table state is in active spin or cascade mode.

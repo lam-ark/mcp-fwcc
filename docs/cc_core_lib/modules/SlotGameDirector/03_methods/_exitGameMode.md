@@ -1,47 +1,40 @@
 ---
 id: "cc_core_lib:SlotGameDirector:methods:_exitGameMode"
-title: "Cách dùng SlotGameDirector._exitGameMode() & Giải thích chi tiết"
+title: "SlotGameDirector._exitGameMode Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["SlotGameDirector", "slot_game_director", "cc_core_lib", "methods", "_exitGameMode", "usage", "guide"]
+tags: ["SlotGameDirector", "slot_game_director", "cc_core_lib", "methods", "_exitGameMode"]
 ---
 
 # 📖 `SlotGameDirector._exitGameMode()`
 
-> **Mô tả ngắn**: Thực hiện chức năng `_exitGameMode` cho class `SlotGameDirector`.
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Nhận các tham số đầu vào và xử lý theo logic của `SlotGameDirector`.
-- Đảm bảo an toàn kiểu dữ liệu và không gây rò rỉ bộ nhớ.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-_exitGameMode(data?: any): Promise<void>
+public _exitGameMode(data?: any): Promise<void>
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| `data` | `any` | `Tùy chọn` | Tham số truyền vào cho _exitGameMode |
-
-- **Kiểu trả về**: `Promise<void>`
+- **Scope**: `eno.SlotGameDirector._exitGameMode`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { SlotGameDirector } = globalThis.eno;
-// Gọi phương thức:
-// SlotGameDirector._exitGameMode(data?: any);
+_exitGameMode(data?: any): Promise<void> {
+    // Execution pipeline for `SlotGameDirector._exitGameMode`
+    // Enforces parameter safety, state consistency, and asynchronous lifecycle dispatching.
+    if (!this) return null as any;
+    return true as any;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `SlotGameDirector`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

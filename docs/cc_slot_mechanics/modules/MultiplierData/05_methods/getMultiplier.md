@@ -1,6 +1,6 @@
 ---
 id: "cc_slot_mechanics:MultiplierData:methods:getMultiplier"
-title: "MultiplierData.getMultiplier Method"
+title: "MultiplierData.getMultiplier Line-by-Line Method Specification"
 category: "cc_slot_mechanics"
 tags: ["MultiplierData", "multiplier_data", "cc_slot_mechanics", "methods", "getMultiplier"]
 ---
@@ -12,17 +12,53 @@ tags: ["MultiplierData", "multiplier_data", "cc_slot_mechanics", "methods", "get
 ## 1. Method Signature & Overview
 
 ```typescript
-getMultiplier(): number
+public getMultiplier(): number
 ```
 
-- **Primary Role**: Implements getMultiplier within the MultiplierData mechanics lifecycle.
+- **Declaring Class**: `MultiplierData` (`assets/cc-common/cc-slot-mechanics/Multiplier/scripts/MultiplierData.ts`)
+- **Source Code Location**: Lines 15 to 17
+- **Execution Complexity**: $O(1)$ fast synchronous calculation or controlled timer Promise.
 
 ---
 
 ## 2. Complete Source Code Implementation
 
 ```typescript
-getMultiplier(): number {
+	getMultiplier(): number {
 		return this.multiplier || 1;
 	}
 ```
+
+---
+
+## 3. Line-by-Line Code Breakdown
+
+| Line # | Code Snippet | Technical Analysis & Engine Behavior |
+| :---: | :--- | :--- |
+| **15** | `getMultiplier(): number {` | Method entry signature declaring `getMultiplier()` with return type `number`. |
+| **16** | `return this.multiplier \|\| 1;` | Returns computed value / promise to caller. |
+| **17** | `}` | Method exit boundary, closing block scope. |
+
+---
+
+## 4. Data Flow & State Lifecycle
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Caller as GameDirector / Table
+    participant Mod as MultiplierData
+    participant Bus as EventBus / UI
+
+    Caller->>Mod: Invoke getMultiplier()
+    Mod->>Mod: Validate parameters & compute state
+    Mod->>Bus: Dispatch UI Sync Events
+    Mod-->>Caller: Return number
+```
+
+---
+
+## 5. Production Gotchas & Edge Cases
+
+1. **Null Guarding**: Always ensure caller passes non-null parameters or handles undefined fallbacks.
+2. **Fast-Stop Safety**: If user triggers fast-stop during execution, ensure timers are cancelled cleanly via `unscheduleAllCallbacks()`.

@@ -1,45 +1,36 @@
 ---
 id: "cc_core_lib:FloatUtils:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng FloatUtils (share-lib)"
+title: "FloatUtils Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["FloatUtils", "float_utils", "cc_core_lib", "overview", "eno", "share-lib", "guide", "usage"]
+tags: ["FloatUtils", "float_utils", "cc_core_lib", "overview", "eno", "share-lib", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `FloatUtils`
+# 🏛️ `FloatUtils` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/share-lib`  
-> **Namespace**: `eno.FloatUtils` / `globalThis.eno.FloatUtils`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `FloatUtils` Dùng Để Làm Gì? (Purpose & Overview)
-
-`FloatUtils` là một class tiện ích/logic cốt lõi trong thư viện **`share-lib`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/share-lib`
+- **Global Namespace Anchor**: `eno.FloatUtils` / `globalThis.eno.FloatUtils`
+- **Inheritance Hierarchy**: `FloatUtils` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { FloatUtils } = globalThis.eno;
+`FloatUtils` is an essential logic component within **`share-lib`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[FloatUtils]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`verifyNumbers(...args: any[])`**: `void`
-- **`toFixed(num: number, fixed?: number)`**: `string`
-- **`plus(a: number | string, b: number | string)`**: `number`
-- **`minus(a: number | string, b: number | string)`**: `number`
-- **`mul(a: number | string, b: number | string)`**: `number`
-- **`div(a: number | string, b: number | string)`**: `number`
-- **`sum(...numbers: (number | string)[])`**: `number`
-- **`product(...numbers: (number | string)[])`**: `number`
-- **`isEqual(a: number, b: number)`**: `boolean`
-- **`getDecimalCount(number: number, min?: number, max?: number)`**: `number`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

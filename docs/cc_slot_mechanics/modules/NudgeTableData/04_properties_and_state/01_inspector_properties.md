@@ -1,16 +1,23 @@
 ---
-id: "cc_slot_mechanics:NudgeTableData:properties:inspector_properties"
-title: "NudgeTableData Inspector Properties"
+id: "cc_slot_mechanics:NudgeTableData:api:properties"
+title: "NudgeTableData Inspector Properties & State Schema"
 category: "cc_slot_mechanics"
-tags: ["NudgeTableData", "nudge_table_data", "cc_slot_mechanics", "properties", "inspector"]
+tags: ["NudgeTableData", "nudge_table_data", "cc_slot_mechanics", "properties", "schema"]
 ---
 
-# 📋 NudgeTableData Inspector Properties
+# 📋 `NudgeTableData` Properties & State Schema
 
 ---
 
-## 1. Serialized Fields
+## 1. Inspector Properties
 
-| Property | Type | Default | Description |
-| :--- | :--- | :---: | :--- |
-| *None declared* | `-` | `-` | Pure code or dynamically configured component |
+| Property Name | Type | Description |
+| :--- | :--- | :--- |
+| *None declared directly* | `-` | Pure data or code-driven controller |
+
+---
+
+## 2. State Invariants
+
+- Properties are wired via Cocos Creator Inspector prefabs.
+- Must not be mutated directly while the table state is in active spin or cascade mode.

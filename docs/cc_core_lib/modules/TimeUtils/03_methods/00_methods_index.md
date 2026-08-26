@@ -13,12 +13,12 @@ tags: ["TimeUtils", "time_utils", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`toLocalTime()`** | `ts: number, format: string` | `string` | Executes toLocalTime operation in `TimeUtils`. |
-| **`customDateFormat()`** | `date: Date, formatString: string` | `string` | Executes customDateFormat operation in `TimeUtils`. |
-| **`toLocalTimeHHMM()`** | `ts: number` | `string` | Executes toLocalTimeHHMM operation in `TimeUtils`. |
-| **`toLocalClockTime()`** | `ts: number` | `string` | Executes toLocalClockTime operation in `TimeUtils`. |
-| **`getTime()`** | `void` | `string` | Executes getTime operation in `TimeUtils`. |
-| **`formatTimeStamp()`** | `ts: number, timeFormat?: string, breakLine?: boolean` | `string` | Executes formatTimeStamp operation in `TimeUtils`. |
-| **`addZero()`** | `i: number` | `string` | Executes addZero operation in `TimeUtils`. |
-| **`secondsToHHMMSS()`** | `secs: number` | `string` | Executes secondsToHHMMSS operation in `TimeUtils`. |
-| **`getLeftTime()`** | `endTime: number, serverTime: number, millisecond?: number` | `number` | Executes getLeftTime operation in `TimeUtils`. |
+| **[`toLocalTime()`](./toLocalTime.md)** | `ts: number, format: string` | `string` | Executes toLocalTime operation in `TimeUtils`. |
+| **[`customDateFormat()`](./customDateFormat.md)** | `date: Date, formatString: string` | `string` | Executes customDateFormat operation in `TimeUtils`. |
+| **[`toLocalTimeHHMM()`](./toLocalTimeHHMM.md)** | `ts: number` | `string` | Executes toLocalTimeHHMM operation in `TimeUtils`. |
+| **[`toLocalClockTime()`](./toLocalClockTime.md)** | `ts: number` | `string` | Executes toLocalClockTime operation in `TimeUtils`. |
+| **[`getTime()`](./getTime.md)** | `void` | `string` | Executes getTime operation in `TimeUtils`. |
+| **[`formatTimeStamp()`](./formatTimeStamp.md)** | `ts: number, timeFormat?: string, breakLine?: boolean` | `string` | Executes formatTimeStamp operation in `TimeUtils`. |
+| **[`addZero()`](./addZero.md)** | `i: number` | `string` | Executes addZero operation in `TimeUtils`. |
+| **[`secondsToHHMMSS()`](./secondsToHHMMSS.md)** | `secs: number` | `string` | Executes secondsToHHMMSS operation in `TimeUtils`. |
+| **[`getLeftTime()`](./getLeftTime.md)** | `endTime: number, serverTime: number, millisecond?: number` | `number` | Executes getLeftTime operation in `TimeUtils`. |

@@ -1,20 +1,26 @@
 ---
-id: "cc_slot_mechanics:CollectionItem:properties:inspector_properties"
-title: "CollectionItem Inspector Properties"
+id: "cc_slot_mechanics:CollectionItem:api:properties"
+title: "CollectionItem Inspector Properties & State Schema"
 category: "cc_slot_mechanics"
-tags: ["CollectionItem", "collection_item", "cc_slot_mechanics", "properties", "inspector"]
+tags: ["CollectionItem", "collection_item", "cc_slot_mechanics", "properties", "schema"]
 ---
 
-# 📋 CollectionItem Inspector Properties
+# 📋 `CollectionItem` Properties & State Schema
 
 ---
 
-## 1. Serialized Fields
+## 1. Inspector Properties
 
-| Property | Type | Default | Description |
-| :--- | :--- | :---: | :--- |
-| **`sprItem`** | `cc.Sprite` | `null` | Serialized property for CollectionItem |
-| **`lbItemName`** | `cc.Label` | `null` | Serialized property for CollectionItem |
-| **`lbCollection`** | `cc.Label` | `null` | Serialized property for CollectionItem |
-| **`prefix`** | `string` | `''` | Serialized property for CollectionItem |
-| **`itemFrames`** | `cc.SpriteFrame[]` | `[]` | Serialized property for CollectionItem |
+| Property Name | Type | Description |
+| :--- | :--- | :--- |
+| **`sprItem`** | `cc.Sprite` | Inspector property in `CollectionItem` managing runtime sprItem. |
+| **`lbItemName`** | `cc.Label` | Inspector property in `CollectionItem` managing runtime lbItemName. |
+| **`lbCollection`** | `cc.Label` | Inspector property in `CollectionItem` managing runtime lbCollection. |
+| **`itemFrames`** | `cc.SpriteFrame[]` | Inspector property in `CollectionItem` managing runtime itemFrames. |
+
+---
+
+## 2. State Invariants
+
+- Properties are wired via Cocos Creator Inspector prefabs.
+- Must not be mutated directly while the table state is in active spin or cascade mode.

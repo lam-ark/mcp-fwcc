@@ -5,28 +5,37 @@ category: "cc_slot_mechanics"
 tags: ["StickySymbolConfig", "sticky_symbol_config", "cc_slot_mechanics", "overview", "architecture", "mechanics"]
 ---
 
-# 🏛️ StickySymbolConfig Architectural Role & Mechanics Overview
+# 🏛️ `StickySymbolConfig` Architectural Role & Mechanics Overview
+
+- **Mechanics Package**: `assets/cc-common/cc-slot-mechanics/StickySymbol`
+- **Source File**: `assets/cc-common/cc-slot-mechanics/StickySymbol/scripts/StickySymbolConfig.ts`
+- **Class Hierarchy**: `StickySymbolConfig` ➔ `Component`
+- **Subsystem Domain**: StickySymbol Mechanics Engine
 
 ---
 
-## 1. Architectural Mission
+## 1. Mathematical & Engineering Foundation
 
-`StickySymbolConfig` is a core component of the `cc-slot-mechanics` package (`assets/cc-common/cc-slot-mechanics/StickySymbol/scripts/StickySymbolConfig.ts`).
-- **Inheritance Chain**: `StickySymbolConfig` ➔ `Component`
-- **Primary Responsibility**: Provides specialized slot mechanics execution, coordinate mathematics, and state management for advanced slot games.
+`StickySymbolConfig` is a core runtime module within the **StickySymbol Mechanics Engine**.
+
+> **Mathematical Foundation & Formulation**:  
+> Specialized slot mechanics coordinate mathematics and state transitions.
 
 ```mermaid
 graph TD
-    Parent[Component] --> Mod[StickySymbolConfig]
-    Mod --> State[Internal State & Data Pipeline]
-    Mod --> Render[Visual Presentation & Animations]
+    SuperClass[Component] --> TargetClass[StickySymbolConfig]
+    TargetClass --> DataPipeline[Internal State & Data Pipeline]
+    TargetClass --> Orchestrator[SlotTable / Director Orchestrator]
+    TargetClass --> ViewLayer[Visual Rendering & Spine Layers]
 ```
 
 ---
 
-## 2. Key Responsibilities
+## 2. Core Responsibilities & System Invariants
 
-1. **State & Physics Coordination**:
-   - Implements game-specific algorithms and state mutations.
-2. **Director & Writer Integration**:
-   - Dispatches step completion callbacks to `ScriptExecutor` to maintain non-blocking async command queues.
+1. **State & Coordinate Calculation**:
+   - Manages mathematical matrix models, reel coordinates, and bounding box calculations with zero memory leaks.
+2. **Director & Writer Command Pipeline**:
+   - Emits asynchronous step completion signals to `ScriptExecutor` to maintain uninterrupted $60\text{ FPS}$ spin loops.
+3. **Event Bus Communication**:
+   - Subscribes and publishes events: `MECHANIC_EVENT`.

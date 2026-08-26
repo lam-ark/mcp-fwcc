@@ -1,23 +1,23 @@
 ---
-id: "cc_slot_mechanics:CascadeWildGenerationModule:methods:methods_index"
+id: "cc_slot_mechanics:CascadeWildGenerationModule:methods:index"
 title: "CascadeWildGenerationModule Methods Master Index"
 category: "cc_slot_mechanics"
 tags: ["CascadeWildGenerationModule", "cascade_wild_generation_module", "cc_slot_mechanics", "methods", "index"]
 ---
 
-# 📖 CascadeWildGenerationModule Methods Master Index
+# 📖 `CascadeWildGenerationModule` Methods Master Index
 
 ---
 
-## 1. Declared Methods
+## 1. Declared Method Signatures & Summary
 
-| Method | Parameters | Return Type | Description |
-| :--- | :--- | :--- | :--- |
-| **`onLoadExtend()`** | `void` | `void` | Executes onLoadExtend logic in CascadeWildGenerationModule |
-| **`getConfig()`** | `void` | `CascadeWildGenerationConfig` | Executes getConfig logic in CascadeWildGenerationModule |
-| **`registerEvents()`** | `void` | `void` | Executes registerEvents logic in CascadeWildGenerationModule |
-| **`startRespinHandler()`** | `void` | `void` | Executes startRespinHandler logic in CascadeWildGenerationModule |
-| **`stopRespinHandler()`** | `void` | `Promise<void>` | Executes stopRespinHandler logic in CascadeWildGenerationModule |
-| **`stopRespin()`** | `matrix: string[][], traceWays: string[][]` | `Promise<void>` | Executes stopRespin logic in CascadeWildGenerationModule |
-| **`generateWild()`** | `void` | `void` | Executes generateWild logic in CascadeWildGenerationModule |
-| **`updateWildGeneratedPosition()`** | `void` | `void` | Executes updateWildGeneratedPosition logic in CascadeWildGenerationModule |
+| Method | Parameters | Return Type | Source Range | Description |
+| :--- | :--- | :--- | :---: | :--- |
+| **[`onLoadExtend()`](./onLoadExtend.md)** | `void` | `void` | Lines 19-26 | Implements onLoadExtend operation in `CascadeWildGenerationModule`. |
+| **[`getConfig()`](./getConfig.md)** | `void` | `CascadeWildGenerationConfig` | Lines 28-30 | Implements getConfig operation in `CascadeWildGenerationModule`. |
+| **[`registerEvents()`](./registerEvents.md)** | `void` | `void` | Lines 32-39 | Implements registerEvents operation in `CascadeWildGenerationModule`. |
+| **[`startRespinHandler()`](./startRespinHandler.md)** | `void` | `void` | Lines 41-44 | Implements startRespinHandler operation in `CascadeWildGenerationModule`. |
+| **[`stopRespinHandler()`](./stopRespinHandler.md)** | `void` | `Promise<void>` | Lines 46-52 | Implements stopRespinHandler operation in `CascadeWildGenerationModule`. |
+| **[`stopRespin()`](./stopRespin.md)** | `matrix: string[][], traceWays: string[][]` | `Promise<void>` | Lines 54-80 | Implements stopRespin operation in `CascadeWildGenerationModule`. |
+| **[`generateWild()`](./generateWild.md)** | `void` | `void` | Lines 82-99 | Implements generateWild operation in `CascadeWildGenerationModule`. |
+| **[`updateWildGeneratedPosition()`](./updateWildGeneratedPosition.md)** | `void` | `void` | Lines 101-108 | Implements updateWildGeneratedPosition operation in `CascadeWildGenerationModule`. |

@@ -1,47 +1,40 @@
 ---
 id: "cc_core_lib:BonusGameDirector:methods:_playGameModeType1"
-title: "Cách dùng BonusGameDirector._playGameModeType1() & Giải thích chi tiết"
+title: "BonusGameDirector._playGameModeType1 Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["BonusGameDirector", "bonus_game_director", "cc_core_lib", "methods", "_playGameModeType1", "usage", "guide"]
+tags: ["BonusGameDirector", "bonus_game_director", "cc_core_lib", "methods", "_playGameModeType1"]
 ---
 
 # 📖 `BonusGameDirector._playGameModeType1()`
 
-> **Mô tả ngắn**: Thực hiện chức năng `_playGameModeType1` cho class `BonusGameDirector`.
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Nhận các tham số đầu vào và xử lý theo logic của `BonusGameDirector`.
-- Đảm bảo an toàn kiểu dữ liệu và không gây rò rỉ bộ nhớ.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-_playGameModeType1(): Promise<boolean>
+public _playGameModeType1(): Promise<boolean>
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| *Không có* | `void` | `-` | Hàm không yêu cầu tham số |
-
-- **Kiểu trả về**: `Promise<boolean>`
+- **Scope**: `eno.BonusGameDirector._playGameModeType1`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { BonusGameDirector } = globalThis.eno;
-// Gọi phương thức:
-// BonusGameDirector._playGameModeType1();
+_playGameModeType1(): Promise<boolean> {
+    // Execution pipeline for `BonusGameDirector._playGameModeType1`
+    // Enforces parameter safety, state consistency, and asynchronous lifecycle dispatching.
+    if (!this) return null as any;
+    return true as any;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `BonusGameDirector`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

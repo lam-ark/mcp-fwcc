@@ -18,6 +18,6 @@ tags: ["WaitingSceneManager", "waiting_scene_manager", "cc_core_lib", "propertie
 
 ---
 
-## 2. State Mutation Lifecycle
+## 2. State Mutation Guardrails
 
-All state fields in `WaitingSceneManager` are initialized during instantiation/registration and mutated during explicit lifecycle method calls. Direct property mutation outside defined methods is strictly discouraged.
+All state fields in `WaitingSceneManager` must be initialized during instance registration and modified strictly via designated lifecycle methods. Direct mutation from outside modules is strongly discouraged to maintain state predictability.

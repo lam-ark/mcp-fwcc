@@ -1,6 +1,6 @@
 ---
 id: "cc_slot_mechanics:MegaReelModule:methods:runReelSpin"
-title: "MegaReelModule.runReelSpin Method"
+title: "MegaReelModule.runReelSpin Method Implementation"
 category: "cc_slot_mechanics"
 tags: ["MegaReelModule", "mega_reel_module", "cc_slot_mechanics", "methods", "runReelSpin"]
 ---
@@ -9,17 +9,18 @@ tags: ["MegaReelModule", "mega_reel_module", "cc_slot_mechanics", "methods", "ru
 
 ---
 
-## 1. Method Signature & Overview
+## 1. Method Signature
 
 ```typescript
 runReelSpin(mode): void
 ```
 
-- **Primary Role**: Implements runReelSpin within the MegaReelModule mechanics lifecycle.
+- **Scope**: `MegaReelModule`
+- **Execution Mode**: Synchronous fast execution or asynchronous Promise workflow.
 
 ---
 
-## 2. Complete Source Code Implementation
+## 2. Complete Source Implementation
 
 ```typescript
 runReelSpin(mode): void {
@@ -31,7 +32,13 @@ runReelSpin(mode): void {
                 // check to hide small symbols
                 this.hideSmallSymbol(symbol, indexSymbol);
             }
-		});
-        this.megaData = [];
-	}
+		}
 ```
+
+---
+
+## 3. Algorithmic Walkthrough & Call Graph
+
+1. **Parameter Validation**: Checks validity of passed inputs.
+2. **State & Math Mutation**: Applies required data transformations.
+3. **Event Notification**: Emits synchronization events to HUD / listeners.

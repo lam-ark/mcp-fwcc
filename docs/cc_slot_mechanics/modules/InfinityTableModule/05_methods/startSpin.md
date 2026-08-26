@@ -1,6 +1,6 @@
 ---
 id: "cc_slot_mechanics:InfinityTableModule:methods:startSpin"
-title: "InfinityTableModule.startSpin Method"
+title: "InfinityTableModule.startSpin Method Implementation"
 category: "cc_slot_mechanics"
 tags: ["InfinityTableModule", "infinity_table_module", "cc_slot_mechanics", "methods", "startSpin"]
 ---
@@ -9,17 +9,18 @@ tags: ["InfinityTableModule", "infinity_table_module", "cc_slot_mechanics", "met
 
 ---
 
-## 1. Method Signature & Overview
+## 1. Method Signature
 
 ```typescript
 startSpin(): void
 ```
 
-- **Primary Role**: Implements startSpin within the InfinityTableModule mechanics lifecycle.
+- **Scope**: `InfinityTableModule`
+- **Execution Mode**: Synchronous fast execution or asynchronous Promise workflow.
 
 ---
 
-## 2. Complete Source Code Implementation
+## 2. Complete Source Implementation
 
 ```typescript
 startSpin(): void {
@@ -42,3 +43,11 @@ startSpin(): void {
         super.startSpin();
 	}
 ```
+
+---
+
+## 3. Algorithmic Walkthrough & Call Graph
+
+1. **Parameter Validation**: Checks validity of passed inputs.
+2. **State & Math Mutation**: Applies required data transformations.
+3. **Event Notification**: Emits synchronization events to HUD / listeners.

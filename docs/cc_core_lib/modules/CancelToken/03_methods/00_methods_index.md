@@ -13,8 +13,8 @@ tags: ["CancelToken", "cancel_token", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`isCancelled()`** | `void` | `boolean` | Executes isCancelled operation in `CancelToken`. |
-| **`reason()`** | `void` | `any` | Executes reason operation in `CancelToken`. |
-| **`addListener()`** | `listener: () => void` | `void` | Executes addListener operation in `CancelToken`. |
-| **`removeListener()`** | `listener: () => void` | `void` | Executes removeListener operation in `CancelToken`. |
-| **`cancel()`** | `reason?: any` | `void` | Executes cancel operation in `CancelToken`. |
+| **[`isCancelled()`](./isCancelled.md)** | `void` | `boolean` | Executes isCancelled operation in `CancelToken`. |
+| **[`reason()`](./reason.md)** | `void` | `any` | Executes reason operation in `CancelToken`. |
+| **[`addListener()`](./addListener.md)** | `listener: () => void` | `void` | Executes addListener operation in `CancelToken`. |
+| **[`removeListener()`](./removeListener.md)** | `listener: () => void` | `void` | Executes removeListener operation in `CancelToken`. |
+| **[`cancel()`](./cancel.md)** | `reason?: any` | `void` | Executes cancel operation in `CancelToken`. |

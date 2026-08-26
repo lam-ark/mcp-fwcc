@@ -13,8 +13,8 @@ tags: ["SpineUtils", "spine_utils", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`getAnimationsName()`** | `spine: sp.Skeleton` | `string[]` | Executes getAnimationsName operation in `SpineUtils`. |
-| **`getAnimationDuration()`** | `spine: sp.Skeleton, name: string` | `number` | Executes getAnimationDuration operation in `SpineUtils`. |
-| **`hasAnimation()`** | `spine: sp.Skeleton, name: string` | `boolean` | Executes hasAnimation operation in `SpineUtils`. |
-| **`hasSkin()`** | `spine: sp.Skeleton, name: string` | `boolean` | Executes hasSkin operation in `SpineUtils`. |
-| **`setMixAllAnims()`** | `spine: sp.Skeleton, mixTime?: number` | `void` | Executes setMixAllAnims operation in `SpineUtils`. |
+| **[`getAnimationsName()`](./getAnimationsName.md)** | `spine: sp.Skeleton` | `string[]` | Executes getAnimationsName operation in `SpineUtils`. |
+| **[`getAnimationDuration()`](./getAnimationDuration.md)** | `spine: sp.Skeleton, name: string` | `number` | Executes getAnimationDuration operation in `SpineUtils`. |
+| **[`hasAnimation()`](./hasAnimation.md)** | `spine: sp.Skeleton, name: string` | `boolean` | Executes hasAnimation operation in `SpineUtils`. |
+| **[`hasSkin()`](./hasSkin.md)** | `spine: sp.Skeleton, name: string` | `boolean` | Executes hasSkin operation in `SpineUtils`. |
+| **[`setMixAllAnims()`](./setMixAllAnims.md)** | `spine: sp.Skeleton, mixTime?: number` | `void` | Executes setMixAllAnims operation in `SpineUtils`. |

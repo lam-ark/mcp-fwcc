@@ -13,4 +13,4 @@ tags: ["LightningGame", "lightning_game", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`destroy()`** | `void` | `void` | Executes destroy operation in `LightningGame`. |
+| **[`destroy()`](./destroy.md)** | `void` | `void` | Executes destroy operation in `LightningGame`. |

@@ -1,36 +1,36 @@
 ---
 id: "cc_core_lib:BetScatterPayManager:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng BetScatterPayManager (slot-base-logic)"
+title: "BetScatterPayManager Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["BetScatterPayManager", "bet_scatter_pay_manager", "cc_core_lib", "overview", "eno", "slot-base-logic", "guide", "usage"]
+tags: ["BetScatterPayManager", "bet_scatter_pay_manager", "cc_core_lib", "overview", "eno", "slot-base-logic", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `BetScatterPayManager`
+# 🏛️ `BetScatterPayManager` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/slot-base-logic`  
-> **Namespace**: `eno.BetScatterPayManager` / `globalThis.eno.BetScatterPayManager`  
-> **Kế thừa**: `BetManager`
-
----
-
-## 🎯 1. `BetScatterPayManager` Dùng Để Làm Gì? (Purpose & Overview)
-
-`BetScatterPayManager` là một class tiện ích/logic cốt lõi trong thư viện **`slot-base-logic`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/slot-base-logic`
+- **Global Namespace Anchor**: `eno.BetScatterPayManager` / `globalThis.eno.BetScatterPayManager`
+- **Inheritance Hierarchy**: `BetScatterPayManager` ➔ `BetManager`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { BetScatterPayManager } = globalThis.eno;
+`BetScatterPayManager` is an essential logic component within **`slot-base-logic`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[BetManager] --> TargetClass[BetScatterPayManager]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`setTotalCredit(amount: number)`**: `void`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

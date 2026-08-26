@@ -13,5 +13,5 @@ tags: ["GameInfoManager", "game_info_manager", "cc_core_lib", "methods", "index"
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`init()`** | `void` | `void` | Executes init operation in `GameInfoManager`. |
-| **`openInfo()`** | `void` | `void` | Executes openInfo operation in `GameInfoManager`. |
+| **[`init()`](./init.md)** | `void` | `void` | Executes init operation in `GameInfoManager`. |
+| **[`openInfo()`](./openInfo.md)** | `void` | `void` | Executes openInfo operation in `GameInfoManager`. |

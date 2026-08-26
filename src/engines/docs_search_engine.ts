@@ -281,19 +281,51 @@ export class DocsSearchEngine implements IEngine {
       results = results.filter((r: any) => String(r.tags || "").toLowerCase().includes(tagLower));
     }
 
-    return results.slice(0, limit).map((r: any) => {
-      const rawTags = r.tags ? String(r.tags).split(" ").filter(Boolean) : [];
+    const qClean = (query || "").toLowerCase().trim();
+    const isQuoted = qClean.startsWith('"') && qClean.endsWith('"');
+    const exactTarget = isQuoted ? qClean.slice(1, -1).trim() : qClean;
+
+    const deduplicatedResults: SearchResultItem[] = [];
+    const seenPaths = new Set<string>();
+
+    for (const r of results) {
       const normalizedRelPath = String(r.relPath || "").replace(/\\/g, "/");
-      return {
-        score: r.score,
-        topic: r.topic,
-        section: r.section,
-        relPath: normalizedRelPath,
-        category: r.category,
-        tags: rawTags,
-        snippet: extractSmartSnippet(r.content, query, 320),
-      };
-    });
+      if (!seenPaths.has(normalizedRelPath)) {
+        seenPaths.add(normalizedRelPath);
+        const rawTags = r.tags ? String(r.tags).split(" ").filter(Boolean) : [];
+        
+        let finalScore = r.score;
+        const topicLower = String(r.topic || "").toLowerCase();
+        const symbolsLower = String(r.codeSymbols || "").toLowerCase();
+        const methodsLower = String(r.methods || "").toLowerCase();
+
+        // Exact match boost
+        if (topicLower === exactTarget || symbolsLower.split(" ").includes(exactTarget) || methodsLower.split(" ").includes(exactTarget)) {
+          finalScore *= 2.5;
+        } else if (symbolsLower.includes(exactTarget) || topicLower.includes(exactTarget)) {
+          finalScore *= 1.5;
+        }
+
+        deduplicatedResults.push({
+          score: finalScore,
+          topic: r.topic,
+          section: r.section,
+          relPath: normalizedRelPath,
+          category: r.category,
+          tags: rawTags,
+          snippet: extractSmartSnippet(r.content, query, 320),
+        });
+
+        if (deduplicatedResults.length >= limit) {
+          break;
+        }
+      }
+    }
+
+    // Sort by finalScore descending
+    deduplicatedResults.sort((a, b) => b.score - a.score);
+
+    return deduplicatedResults.slice(0, limit);
   }
 
   public getChunk(chunkIdOrQuery: string): { found: boolean; chunk?: DocChunk } {

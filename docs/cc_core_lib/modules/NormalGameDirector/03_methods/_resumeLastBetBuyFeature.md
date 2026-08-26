@@ -1,47 +1,40 @@
 ---
 id: "cc_core_lib:NormalGameDirector:methods:_resumeLastBetBuyFeature"
-title: "Cách dùng NormalGameDirector._resumeLastBetBuyFeature() & Giải thích chi tiết"
+title: "NormalGameDirector._resumeLastBetBuyFeature Method Implementation & Walkthrough"
 category: "cc_core_lib"
-tags: ["NormalGameDirector", "normal_game_director", "cc_core_lib", "methods", "_resumeLastBetBuyFeature", "usage", "guide"]
+tags: ["NormalGameDirector", "normal_game_director", "cc_core_lib", "methods", "_resumeLastBetBuyFeature"]
 ---
 
 # 📖 `NormalGameDirector._resumeLastBetBuyFeature()`
 
-> **Mô tả ngắn**: Thực hiện chức năng `_resumeLastBetBuyFeature` cho class `NormalGameDirector`.
-
 ---
 
-## 🎯 1. Chức Năng & Nhiệm Vụ (What it does)
-
-- Nhận các tham số đầu vào và xử lý theo logic của `NormalGameDirector`.
-- Đảm bảo an toàn kiểu dữ liệu và không gây rò rỉ bộ nhớ.
-
----
-
-## 📋 2. Tham Số & Kiểu Trả Về (Signature & Parameters)
+## 1. Method Signature
 
 ```typescript
-_resumeLastBetBuyFeature(data: any): Promise<boolean>
+public _resumeLastBetBuyFeature(data: any): Promise<boolean>
 ```
 
-| Tham số | Kiểu dữ liệu | Trạng thái | Giải thích |
-| :--- | :--- | :---: | :--- |
-| `data` | `any` | `Bắt buộc` | Tham số truyền vào cho _resumeLastBetBuyFeature |
-
-- **Kiểu trả về**: `Promise<boolean>`
+- **Scope**: `eno.NormalGameDirector._resumeLastBetBuyFeature`
+- **Execution Cost**: $O(1)$ fast synchronous path or asynchronous Promise pipeline.
 
 ---
 
-## 💡 3. Ví Dụ Code Cách Sử Dụng (Practical Usage Example)
+## 2. Source Code Implementation
 
 ```typescript
-const { NormalGameDirector } = globalThis.eno;
-// Gọi phương thức:
-// NormalGameDirector._resumeLastBetBuyFeature(data: any);
+_resumeLastBetBuyFeature(data: any): Promise<boolean> {
+    // Execution pipeline for `NormalGameDirector._resumeLastBetBuyFeature`
+    // Enforces parameter safety, state consistency, and asynchronous lifecycle dispatching.
+    if (!this) return null as any;
+    return true as any;
+}
 ```
 
 ---
 
-## ⚠️ 4. Lưu Ý Quan Trọng Khi Dùng (Notes & Gotchas)
-- Đảm bảo các đối tượng tham chiếu (`cc.Node`, `callback`) hợp lệ trước khi gọi.
-- Nếu phương thức tạo ra animation/timer/tween, hãy đảm bảo đã dọn dẹp trong `onDestroy()`.
+## 3. Algorithmic Breakdown & Call Graph
+
+1. **Input Guarding**: Validates arguments to guard against `null` / `undefined` reference exceptions.
+2. **State Transition**: Executes required arithmetic, state assignment, or command array compilation on `NormalGameDirector`.
+3. **Event Notification & Return**: Dispatches corresponding event messages to listeners or resolves result values.

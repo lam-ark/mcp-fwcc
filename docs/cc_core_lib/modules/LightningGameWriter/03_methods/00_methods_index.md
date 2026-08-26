@@ -13,9 +13,9 @@ tags: ["LightningGameWriter", "lightning_game_writer", "cc_core_lib", "methods",
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`makeScriptResultReceived()`** | `void` | `IScriptWriter[]` | Executes makeScriptResultReceived operation in `LightningGameWriter`. |
-| **`makeScriptPlayGameMode()`** | `void` | `IScriptWriter[]` | Executes makeScriptPlayGameMode operation in `LightningGameWriter`. |
-| **`makeScriptShowResult()`** | `void` | `IScriptWriter[]` | Executes makeScriptShowResult operation in `LightningGameWriter`. |
-| **`makeScriptResumeMode()`** | `void` | `IScriptWriter[]` | Executes makeScriptResumeMode operation in `LightningGameWriter`. |
-| **`makeScriptSpinClickLightning()`** | `void` | `IScriptWriter[]` | Executes makeScriptSpinClickLightning operation in `LightningGameWriter`. |
-| **`makeScriptExitGameMode()`** | `void` | `IScriptWriter[]` | Executes makeScriptExitGameMode operation in `LightningGameWriter`. |
+| **[`makeScriptResultReceived()`](./makeScriptResultReceived.md)** | `void` | `IScriptWriter[]` | Executes makeScriptResultReceived operation in `LightningGameWriter`. |
+| **[`makeScriptPlayGameMode()`](./makeScriptPlayGameMode.md)** | `void` | `IScriptWriter[]` | Executes makeScriptPlayGameMode operation in `LightningGameWriter`. |
+| **[`makeScriptShowResult()`](./makeScriptShowResult.md)** | `void` | `IScriptWriter[]` | Executes makeScriptShowResult operation in `LightningGameWriter`. |
+| **[`makeScriptResumeMode()`](./makeScriptResumeMode.md)** | `void` | `IScriptWriter[]` | Executes makeScriptResumeMode operation in `LightningGameWriter`. |
+| **[`makeScriptSpinClickLightning()`](./makeScriptSpinClickLightning.md)** | `void` | `IScriptWriter[]` | Executes makeScriptSpinClickLightning operation in `LightningGameWriter`. |
+| **[`makeScriptExitGameMode()`](./makeScriptExitGameMode.md)** | `void` | `IScriptWriter[]` | Executes makeScriptExitGameMode operation in `LightningGameWriter`. |

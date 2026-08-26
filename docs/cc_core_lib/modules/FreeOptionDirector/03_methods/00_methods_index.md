@@ -13,4 +13,4 @@ tags: ["FreeOptionDirector", "free_option_director", "cc_core_lib", "methods", "
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`_gameFinish()`** | `data: any` | `Promise<boolean>` | Executes _gameFinish operation in `FreeOptionDirector`. |
+| **[`_gameFinish()`](./_gameFinish.md)** | `data: any` | `Promise<boolean>` | Executes _gameFinish operation in `FreeOptionDirector`. |

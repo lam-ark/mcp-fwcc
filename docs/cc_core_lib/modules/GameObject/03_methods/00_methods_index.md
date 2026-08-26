@@ -13,4 +13,4 @@ tags: ["GameObject", "game_object", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setGameObject()`** | `game: Game` | `void` | Executes setGameObject operation in `GameObject`. |
+| **[`setGameObject()`](./setGameObject.md)** | `game: Game` | `void` | Executes setGameObject operation in `GameObject`. |

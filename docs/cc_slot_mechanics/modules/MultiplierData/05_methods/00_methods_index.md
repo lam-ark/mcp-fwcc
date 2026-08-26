@@ -1,16 +1,16 @@
 ---
-id: "cc_slot_mechanics:MultiplierData:methods:methods_index"
+id: "cc_slot_mechanics:MultiplierData:methods:index"
 title: "MultiplierData Methods Master Index"
 category: "cc_slot_mechanics"
 tags: ["MultiplierData", "multiplier_data", "cc_slot_mechanics", "methods", "index"]
 ---
 
-# 📖 MultiplierData Methods Master Index
+# 📖 `MultiplierData` Methods Master Index
 
 ---
 
-## 1. Declared Methods
+## 1. Declared Method Signatures & Summary
 
-| Method | Parameters | Return Type | Description |
-| :--- | :--- | :--- | :--- |
-| **`getMultiplier()`** | `void` | `number` | Executes getMultiplier logic in MultiplierData |
+| Method | Parameters | Return Type | Source Range | Description |
+| :--- | :--- | :--- | :---: | :--- |
+| **[`getMultiplier()`](./getMultiplier.md)** | `void` | `number` | Lines 15-17 | Implements getMultiplier operation in `MultiplierData`. |

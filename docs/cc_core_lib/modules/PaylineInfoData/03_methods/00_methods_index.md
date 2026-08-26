@@ -13,6 +13,6 @@ tags: ["PaylineInfoData", "payline_info_data", "cc_core_lib", "methods", "index"
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setText()`** | `winText: any, lineText: any, creditText: any` | `void` | Executes setText operation in `PaylineInfoData`. |
-| **`setPaylineInfo()`** | `paylineInfo: any` | `void` | Executes setPaylineInfo operation in `PaylineInfoData`. |
-| **`setShowing()`** | `showing: any` | `void` | Executes setShowing operation in `PaylineInfoData`. |
+| **[`setText()`](./setText.md)** | `winText: any, lineText: any, creditText: any` | `void` | Executes setText operation in `PaylineInfoData`. |
+| **[`setPaylineInfo()`](./setPaylineInfo.md)** | `paylineInfo: any` | `void` | Executes setPaylineInfo operation in `PaylineInfoData`. |
+| **[`setShowing()`](./setShowing.md)** | `showing: any` | `void` | Executes setShowing operation in `PaylineInfoData`. |

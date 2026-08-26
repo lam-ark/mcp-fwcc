@@ -1,41 +1,36 @@
 ---
 id: "cc_core_lib:BaseDirector:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng BaseDirector (slot-base-logic)"
+title: "BaseDirector Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["BaseDirector", "base_director", "cc_core_lib", "overview", "eno", "slot-base-logic", "guide", "usage"]
+tags: ["BaseDirector", "base_director", "cc_core_lib", "overview", "eno", "slot-base-logic", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `BaseDirector`
+# 🏛️ `BaseDirector` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/slot-base-logic`  
-> **Namespace**: `eno.BaseDirector` / `globalThis.eno.BaseDirector`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `BaseDirector` Dùng Để Làm Gì? (Purpose & Overview)
-
-`BaseDirector` là một class tiện ích/logic cốt lõi trong thư viện **`slot-base-logic`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/slot-base-logic`
+- **Global Namespace Anchor**: `eno.BaseDirector` / `globalThis.eno.BaseDirector`
+- **Inheritance Hierarchy**: `BaseDirector` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { BaseDirector } = globalThis.eno;
+`BaseDirector` is an essential logic component within **`slot-base-logic`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[BaseDirector]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`runAction(actionName: any, data?: any)`**: `Promise<any>`
-- **`executeNextScript(actionName: any)`**: `void`
-- **`onFinishScript(actionName: any)`**: `void`
-- **`onResetAllScripts()`**: `void`
-- **`_exitGameMode(data?: any)`**: `Promise<void>`
-- **`_playResumeMode(data?: any)`**: `Promise<boolean>`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

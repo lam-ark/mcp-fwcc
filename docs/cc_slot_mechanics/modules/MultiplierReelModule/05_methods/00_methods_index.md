@@ -1,21 +1,21 @@
 ---
-id: "cc_slot_mechanics:MultiplierReelModule:methods:methods_index"
+id: "cc_slot_mechanics:MultiplierReelModule:methods:index"
 title: "MultiplierReelModule Methods Master Index"
 category: "cc_slot_mechanics"
 tags: ["MultiplierReelModule", "multiplier_reel_module", "cc_slot_mechanics", "methods", "index"]
 ---
 
-# 📖 MultiplierReelModule Methods Master Index
+# 📖 `MultiplierReelModule` Methods Master Index
 
 ---
 
-## 1. Declared Methods
+## 1. Declared Method Signatures & Summary
 
-| Method | Parameters | Return Type | Description |
-| :--- | :--- | :--- | :--- |
-| **`onLoadExtend()`** | `void` | `void` | Executes onLoadExtend logic in MultiplierReelModule |
-| **`registerEvents()`** | `void` | `void` | Executes registerEvents logic in MultiplierReelModule |
-| **`showMultiplier()`** | `void` | `void` | Executes showMultiplier logic in MultiplierReelModule |
-| **`resetMultiplier()`** | `void` | `void` | Executes resetMultiplier logic in MultiplierReelModule |
-| **`initReel()`** | `void` | `void` | Executes initReel logic in MultiplierReelModule |
-| **`resetAllEffectAndTasks()`** | `void` | `void` | Executes resetAllEffectAndTasks logic in MultiplierReelModule |
+| Method | Parameters | Return Type | Source Range | Description |
+| :--- | :--- | :--- | :---: | :--- |
+| **[`onLoadExtend()`](./onLoadExtend.md)** | `void` | `void` | Lines 17-22 | Implements onLoadExtend operation in `MultiplierReelModule`. |
+| **[`registerEvents()`](./registerEvents.md)** | `void` | `void` | Lines 24-27 | Implements registerEvents operation in `MultiplierReelModule`. |
+| **[`showMultiplier()`](./showMultiplier.md)** | `void` | `void` | Lines 29-35 | Implements showMultiplier operation in `MultiplierReelModule`. |
+| **[`resetMultiplier()`](./resetMultiplier.md)** | `void` | `void` | Lines 37-41 | Implements resetMultiplier operation in `MultiplierReelModule`. |
+| **[`initReel()`](./initReel.md)** | `void` | `void` | Lines 43-50 | Implements initReel operation in `MultiplierReelModule`. |
+| **[`resetAllEffectAndTasks()`](./resetAllEffectAndTasks.md)** | `void` | `void` | Lines 52-54 | Implements resetAllEffectAndTasks operation in `MultiplierReelModule`. |

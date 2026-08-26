@@ -1,6 +1,6 @@
 ---
 id: "cc_slot_mechanics:HorizontalCascadeSceneTest:methods:stopWithRandomMatrix"
-title: "HorizontalCascadeSceneTest.stopWithRandomMatrix Method"
+title: "HorizontalCascadeSceneTest.stopWithRandomMatrix Line-by-Line Method Specification"
 category: "cc_slot_mechanics"
 tags: ["HorizontalCascadeSceneTest", "horizontal_cascade_scene_test", "cc_slot_mechanics", "methods", "stopWithRandomMatrix"]
 ---
@@ -12,17 +12,19 @@ tags: ["HorizontalCascadeSceneTest", "horizontal_cascade_scene_test", "cc_slot_m
 ## 1. Method Signature & Overview
 
 ```typescript
-stopWithRandomMatrix(): void
+public stopWithRandomMatrix(): void
 ```
 
-- **Primary Role**: Implements stopWithRandomMatrix within the HorizontalCascadeSceneTest mechanics lifecycle.
+- **Declaring Class**: `HorizontalCascadeSceneTest` (`assets/cc-common/cc-slot-mechanics/HorizontalCascade/scripts/HorizontalCascadeSceneTest.ts`)
+- **Source Code Location**: Lines 25 to 38
+- **Execution Complexity**: $O(1)$ fast synchronous calculation or controlled timer Promise.
 
 ---
 
 ## 2. Complete Source Code Implementation
 
 ```typescript
-stopWithRandomMatrix(): void {
+	stopWithRandomMatrix(): void {
         const slotData = this.table.getComponent(HorizontalTableData);
         slotData["matrix"] = [2,3,3,2,3].map(String);
 		this.table.stopSpin();
@@ -37,3 +39,48 @@ stopWithRandomMatrix(): void {
 		}, 2);
 	}
 ```
+
+---
+
+## 3. Line-by-Line Code Breakdown
+
+| Line # | Code Snippet | Technical Analysis & Engine Behavior |
+| :---: | :--- | :--- |
+| **25** | `stopWithRandomMatrix(): void {` | Method entry signature declaring `stopWithRandomMatrix()` with return type `void`. |
+| **26** | `const slotData = this.table.getComponent(HorizontalTableData);` | Local variable initialization allocating `slotData`. |
+| **27** | `slotData["matrix"] = [2,3,3,2,3].map(String);` | Applies operational logic and state mutation. |
+| **28** | `this.table.stopSpin();` | Applies operational logic and state mutation. |
+| **29** | `` | Applies operational logic and state mutation. |
+| **30** | `this.scheduleOnce(() => {` | Schedules delayed execution callback using Cocos Creator timer. |
+| **31** | `// fake respin` | Applies operational logic and state mutation. |
+| **32** | `const cascadeData = this.cascadeModule.getComponent(HorizontalCascadeData);` | Local variable initialization allocating `cascadeData`. |
+| **33** | `cascadeData["matrix"] = slotData["matrix"];` | Applies operational logic and state mutation. |
+| **34** | `cascadeData["traceWay"] = [2];` | Applies operational logic and state mutation. |
+| **35** | `this.cascadeModule.startRespin(null, null);` | Applies operational logic and state mutation. |
+| **36** | `this.stopRespin();` | Applies operational logic and state mutation. |
+| **37** | `}, 2);` | Applies operational logic and state mutation. |
+| **38** | `}` | Method exit boundary, closing block scope. |
+
+---
+
+## 4. Data Flow & State Lifecycle
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Caller as GameDirector / Table
+    participant Mod as HorizontalCascadeSceneTest
+    participant Bus as EventBus / UI
+
+    Caller->>Mod: Invoke stopWithRandomMatrix()
+    Mod->>Mod: Validate parameters & compute state
+    Mod->>Bus: Dispatch UI Sync Events
+    Mod-->>Caller: Return void
+```
+
+---
+
+## 5. Production Gotchas & Edge Cases
+
+1. **Null Guarding**: Always ensure caller passes non-null parameters or handles undefined fallbacks.
+2. **Fast-Stop Safety**: If user triggers fast-stop during execution, ensure timers are cancelled cleanly via `unscheduleAllCallbacks()`.

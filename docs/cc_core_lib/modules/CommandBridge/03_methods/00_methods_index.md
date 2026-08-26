@@ -13,6 +13,6 @@ tags: ["CommandBridge", "command_bridge", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`registerEvent()`** | `event: string, callback: Function` | `void` | Executes registerEvent operation in `CommandBridge`. |
-| **`unregisterEvent()`** | `event: string, callback: Function` | `void` | Executes unregisterEvent operation in `CommandBridge`. |
-| **`emit()`** | `event: string, ...args: any[]` | `Promise<void>` | Executes emit operation in `CommandBridge`. |
+| **[`registerEvent()`](./registerEvent.md)** | `event: string, callback: Function` | `void` | Executes registerEvent operation in `CommandBridge`. |
+| **[`unregisterEvent()`](./unregisterEvent.md)** | `event: string, callback: Function` | `void` | Executes unregisterEvent operation in `CommandBridge`. |
+| **[`emit()`](./emit.md)** | `event: string, ...args: any[]` | `Promise<void>` | Executes emit operation in `CommandBridge`. |

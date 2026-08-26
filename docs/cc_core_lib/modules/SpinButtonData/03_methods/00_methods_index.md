@@ -13,4 +13,4 @@ tags: ["SpinButtonData", "spin_button_data", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setAutoSpin()`** | `count: number` | `void` | Executes setAutoSpin operation in `SpinButtonData`. |
+| **[`setAutoSpin()`](./setAutoSpin.md)** | `count: number` | `void` | Executes setAutoSpin operation in `SpinButtonData`. |

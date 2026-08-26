@@ -13,4 +13,4 @@ tags: ["BetAllwaysManager", "bet_allways_manager", "cc_core_lib", "methods", "in
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setTotalCredit()`** | `amount: number` | `void` | Executes setTotalCredit operation in `BetAllwaysManager`. |
+| **[`setTotalCredit()`](./setTotalCredit.md)** | `amount: number` | `void` | Executes setTotalCredit operation in `BetAllwaysManager`. |

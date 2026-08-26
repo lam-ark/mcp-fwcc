@@ -13,4 +13,4 @@ tags: ["SpinButtonLightningManager", "spin_button_lightning_manager", "cc_core_l
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`spinSpaceTriggered()`** | `void` | `void` | Executes spinSpaceTriggered operation in `SpinButtonLightningManager`. |
+| **[`spinSpaceTriggered()`](./spinSpaceTriggered.md)** | `void` | `void` | Executes spinSpaceTriggered operation in `SpinButtonLightningManager`. |

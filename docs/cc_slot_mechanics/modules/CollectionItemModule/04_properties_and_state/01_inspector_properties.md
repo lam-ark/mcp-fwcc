@@ -1,17 +1,24 @@
 ---
-id: "cc_slot_mechanics:CollectionItemModule:properties:inspector_properties"
-title: "CollectionItemModule Inspector Properties"
+id: "cc_slot_mechanics:CollectionItemModule:api:properties"
+title: "CollectionItemModule Inspector Properties & State Schema"
 category: "cc_slot_mechanics"
-tags: ["CollectionItemModule", "collection_item_module", "cc_slot_mechanics", "properties", "inspector"]
+tags: ["CollectionItemModule", "collection_item_module", "cc_slot_mechanics", "properties", "schema"]
 ---
 
-# 📋 CollectionItemModule Inspector Properties
+# 📋 `CollectionItemModule` Properties & State Schema
 
 ---
 
-## 1. Serialized Fields
+## 1. Inspector Properties
 
-| Property | Type | Default | Description |
-| :--- | :--- | :---: | :--- |
-| **`item`** | `cc.Prefab` | `null` | Serialized property for CollectionItemModule |
-| **`holder`** | `cc.Node` | `null` | Serialized property for CollectionItemModule |
+| Property Name | Type | Description |
+| :--- | :--- | :--- |
+| **`item`** | `cc.Prefab` | Inspector property in `CollectionItemModule` managing runtime item. |
+| **`holder`** | `cc.Node` | Inspector property in `CollectionItemModule` managing runtime holder. |
+
+---
+
+## 2. State Invariants
+
+- Properties are wired via Cocos Creator Inspector prefabs.
+- Must not be mutated directly while the table state is in active spin or cascade mode.

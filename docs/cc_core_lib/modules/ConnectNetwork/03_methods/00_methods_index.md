@@ -13,6 +13,6 @@ tags: ["ConnectNetwork", "connect_network", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setGameNetwork()`** | `network: any` | `void` | Executes setGameNetwork operation in `ConnectNetwork`. |
-| **`getToken()`** | `void` | `any` | Executes getToken operation in `ConnectNetwork`. |
-| **`getRefreshToken()`** | `void` | `string` | Executes getRefreshToken operation in `ConnectNetwork`. |
+| **[`setGameNetwork()`](./setGameNetwork.md)** | `network: any` | `void` | Executes setGameNetwork operation in `ConnectNetwork`. |
+| **[`getToken()`](./getToken.md)** | `void` | `any` | Executes getToken operation in `ConnectNetwork`. |
+| **[`getRefreshToken()`](./getRefreshToken.md)** | `void` | `string` | Executes getRefreshToken operation in `ConnectNetwork`. |

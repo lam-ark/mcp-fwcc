@@ -1,61 +1,36 @@
 ---
 id: "cc_core_lib:NormalGameDirector:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng NormalGameDirector (slot-base-logic)"
+title: "NormalGameDirector Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["NormalGameDirector", "normal_game_director", "cc_core_lib", "overview", "eno", "slot-base-logic", "guide", "usage"]
+tags: ["NormalGameDirector", "normal_game_director", "cc_core_lib", "overview", "eno", "slot-base-logic", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `NormalGameDirector`
+# 🏛️ `NormalGameDirector` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/slot-base-logic`  
-> **Namespace**: `eno.NormalGameDirector` / `globalThis.eno.NormalGameDirector`  
-> **Kế thừa**: `SlotGameDirector`
-
----
-
-## 🎯 1. `NormalGameDirector` Dùng Để Làm Gì? (Purpose & Overview)
-
-`NormalGameDirector` là một class tiện ích/logic cốt lõi trong thư viện **`slot-base-logic`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/slot-base-logic`
+- **Global Namespace Anchor**: `eno.NormalGameDirector` / `globalThis.eno.NormalGameDirector`
+- **Inheritance Hierarchy**: `NormalGameDirector` ➔ `SlotGameDirector`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { NormalGameDirector } = globalThis.eno;
+`NormalGameDirector` is an essential logic component within **`slot-base-logic`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[SlotGameDirector] --> TargetClass[NormalGameDirector]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`_checkConditionShowTurboIntro()`**: `Promise<boolean>`
-- **`_checkEnoughBalanceBuyFeature(data: any)`**: `Promise<boolean>`
-- **`_updateWalletAfterBuyFeatureSpin(data: any)`**: `Promise<boolean>`
-- **`_setButtonSpinning(data: any)`**: `Promise<boolean>`
-- **`_updateWalletAfterSpin(data: any)`**: `Promise<boolean>`
-- **`_sendSpinToNetwork(data: any)`**: `Promise<boolean>`
-- **`_sendBuyFeatureSpinToNetwork(currentBetData: string)`**: `Promise<boolean>`
-- **`_enableButtons(data: any)`**: `Promise<boolean>`
-- **`_prepareNextSpin(data: any)`**: `Promise<boolean>`
-- **`_resumeLastBet(data: any)`**: `Promise<boolean>`
-- **`_resumeLastBetBuyFeature(data: any)`**: `Promise<boolean>`
-- **`_resumeLastExtraBetFeature(data: any)`**: `Promise<boolean>`
-- **`_playRespinMode(data: any)`**: `Promise<any>`
-- **`_finishPlaySession(data: any)`**: `Promise<boolean>`
-- **`_finishResumePlaySession(data: any)`**: `Promise<boolean>`
-- **`_resetTrialWallet(data: any)`**: `Promise<boolean>`
-- **`_updateSpinRemaining(data: any)`**: `Promise<boolean>`
-- **`_decreasePromotionRemain(data: any)`**: `Promise<boolean>`
-- **`_checkMaxTrialSession(data: any)`**: `Promise<boolean>`
-- **`_updateWalletTrialAfterSpin(data: any)`**: `Promise<boolean>`
-- **`_showResumeNormalGame(data: any)`**: `Promise<void>`
-- **`_preResumeGameMode(data: any)`**: `Promise<void>`
-- **`_forceStopCurrentGameMode()`**: `Promise<void>`
-- **`_resetNormalSpinButton()`**: `Promise<boolean>`
-- **`_triggerSpinWithBuyFeature()`**: `Promise<void>`
-- **`_showResultEntry()`**: `Promise<void>`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

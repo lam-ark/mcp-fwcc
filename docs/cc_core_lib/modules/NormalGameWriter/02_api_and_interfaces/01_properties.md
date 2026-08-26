@@ -19,6 +19,6 @@ tags: ["NormalGameWriter", "normal_game_writer", "cc_core_lib", "properties", "s
 
 ---
 
-## 2. State Mutation Lifecycle
+## 2. State Mutation Guardrails
 
-All state fields in `NormalGameWriter` are initialized during instantiation/registration and mutated during explicit lifecycle method calls. Direct property mutation outside defined methods is strictly discouraged.
+All state fields in `NormalGameWriter` must be initialized during instance registration and modified strictly via designated lifecycle methods. Direct mutation from outside modules is strongly discouraged to maintain state predictability.

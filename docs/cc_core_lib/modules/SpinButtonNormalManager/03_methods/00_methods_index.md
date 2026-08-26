@@ -13,18 +13,18 @@ tags: ["SpinButtonNormalManager", "spin_button_normal_manager", "cc_core_lib", "
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`init()`** | `void` | `void` | Executes init operation in `SpinButtonNormalManager`. |
-| **`onSpinButtonHover()`** | `void` | `void` | Executes onSpinButtonHover operation in `SpinButtonNormalManager`. |
-| **`onSpinButtonCancelHover()`** | `void` | `void` | Executes onSpinButtonCancelHover operation in `SpinButtonNormalManager`. |
-| **`onSpinButtonHold()`** | `spinTimes?: number` | `void` | Executes onSpinButtonHold operation in `SpinButtonNormalManager`. |
-| **`onSpinClick()`** | `void` | `void` | Executes onSpinClick operation in `SpinButtonNormalManager`. |
-| **`onSpinWithBuyFeature()`** | `void` | `void` | Executes onSpinWithBuyFeature operation in `SpinButtonNormalManager`. |
-| **`spinSpaceTriggered()`** | `void` | `void` | Executes spinSpaceTriggered operation in `SpinButtonNormalManager`. |
-| **`onEnableUserAction()`** | `void` | `void` | Executes onEnableUserAction operation in `SpinButtonNormalManager`. |
-| **`onFastToResultCall()`** | `void` | `void` | Executes onFastToResultCall operation in `SpinButtonNormalManager`. |
-| **`setButtonSpinning()`** | `void` | `void` | Executes setButtonSpinning operation in `SpinButtonNormalManager`. |
-| **`setButtonCanStopAuto()`** | `void` | `void` | Executes setButtonCanStopAuto operation in `SpinButtonNormalManager`. |
-| **`setButtonCanTransitToNormal()`** | `void` | `void` | Executes setButtonCanTransitToNormal operation in `SpinButtonNormalManager`. |
-| **`resetNormalSpinButton()`** | `void` | `void` | Executes resetNormalSpinButton operation in `SpinButtonNormalManager`. |
-| **`onDisableAutoSpin()`** | `void` | `void` | Executes onDisableAutoSpin operation in `SpinButtonNormalManager`. |
-| **`decreaseAutoSpinTimes()`** | `void` | `void` | Executes decreaseAutoSpinTimes operation in `SpinButtonNormalManager`. |
+| **[`init()`](./init.md)** | `void` | `void` | Executes init operation in `SpinButtonNormalManager`. |
+| **[`onSpinButtonHover()`](./onSpinButtonHover.md)** | `void` | `void` | Executes onSpinButtonHover operation in `SpinButtonNormalManager`. |
+| **[`onSpinButtonCancelHover()`](./onSpinButtonCancelHover.md)** | `void` | `void` | Executes onSpinButtonCancelHover operation in `SpinButtonNormalManager`. |
+| **[`onSpinButtonHold()`](./onSpinButtonHold.md)** | `spinTimes?: number` | `void` | Executes onSpinButtonHold operation in `SpinButtonNormalManager`. |
+| **[`onSpinClick()`](./onSpinClick.md)** | `void` | `void` | Executes onSpinClick operation in `SpinButtonNormalManager`. |
+| **[`onSpinWithBuyFeature()`](./onSpinWithBuyFeature.md)** | `void` | `void` | Executes onSpinWithBuyFeature operation in `SpinButtonNormalManager`. |
+| **[`spinSpaceTriggered()`](./spinSpaceTriggered.md)** | `void` | `void` | Executes spinSpaceTriggered operation in `SpinButtonNormalManager`. |
+| **[`onEnableUserAction()`](./onEnableUserAction.md)** | `void` | `void` | Executes onEnableUserAction operation in `SpinButtonNormalManager`. |
+| **[`onFastToResultCall()`](./onFastToResultCall.md)** | `void` | `void` | Executes onFastToResultCall operation in `SpinButtonNormalManager`. |
+| **[`setButtonSpinning()`](./setButtonSpinning.md)** | `void` | `void` | Executes setButtonSpinning operation in `SpinButtonNormalManager`. |
+| **[`setButtonCanStopAuto()`](./setButtonCanStopAuto.md)** | `void` | `void` | Executes setButtonCanStopAuto operation in `SpinButtonNormalManager`. |
+| **[`setButtonCanTransitToNormal()`](./setButtonCanTransitToNormal.md)** | `void` | `void` | Executes setButtonCanTransitToNormal operation in `SpinButtonNormalManager`. |
+| **[`resetNormalSpinButton()`](./resetNormalSpinButton.md)** | `void` | `void` | Executes resetNormalSpinButton operation in `SpinButtonNormalManager`. |
+| **[`onDisableAutoSpin()`](./onDisableAutoSpin.md)** | `void` | `void` | Executes onDisableAutoSpin operation in `SpinButtonNormalManager`. |
+| **[`decreaseAutoSpinTimes()`](./decreaseAutoSpinTimes.md)** | `void` | `void` | Executes decreaseAutoSpinTimes operation in `SpinButtonNormalManager`. |

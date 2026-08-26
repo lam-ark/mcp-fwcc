@@ -1,47 +1,36 @@
 ---
 id: "cc_core_lib:NodeUtils:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng NodeUtils (cc-wrap-func)"
+title: "NodeUtils Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["NodeUtils", "node_utils", "cc_core_lib", "overview", "eno", "cc-wrap-func", "guide", "usage"]
+tags: ["NodeUtils", "node_utils", "cc_core_lib", "overview", "eno", "cc-wrap-func", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `NodeUtils`
+# 🏛️ `NodeUtils` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/cc-wrap-func`  
-> **Namespace**: `eno.NodeUtils` / `globalThis.eno.NodeUtils`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `NodeUtils` Dùng Để Làm Gì? (Purpose & Overview)
-
-`NodeUtils` là một class tiện ích/logic cốt lõi trong thư viện **`cc-wrap-func`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/cc-wrap-func`
+- **Global Namespace Anchor**: `eno.NodeUtils` / `globalThis.eno.NodeUtils`
+- **Inheritance Hierarchy**: `NodeUtils` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { NodeUtils } = globalThis.eno;
+`NodeUtils` is an essential logic component within **`cc-wrap-func`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[NodeUtils]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`changeColor(node: cc.Node, color: cc.Color)`**: `void`
-- **`setZIndex(node: cc.Node, index: number, forceUpdate?: boolean)`**: `void`
-- **`updateSiblingIndex(parent: cc.Node)`**: `void`
-- **`getPositionInOtherNode(spaceNode: cc.Node, targetNode: cc.Node)`**: `cc.Vec3 | null`
-- **`getOrAddComponent(node: cc.Node, component: string)`**: `any | null`
-- **`setRenderColor(node: cc.Node, alpha: number)`**: `void`
-- **`getWorldRotation(node: cc.Node)`**: `number`
-- **`setOpacityDeep(node: cc.Node, opacity: number)`**: `void`
-- **`getOpacity(node: cc.Node)`**: `number`
-- **`setOpacity(node: cc.Node, opacity: number)`**: `void`
-- **`changeParent(node: cc.Node, newParent: cc.Node)`**: `void`
-- **`getGameIdFromNode(node: cc.Node)`**: `string`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

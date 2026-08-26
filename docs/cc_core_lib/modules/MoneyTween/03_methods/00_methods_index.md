@@ -13,8 +13,8 @@ tags: ["MoneyTween", "money_tween", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`runShortNumber()`** | `target: cc.Node, duration: number, endValue: number, options?: Options` | `cc.Tween` | Executes runShortNumber operation in `MoneyTween`. |
-| **`runWallet()`** | `target: cc.Node, duration: number, endValue: number, options?: Options` | `cc.Tween` | Executes runWallet operation in `MoneyTween`. |
-| **`getCurrentValue()`** | `target: cc.Node` | `number` | Executes getCurrentValue operation in `MoneyTween`. |
-| **`runBigWinNumber()`** | `target: cc.Node, duration: number, endValue: number, options?: Options` | `cc.Tween` | Executes runBigWinNumber operation in `MoneyTween`. |
-| **`stopAllMoneyTweens()`** | `void` | `void` | Executes stopAllMoneyTweens operation in `MoneyTween`. |
+| **[`runShortNumber()`](./runShortNumber.md)** | `target: cc.Node, duration: number, endValue: number, options?: Options` | `cc.Tween` | Executes runShortNumber operation in `MoneyTween`. |
+| **[`runWallet()`](./runWallet.md)** | `target: cc.Node, duration: number, endValue: number, options?: Options` | `cc.Tween` | Executes runWallet operation in `MoneyTween`. |
+| **[`getCurrentValue()`](./getCurrentValue.md)** | `target: cc.Node` | `number` | Executes getCurrentValue operation in `MoneyTween`. |
+| **[`runBigWinNumber()`](./runBigWinNumber.md)** | `target: cc.Node, duration: number, endValue: number, options?: Options` | `cc.Tween` | Executes runBigWinNumber operation in `MoneyTween`. |
+| **[`stopAllMoneyTweens()`](./stopAllMoneyTweens.md)** | `void` | `void` | Executes stopAllMoneyTweens operation in `MoneyTween`. |

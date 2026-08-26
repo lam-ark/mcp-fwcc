@@ -5,28 +5,37 @@ category: "cc_slot_mechanics"
 tags: ["TableGigabloxModule", "table_gigablox_module", "cc_slot_mechanics", "overview", "architecture", "mechanics"]
 ---
 
-# 🏛️ TableGigabloxModule Architectural Role & Mechanics Overview
+# 🏛️ `TableGigabloxModule` Architectural Role & Mechanics Overview
+
+- **Mechanics Package**: `assets/cc-common/cc-slot-mechanics/Gigablox`
+- **Source File**: `assets/cc-common/cc-slot-mechanics/Gigablox/scripts/TableGigabloxModule.ts`
+- **Class Hierarchy**: `TableGigabloxModule` ➔ `SlotTableModule`
+- **Subsystem Domain**: Gigablox Colossal Symbol Synchronizer
 
 ---
 
-## 1. Architectural Mission
+## 1. Mathematical & Engineering Foundation
 
-`TableGigabloxModule` is a core component of the `cc-slot-mechanics` package (`assets/cc-common/cc-slot-mechanics/Gigablox/scripts/TableGigabloxModule.ts`).
-- **Inheritance Chain**: `TableGigabloxModule` ➔ `SlotTableModule`
-- **Primary Responsibility**: Provides specialized slot mechanics execution, coordinate mathematics, and state management for advanced slot games.
+`TableGigabloxModule` is a core runtime module within the **Gigablox Colossal Symbol Synchronizer**.
+
+> **Mathematical Foundation & Formulation**:  
+> Multi-reel bounding box synchronization across $K$ columns with colossal symbol dimensions $2\times 2, 3\times 3, 4\times 4$.
 
 ```mermaid
 graph TD
-    Parent[SlotTableModule] --> Mod[TableGigabloxModule]
-    Mod --> State[Internal State & Data Pipeline]
-    Mod --> Render[Visual Presentation & Animations]
+    SuperClass[SlotTableModule] --> TargetClass[TableGigabloxModule]
+    TargetClass --> DataPipeline[Internal State & Data Pipeline]
+    TargetClass --> Orchestrator[SlotTable / Director Orchestrator]
+    TargetClass --> ViewLayer[Visual Rendering & Spine Layers]
 ```
 
 ---
 
-## 2. Key Responsibilities
+## 2. Core Responsibilities & System Invariants
 
-1. **State & Physics Coordination**:
-   - Implements game-specific algorithms and state mutations.
-2. **Director & Writer Integration**:
-   - Dispatches step completion callbacks to `ScriptExecutor` to maintain non-blocking async command queues.
+1. **State & Coordinate Calculation**:
+   - Manages mathematical matrix models, reel coordinates, and bounding box calculations with zero memory leaks.
+2. **Director & Writer Command Pipeline**:
+   - Emits asynchronous step completion signals to `ScriptExecutor` to maintain uninterrupted $60\text{ FPS}$ spin loops.
+3. **Event Bus Communication**:
+   - Subscribes and publishes events: `GIGABLOX_MERGE_START`, `GIGABLOX_SPIN_SYNC`, `GIGABLOX_LANDED`.

@@ -13,4 +13,4 @@ tags: ["GlobalNetwork", "global_network", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setGameNetwork()`** | `network: any` | `void` | Executes setGameNetwork operation in `GlobalNetwork`. |
+| **[`setGameNetwork()`](./setGameNetwork.md)** | `network: any` | `void` | Executes setGameNetwork operation in `GlobalNetwork`. |

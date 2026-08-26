@@ -13,6 +13,6 @@ tags: ["BetHistoryDetailManager", "bet_history_detail_manager", "cc_core_lib", "
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`initBetDetail()`** | `sessionData: any, betHistoryType?: number` | `void` | Executes initBetDetail operation in `BetHistoryDetailManager`. |
-| **`onOpen()`** | `void` | `void` | Executes onOpen operation in `BetHistoryDetailManager`. |
-| **`onClose()`** | `void` | `void` | Executes onClose operation in `BetHistoryDetailManager`. |
+| **[`initBetDetail()`](./initBetDetail.md)** | `sessionData: any, betHistoryType?: number` | `void` | Executes initBetDetail operation in `BetHistoryDetailManager`. |
+| **[`onOpen()`](./onOpen.md)** | `void` | `void` | Executes onOpen operation in `BetHistoryDetailManager`. |
+| **[`onClose()`](./onClose.md)** | `void` | `void` | Executes onClose operation in `BetHistoryDetailManager`. |

@@ -13,4 +13,4 @@ tags: ["FreeOptionData", "free_option_data", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`getOptions()`** | `void` | `any[]` | Executes getOptions operation in `FreeOptionData`. |
+| **[`getOptions()`](./getOptions.md)** | `void` | `any[]` | Executes getOptions operation in `FreeOptionData`. |

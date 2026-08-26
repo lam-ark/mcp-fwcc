@@ -1,91 +1,36 @@
 ---
 id: "cc_core_lib:GameStateWrap:overview:architecture"
-title: "Hướng dẫn & Cách sử dụng GameStateWrap (slot-base-logic)"
+title: "GameStateWrap Architectural Role & Runtime Integration"
 category: "cc_core_lib"
-tags: ["GameStateWrap", "game_state_wrap", "cc_core_lib", "overview", "eno", "slot-base-logic", "guide", "usage"]
+tags: ["GameStateWrap", "game_state_wrap", "cc_core_lib", "overview", "eno", "slot-base-logic", "architecture"]
 ---
 
-# 📚 Hướng dẫn sử dụng: `GameStateWrap`
+# 🏛️ `GameStateWrap` Architectural Role & Runtime Integration
 
-> **Package**: `assets/cc-common/cc-core-lib/slot-base-logic`  
-> **Namespace**: `eno.GameStateWrap` / `globalThis.eno.GameStateWrap`  
-> **Kế thừa**: `Object`
-
----
-
-## 🎯 1. `GameStateWrap` Dùng Để Làm Gì? (Purpose & Overview)
-
-`GameStateWrap` là một class tiện ích/logic cốt lõi trong thư viện **`slot-base-logic`**. Nó cung cấp các công cụ sẵn có giúp các module game slot thao tác nhanh chóng, chuẩn xác và tối ưu hiệu năng $60\text{ FPS}$ trên mobile.
+- **Package Source**: `assets/cc-common/cc-core-lib/slot-base-logic`
+- **Global Namespace Anchor**: `eno.GameStateWrap` / `globalThis.eno.GameStateWrap`
+- **Inheritance Hierarchy**: `GameStateWrap` ➔ `Object`
 
 ---
 
-## 💡 2. Cách Sử Dụng Nhanh (Quick Start)
+## 1. Architectural Mission
 
-```typescript
-// 1. Lấy class từ global namespace 'eno'
-const { GameStateWrap } = globalThis.eno;
+`GameStateWrap` is an essential logic component within **`slot-base-logic`**. It encapsulates dedicated business rules, lifecycle hooks, and optimized runtime performance tailored for high-framerate ($60\text{ FPS}$) Cocos Creator 2.4 slot games.
 
-// 2. Khởi tạo hoặc sử dụng static methods
-// Ví dụ sử dụng cơ bản:
-// ...
+```mermaid
+graph TD
+    SuperClass[Object] --> TargetClass[GameStateWrap]
+    TargetClass --> InternalState[State & Properties]
+    TargetClass --> Consumers[GameDirector / Table / UI Consumers]
 ```
 
 ---
 
-## 📋 3. Danh Sách Các Phương Thức Chính
-- **`init()`**: `void`
-- **`bindTutorialData(tutorialData: any)`**: `void`
-- **`_decodeTutorialData(tutorialData: any)`**: `void`
-- **`onCannotConnect()`**: `void`
-- **`onCannotAuthen()`**: `void`
-- **`onNetworkWarning()`**: `void`
-- **`onShowPopupDisconnected()`**: `void`
-- **`onConnected()`**: `void`
-- **`switchToTrial()`**: `void`
-- **`getCurrentWallet()`**: `void`
-- **`_fireEventJoinGameDenied()`**: `void`
-- **`_fireEventStateUpdated(data: any)`**: `void`
-- **`_fireEventStatePushed(data: any)`**: `void`
-- **`_fireEventErrorPushed(data: any)`**: `void`
-- **`_fireEventRequestDenied(data: any)`**: `void`
-- **`_fireEventLeaveGameTrial(data: any)`**: `void`
-- **`_fireEventJackpotWin(data: any)`**: `void`
-- **`_fireEventNoticeJackpotWin(data: any)`**: `void`
-- **`_fireEventNoticeUserWinJackpot(data: any)`**: `void`
-- **`_fireEventJoinGameResult(data: any)`**: `void`
-- **`_handleCommandSendSuccessfully(data: any)`**: `void`
-- **`onNetworkConnectFail()`**: `void`
-- **`onNetworkConnectSuccess()`**: `void`
-- **`_timeoutExpectedEventHandler(event: any)`**: `void`
-- **`_verifyExpectedEvent(eventName: any)`**: `void`
-- **`skipTutorial()`**: `void`
-- **`switchToReal()`**: `void`
-- **`triggerJoinTrial()`**: `void`
-- **`triggerSpinRequest(betId: any, betLines?: any)`**: `void`
-- **`triggerSpinRequestBatch1(currentBetValue: any)`**: `void`
-- **`_getNewTrialPS()`**: `void`
-- **`_returnTrialPS()`**: `void`
-- **`triggerFreeSpinRequest()`**: `void`
-- **`triggerFreeSpinEventRequest()`**: `void`
-- **`triggerFreeSpinOption(option: any)`**: `void`
-- **`triggerFreeSpinEventOption(option: any)`**: `void`
-- **`triggerMiniGame(openCell: any)`**: `void`
-- **`triggerLightningSpinRequest()`**: `void`
-- **`triggerPowerUpSpinRequest(openCell: any)`**: `void`
-- **`triggerGambleSpinRequest(openCell: any, totalBet: any)`**: `void`
-- **`triggerRespinRequest()`**: `void`
-- **`_triggerGetLatestStatePrivate(metaData: any)`**: `void`
-- **`triggerLeaveGameTrialRequest()`**: `void`
-- **`cleanUpForGame()`**: `void`
-- **`cleanUpNetWork()`**: `void`
-- **`outGame()`**: `void`
-- **`networkCallbackJP(callbackJP: any)`**: `void`
-- **`_timeOutReceiveAck(event: any)`**: `void`
-- **`gameOnPause()`**: `void`
-- **`gameOnResume()`**: `void`
-- **`_cleanUp()`**: `void`
-- **`onForceGetLastedState(isOn: any)`**: `void`
-- **`_fireUpdateTrial(data: any)`**: `void`
-- **`isFinishedTutorialData()`**: `boolean`
-- **`onTimeoutGetLastedState()`**: `void`
-- **`_fireEventUserLogOutFunc()`**: `void`
+## 2. Core Responsibilities
+
+1. **Deterministic Lifecycle Orchestration**:
+   - Manages state machine transitions with zero uncontrolled side-effects.
+2. **Memory & Performance Optimization**:
+   - Zero-allocation design preventing Garbage Collection (GC) spikes during high-frequency spin loops.
+3. **Cross-Platform Resilience**:
+   - Normalizes engine quirks between iOS WebAudio, Android touch dispatchers, and desktop WebGL canvas adapters.

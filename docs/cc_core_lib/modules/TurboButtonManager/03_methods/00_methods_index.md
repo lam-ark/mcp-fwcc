@@ -13,13 +13,13 @@ tags: ["TurboButtonManager", "turbo_button_manager", "cc_core_lib", "methods", "
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`onTurboClicked()`** | `void` | `void` | Executes onTurboClicked operation in `TurboButtonManager`. |
-| **`onActiveFromTurboIntro()`** | `void` | `void` | Executes onActiveFromTurboIntro operation in `TurboButtonManager`. |
-| **`switchToTrial()`** | `void` | `void` | Executes switchToTrial operation in `TurboButtonManager`. |
-| **`switchToReal()`** | `void` | `void` | Executes switchToReal operation in `TurboButtonManager`. |
-| **`turnTurboOn()`** | `void` | `void` | Executes turnTurboOn operation in `TurboButtonManager`. |
-| **`turnTurboOff()`** | `void` | `void` | Executes turnTurboOff operation in `TurboButtonManager`. |
-| **`onTurboHover()`** | `void` | `void` | Executes onTurboHover operation in `TurboButtonManager`. |
-| **`onTurboExitHover()`** | `void` | `void` | Executes onTurboExitHover operation in `TurboButtonManager`. |
-| **`onTurboPressed()`** | `void` | `void` | Executes onTurboPressed operation in `TurboButtonManager`. |
-| **`onTurboReleased()`** | `void` | `void` | Executes onTurboReleased operation in `TurboButtonManager`. |
+| **[`onTurboClicked()`](./onTurboClicked.md)** | `void` | `void` | Executes onTurboClicked operation in `TurboButtonManager`. |
+| **[`onActiveFromTurboIntro()`](./onActiveFromTurboIntro.md)** | `void` | `void` | Executes onActiveFromTurboIntro operation in `TurboButtonManager`. |
+| **[`switchToTrial()`](./switchToTrial.md)** | `void` | `void` | Executes switchToTrial operation in `TurboButtonManager`. |
+| **[`switchToReal()`](./switchToReal.md)** | `void` | `void` | Executes switchToReal operation in `TurboButtonManager`. |
+| **[`turnTurboOn()`](./turnTurboOn.md)** | `void` | `void` | Executes turnTurboOn operation in `TurboButtonManager`. |
+| **[`turnTurboOff()`](./turnTurboOff.md)** | `void` | `void` | Executes turnTurboOff operation in `TurboButtonManager`. |
+| **[`onTurboHover()`](./onTurboHover.md)** | `void` | `void` | Executes onTurboHover operation in `TurboButtonManager`. |
+| **[`onTurboExitHover()`](./onTurboExitHover.md)** | `void` | `void` | Executes onTurboExitHover operation in `TurboButtonManager`. |
+| **[`onTurboPressed()`](./onTurboPressed.md)** | `void` | `void` | Executes onTurboPressed operation in `TurboButtonManager`. |
+| **[`onTurboReleased()`](./onTurboReleased.md)** | `void` | `void` | Executes onTurboReleased operation in `TurboButtonManager`. |

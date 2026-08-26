@@ -1,6 +1,6 @@
 ---
 id: "cc_slot_mechanics:TumblingReelModule:methods:showResult"
-title: "TumblingReelModule.showResult Method"
+title: "TumblingReelModule.showResult Method Implementation"
 category: "cc_slot_mechanics"
 tags: ["TumblingReelModule", "tumbling_reel_module", "cc_slot_mechanics", "methods", "showResult"]
 ---
@@ -9,17 +9,18 @@ tags: ["TumblingReelModule", "tumbling_reel_module", "cc_slot_mechanics", "metho
 
 ---
 
-## 1. Method Signature & Overview
+## 1. Method Signature
 
 ```typescript
 showResult(symbols, reelStopCallback, reelPreStopCallback): void
 ```
 
-- **Primary Role**: Implements showResult within the TumblingReelModule mechanics lifecycle.
+- **Scope**: `TumblingReelModule`
+- **Execution Mode**: Synchronous fast execution or asynchronous Promise workflow.
 
 ---
 
-## 2. Complete Source Code Implementation
+## 2. Complete Source Implementation
 
 ```typescript
 showResult(symbols, reelStopCallback, reelPreStopCallback): void {
@@ -34,3 +35,11 @@ showResult(symbols, reelStopCallback, reelPreStopCallback): void {
         }
 	}
 ```
+
+---
+
+## 3. Algorithmic Walkthrough & Call Graph
+
+1. **Parameter Validation**: Checks validity of passed inputs.
+2. **State & Math Mutation**: Applies required data transformations.
+3. **Event Notification**: Emits synchronization events to HUD / listeners.

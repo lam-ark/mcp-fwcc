@@ -13,10 +13,10 @@ tags: ["ExitButtonManager", "exit_button_manager", "cc_core_lib", "properties", 
 
 | Property | Type | Description |
 | :--- | :--- | :--- |
-| *None declared* | `-` | Pure static utility or stateless method container |
+| *None declared* | `-` | Pure static utility or stateless container |
 
 ---
 
-## 2. State Mutation Lifecycle
+## 2. State Mutation Guardrails
 
-All state fields in `ExitButtonManager` are initialized during instantiation/registration and mutated during explicit lifecycle method calls. Direct property mutation outside defined methods is strictly discouraged.
+All state fields in `ExitButtonManager` must be initialized during instance registration and modified strictly via designated lifecycle methods. Direct mutation from outside modules is strongly discouraged to maintain state predictability.

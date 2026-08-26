@@ -13,7 +13,7 @@ tags: ["DialogData", "dialog_data", "cc_core_lib", "methods", "index"]
 
 | Method | Parameters | Return Type | Description |
 | :--- | :--- | :--- | :--- |
-| **`setMessage()`** | `message: string` | `void` | Executes setMessage operation in `DialogData`. |
-| **`setTitle()`** | `title: string` | `void` | Executes setTitle operation in `DialogData`. |
-| **`setButtonOKDisplay()`** | `isActive: boolean` | `void` | Executes setButtonOKDisplay operation in `DialogData`. |
-| **`setButtonCancelDisplay()`** | `isActive: boolean` | `void` | Executes setButtonCancelDisplay operation in `DialogData`. |
+| **[`setMessage()`](./setMessage.md)** | `message: string` | `void` | Executes setMessage operation in `DialogData`. |
+| **[`setTitle()`](./setTitle.md)** | `title: string` | `void` | Executes setTitle operation in `DialogData`. |
+| **[`setButtonOKDisplay()`](./setButtonOKDisplay.md)** | `isActive: boolean` | `void` | Executes setButtonOKDisplay operation in `DialogData`. |
+| **[`setButtonCancelDisplay()`](./setButtonCancelDisplay.md)** | `isActive: boolean` | `void` | Executes setButtonCancelDisplay operation in `DialogData`. |
