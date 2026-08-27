@@ -37,3 +37,6 @@ Welcome to the technical architecture guide on the **Payline Evaluation & Win Pr
    * Step-by-step developer checklist for configuring paylines in new games.
    * Handling Expanding Reels and Dynamic Grid Formats (`TABLE_FORMAT_CHANGED`).
    * Production case study (Red Cliff 243 AllWays with Wild Multiplier frames).
+
+6. **[`06_paybar_hud_persistence_and_multi_tier_presentation.md`](./06_paybar_hud_persistence_and_multi_tier_presentation.md)**
+   * Paybar HUD Persistence, Multi-Tier Effects & Free Game Win Rollup via `MoneyTween`.

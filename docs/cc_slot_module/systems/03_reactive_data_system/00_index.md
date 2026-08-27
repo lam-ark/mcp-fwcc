@@ -30,3 +30,10 @@ Welcome to the technical guide on the **Reactive Data Flow & Reconnection Archit
 5. **[`05_companion_triplet_view_data_config_pattern.md`](./05_companion_triplet_view_data_config_pattern.md)**
    * Clean Code Subsystem Architecture: The Companion Triplet Pattern (**Visual Controller** `*Module.ts` + **Reactive Data Model** `*Data.ts` + **Configuration** `*Config.ts`).
    * Subsystem inventory, co-location in Scene Graph, and Single Responsibility Principle (SRP) rules.
+
+6. **[`06_win_accumulation_across_game_modes_and_winamountps.md`](./06_win_accumulation_across_game_modes_and_winamountps.md)**
+   * PlaySession Win Accumulation Lifecycle, `winAmountPS` contract, and Game Mode Transitions (Normal Game $\rightarrow$ Free Game).
+   * Paybar HUD persistence, non-clearing Free Spin loops, and MoneyTween rollups.
+
+7. **[`07_module_data_config_triad_implementation_guide.md`](./07_module_data_config_triad_implementation_guide.md)**
+   * Step-by-Step Implementation Guide for Module-Data-Config Triads with code recipes and anti-pattern prevention.
